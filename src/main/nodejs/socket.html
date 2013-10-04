@@ -1,0 +1,21 @@
+<html>
+	<head>
+		<script src="/socket.io/socket.io.js"></script>
+		<script>
+			var count=0;
+			var socket = io.connect('/');
+			socket.on('news', function (data) {
+				//console.log(data);
+				socket.emit('my other event', { my: 'data' });
+				
+			  });
+			socket.on('draw', function () {
+				document.getElementById('myDiv').innerHTML  = count++; 
+			});
+		</script>
+	</head>
+	<body>
+		<div id="myTest"></div>
+		count : <span id="myDiv">0</span>
+	</body>
+</html>

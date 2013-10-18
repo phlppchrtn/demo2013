@@ -1,4 +1,5 @@
 package socket.tcp;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -21,7 +22,7 @@ public class KnockKnockServer {
 						while ((inputLine = in.readLine()) != null) {
 							outputLine = kkp.processInput(inputLine);
 							out.println(outputLine);
-							if (outputLine.equals("Bye."))
+							if (outputLine.toUpperCase().startsWith("BYE"))
 								break;
 						}
 					}

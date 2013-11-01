@@ -13,7 +13,7 @@ import org.apache.sshd.server.PasswordAuthenticator;
 import org.apache.sshd.server.keyprovider.SimpleGeneratorHostKeyProvider;
 import org.apache.sshd.server.session.ServerSession;
 
-public class KnockKnockServer {
+public class SSHServer {
 	/**
 	 * Very basic PasswordAuthenticator used for unit tests.
 	 */

@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 CVS/
 classes/
 
@@ -16,6 +17,8 @@ tmp/
 *.swp
 *~.nib
 =======
+=======
+>>>>>>> c806399c4696b8018b02f102afb5feaaa92719ef
 # Numerous always-ignore extensions
 *.class
 *~
@@ -46,11 +49,15 @@ tmp/
 .project
 .cache
 .metadata
+<<<<<<< HEAD
+>>>>>>> c806399c4696b8018b02f102afb5feaaa92719ef
+=======
 >>>>>>> c806399c4696b8018b02f102afb5feaaa92719ef
 local.properties
 .classpath
 .settings/
 .loadpath
+<<<<<<< HEAD
 <<<<<<< HEAD
 .class
 
@@ -79,6 +86,8 @@ Desktop.ini
 
 
 =======
+=======
+>>>>>>> c806399c4696b8018b02f102afb5feaaa92719ef
  
 # Locally stored "Eclipse launch configurations"
 *.launch
@@ -100,4 +109,7 @@ Thumbs.db
 # Folder config file
 Desktop.ini
 
+<<<<<<< HEAD
+>>>>>>> c806399c4696b8018b02f102afb5feaaa92719ef
+=======
 >>>>>>> c806399c4696b8018b02f102afb5feaaa92719ef

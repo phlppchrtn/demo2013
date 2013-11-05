@@ -5,7 +5,6 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
-
 public final class TcpClient2 implements AutoCloseable {
 	//	private final int port;
 	private SocketChannel socketChannel;
@@ -42,7 +41,7 @@ public final class TcpClient2 implements AutoCloseable {
 		}
 	}
 
-	public String exec(Command command) throws IOException {
+	public void exec(Command command) throws IOException {
 		//System.out.println("exec command :" + command.getName());
 		buffer.clear();
 		RedisProtocol2.encode(command, buffer);
@@ -52,11 +51,27 @@ public final class TcpClient2 implements AutoCloseable {
 		while (buffer.hasRemaining()) {
 			socketChannel.write(buffer);
 		}
+	}
 
-		//System.out.println("flush command :" + command.getName());
-		//----
-		String response = null; //buffer.read();
-		System.out.println("ask:response=" + response);
-		return response;
+	public long reply() throws IOException {
+		buffer.clear();
+		int bytesRead = socketChannel.read(buffer);
+		//		while (bytesRead != -1) {
+		System.out.println("Read " + bytesRead);
+		buffer.flip();
+
+		boolean first = true;
+		char firstChar;
+		StringBuilder sb = new StringBuilder();
+		while (buffer.hasRemaining()) {
+			if (first) {
+				//:98
+				firstChar = (char) buffer.get();
+				first = false;
+			} else {
+				sb.append((char) buffer.get());
+			}
+		}
+		return Long.valueOf(sb.toString().trim());
 	}
 }

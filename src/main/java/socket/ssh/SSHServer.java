@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
-import org.apache.sshd.SshServer;
 import org.apache.sshd.server.Command;
 import org.apache.sshd.server.Environment;
 import org.apache.sshd.server.ExitCallback;
@@ -13,7 +12,12 @@ import org.apache.sshd.server.PasswordAuthenticator;
 import org.apache.sshd.server.keyprovider.SimpleGeneratorHostKeyProvider;
 import org.apache.sshd.server.session.ServerSession;
 
-public class SSHServer {
+/*
+ * Test du serveur SSH de apache.
+ * userName = nico
+ * pwd = nico
+ */
+public class SshServer {
 	/**
 	 * Very basic PasswordAuthenticator used for unit tests.
 	 */
@@ -31,7 +35,7 @@ public class SSHServer {
 	}
 
 	public static void main(String[] args) throws IOException, InterruptedException {
-		SshServer sshServer = SshServer.setUpDefaultServer();
+		org.apache.sshd.SshServer sshServer = org.apache.sshd.SshServer.setUpDefaultServer();
 		sshServer.setPort(22);
 		sshServer.setKeyPairProvider(new SimpleGeneratorHostKeyProvider());
 		//		sshServer.setKeyPairProvider(new SimpleGeneratorHostKeyProvider("hostkey.ser"));

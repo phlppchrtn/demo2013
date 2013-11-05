@@ -1,24 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-CVS/
-classes/
-
-#################
-## Eclipse
-#################
-
-*.pydevproject
-.project
-.metadata
-bin/
-tmp/
-*.tmp
-*.bak
-*.swp
-*~.nib
-=======
-=======
->>>>>>> c806399c4696b8018b02f102afb5feaaa92719ef
 # Numerous always-ignore extensions
 *.class
 *~
@@ -40,6 +19,7 @@ classes/
 target/
 bin/
 tmp/
+trash/
 
  
 #################
@@ -49,45 +29,10 @@ tmp/
 .project
 .cache
 .metadata
-<<<<<<< HEAD
->>>>>>> c806399c4696b8018b02f102afb5feaaa92719ef
-=======
->>>>>>> c806399c4696b8018b02f102afb5feaaa92719ef
 local.properties
 .classpath
 .settings/
 .loadpath
-<<<<<<< HEAD
-<<<<<<< HEAD
-.class
-
-# External tool builders
-.externalToolBuilders/
-
-# Locally stored "Eclipse launch configurations"
-*.launch
-
-# CDT-specific
-.cproject
-
-# PDT-specific
-.buildpath
-
-
-############
-## Windows
-############
-
-# Windows image file caches
-Thumbs.db
-
-# Folder config file
-Desktop.ini
-
-
-=======
-=======
->>>>>>> c806399c4696b8018b02f102afb5feaaa92719ef
  
 # Locally stored "Eclipse launch configurations"
 *.launch
@@ -109,7 +54,3 @@ Thumbs.db
 # Folder config file
 Desktop.ini
 
-<<<<<<< HEAD
->>>>>>> c806399c4696b8018b02f102afb5feaaa92719ef
-=======
->>>>>>> c806399c4696b8018b02f102afb5feaaa92719ef

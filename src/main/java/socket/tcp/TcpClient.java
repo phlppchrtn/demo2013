@@ -6,13 +6,10 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 public final class TcpClient implements AutoCloseable {
-	//	private final int port;
-	private Socket socket;
-	private BufferedReader in;
+	private final Socket socket;
+	private final BufferedReader in;
 
 	TcpClient(int port) {
-		//		this.port = port;
-		//Ouverture de socket
 		try {
 			socket = new Socket("localhost", port);
 
@@ -28,13 +25,15 @@ public final class TcpClient implements AutoCloseable {
 	}
 
 	public void close() {
-		if (socket != null) {
+		try {
 			try {
 				in.close();
+			} finally {
+				//On ferme tjrs la socket
 				socket.close();
-			} catch (IOException e) {
-				throw new RuntimeException(e);
 			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 

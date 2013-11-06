@@ -51,7 +51,7 @@ public class RedisProtocol {
 		String[] args = new String[n - 1];
 		for (int i = 0; i < n; i++) {
 			line = input.readLine();
-			System.out.println("line('" + i + "') : " + line);
+			//	System.out.println("line('" + i + "') : " + line);
 			if (!line.startsWith("$")) {
 				throw new RuntimeException("protocol must contains lines with $");
 			}
@@ -60,7 +60,7 @@ public class RedisProtocol {
 			line = input.readLine();
 			if (i == 0) {
 				commandName = line;
-				System.out.println("name  : " + line);
+				//	System.out.println("name  : " + line);
 			} else {
 				args[i - 1] = line;
 			}

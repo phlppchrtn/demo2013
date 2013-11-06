@@ -10,14 +10,28 @@ public class TcpMain {
 		TcpServer tcpServer = new TcpServer(PORT);
 		new Thread(tcpServer).start();
 
-		//-------------------------------------------------	
-		//Démarrage d'un client
-		//-------------------------------------------------	
+		for (int j = 0; j < 20; j++) {
+			new Thread(new Sender("" + j)).start();
+		}
+	}
 
-		try (TcpClient tcpClient = new TcpClient(PORT)) {
-			for (int i = 0; i < 25; i++) {
-				System.out.println(">>>ping : " + tcpClient.exec(new Command("ping")));
-				//System.out.println(">>>pong : " + tcpClient.ask("pong\r\n"));
+	public static class Sender implements Runnable {
+		private final String id;
+
+		Sender(String id) {
+			this.id = id;
+		}
+
+		@Override
+		public void run() {
+			try (TcpClient2 tcpClient = new TcpClient2(PORT)) {
+				for (int i = 0; i < 5; i++) {
+					tcpClient.exec(new Command("ping"));
+					System.out.println(">>>ping(id=" + id + ") : " + tcpClient.reply());
+					//System.out.println(">>>pong : " + tcpClient.ask("pong\r\n"));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}

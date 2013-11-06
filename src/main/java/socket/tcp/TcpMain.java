@@ -24,14 +24,14 @@ public class TcpMain {
 
 		@Override
 		public void run() {
-			try (TcpClient2 tcpClient = new TcpClient2(PORT)) {
+			try (TcpClient tcpClient = new TcpClient(PORT)) {
 				for (int i = 0; i < 5; i++) {
 					tcpClient.exec(new Command("ping"));
 					System.out.println(">>>ping(id=" + id + ") : " + tcpClient.reply());
 					//System.out.println(">>>pong : " + tcpClient.ask("pong\r\n"));
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (IOException e) {
+				throw new RuntimeException(e);
 			}
 		}
 	}

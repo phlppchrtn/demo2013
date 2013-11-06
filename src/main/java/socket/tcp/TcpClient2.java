@@ -6,16 +6,12 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
 public final class TcpClient2 implements AutoCloseable {
-	//	private final int port;
 	private SocketChannel socketChannel;
 	private ByteBuffer buffer;
 
 	public TcpClient2(int port) {
-		//		this.port = port;
-		//Ouverture de socket
 		try {
-			socketChannel = SocketChannel.open();
-			socketChannel.connect(new InetSocketAddress("localhost", port));
+			socketChannel = SocketChannel.open(new InetSocketAddress("localhost", port));
 
 			buffer = ByteBuffer.allocate(1024);
 			//			buffer.clear();

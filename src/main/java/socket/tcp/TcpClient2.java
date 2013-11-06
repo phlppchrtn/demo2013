@@ -57,7 +57,7 @@ public final class TcpClient2 implements AutoCloseable {
 		buffer.clear();
 		int bytesRead = socketChannel.read(buffer);
 		//		while (bytesRead != -1) {
-		System.out.println("Read " + bytesRead);
+		//System.out.println("Read " + bytesRead);
 		buffer.flip();
 
 		boolean first = true;

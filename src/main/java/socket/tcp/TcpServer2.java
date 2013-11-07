@@ -31,8 +31,9 @@ public final class TcpServer2 implements Runnable {
 				// Wait for events
 				while (true) {
 					// Wait for an event
-					/*int keys =*/selector.select();
-					//	System.out.println("select");
+					/*int keys =*/
+					selector.select();
+					//System.out.println("select");
 					final Iterator<SelectionKey> selectionKeyIt = selector.selectedKeys().iterator();
 
 					while (selectionKeyIt.hasNext()) {
@@ -59,7 +60,7 @@ public final class TcpServer2 implements Runnable {
 		}
 	}
 
-	private static void accept(SelectionKey selectionKey) throws IOException {
+	private void accept(SelectionKey selectionKey) throws IOException {
 		System.out.println("accept  >>>>" + selectionKey);
 		// For an accept to be pending the channel must be a server socket channel.
 		ServerSocketChannel serverSocketChannel = (ServerSocketChannel) selectionKey.channel();
@@ -75,16 +76,27 @@ public final class TcpServer2 implements Runnable {
 		// we'd like to be notified when there's data waiting to be read
 		socketChannel.register(selectionKey.selector(), SelectionKey.OP_READ);
 		//		socketChannel.register(selectionKey.selector(), SelectionKey.OP_CONNECT);
+
+		System.out.println("isConnected>>>>" + socketChannel.isConnected());
+		read(socketChannel);
 	}
 
 	public void read(SelectionKey selectionKey) throws IOException {
-		System.out.println("reading...");
+		//	System.out.println("reading...");
 		//On recoit une info du client.
 		SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
+		read(socketChannel);
+	}
+
+	public void read(SocketChannel socketChannel) throws IOException {
+
 		buffer.clear();
 		int bytesRead = socketChannel.read(buffer);
-		if (bytesRead >= 0)
-			System.out.println("readBytes : " + bytesRead);
+
+		if (bytesRead < 0) {
+			return;
+		}
+		System.out.println("readBytes : " + bytesRead);
 		//System.out.println("readSck : " + socketChannel);
 		buffer.flip();
 
@@ -94,12 +106,16 @@ public final class TcpServer2 implements Runnable {
 		}
 
 		String command = sb.toString();
+		System.out.println("command (" + command.length() + "): " + command);
 		if (command.contains("flush")) {
+			System.out.println("flush : " + command);
 			datas = 0;
 		} else if (command.contains("llen")) {
+			System.out.println("llen : " + command);
 			String count = ":" + datas;
 			buffer.put(count.getBytes(RedisProtocol.CHARSET));
 		} else if (command.contains("lpush")) {
+			System.out.println("lpush : " + command);
 			datas++;
 		}
 	}

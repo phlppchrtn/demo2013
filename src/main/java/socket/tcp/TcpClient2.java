@@ -9,9 +9,9 @@ public final class TcpClient2 implements AutoCloseable {
 	private SocketChannel socketChannel;
 	private ByteBuffer buffer;
 
-	public TcpClient2(int port) {
+	public TcpClient2(String host, int port) {
 		try {
-			socketChannel = SocketChannel.open(new InetSocketAddress("localhost", port));
+			socketChannel = SocketChannel.open(new InetSocketAddress(host, port));
 
 			buffer = ByteBuffer.allocate(1024);
 			//			buffer.clear();

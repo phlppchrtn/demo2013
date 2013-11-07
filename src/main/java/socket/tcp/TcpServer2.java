@@ -2,7 +2,6 @@ package socket.tcp;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
@@ -24,13 +23,11 @@ public final class TcpServer2 implements Runnable {
 
 	public void run() {
 		try (Selector selector = Selector.open()) {
-			//		new Thread(new Listener(selector)).start();
-
 			try (ServerSocketChannel serverSocketChannel = ServerSocketChannel.open()) {
 				serverSocketChannel.socket().bind(new InetSocketAddress(host, port));
 				serverSocketChannel.configureBlocking(false);
 
-				serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT); // | SelectionKey.OP_READ | SelectionKey.OP_CONNECT | SelectionKey.OP_WRITE);
+				serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 				// Wait for events
 				while (true) {
 					// Wait for an event
@@ -49,7 +46,8 @@ public final class TcpServer2 implements Runnable {
 						if (selectionKey.isAcceptable()) {
 							//On accepte une ouverture de socket 
 							accept(selectionKey);
-						} else if (selectionKey.isReadable()) {
+						}
+						if (selectionKey.isReadable()) {
 							//On lit sur une socket
 							read(selectionKey);
 						}
@@ -61,14 +59,14 @@ public final class TcpServer2 implements Runnable {
 		}
 	}
 
-	private void accept(SelectionKey selectionKey) throws IOException {
+	private static void accept(SelectionKey selectionKey) throws IOException {
 		System.out.println("accept  >>>>" + selectionKey);
 		// For an accept to be pending the channel must be a server socket channel.
 		ServerSocketChannel serverSocketChannel = (ServerSocketChannel) selectionKey.channel();
 
 		// Accept the connection and make it non-blocking
 		SocketChannel socketChannel = serverSocketChannel.accept();
-		Socket socket = socketChannel.socket();
+		//Socket socket = socketChannel.socket();
 		socketChannel.configureBlocking(false);
 
 		System.out.println("register>>>>" + socketChannel);
@@ -76,17 +74,18 @@ public final class TcpServer2 implements Runnable {
 		// Register the new SocketChannel with our Selector, indicating
 		// we'd like to be notified when there's data waiting to be read
 		socketChannel.register(selectionKey.selector(), SelectionKey.OP_READ);
+		//		socketChannel.register(selectionKey.selector(), SelectionKey.OP_CONNECT);
 	}
 
 	public void read(SelectionKey selectionKey) throws IOException {
-		//System.out.println("reading...");
+		System.out.println("reading...");
 		//On recoit une info du client.
 		SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
 		buffer.clear();
 		int bytesRead = socketChannel.read(buffer);
-		System.out.println("readBytes : " + bytesRead);
+		if (bytesRead >= 0)
+			System.out.println("readBytes : " + bytesRead);
 		//System.out.println("readSck : " + socketChannel);
-		//		while (bytesRead != -1) {
 		buffer.flip();
 
 		StringBuilder sb = new StringBuilder();
@@ -104,19 +103,4 @@ public final class TcpServer2 implements Runnable {
 			datas++;
 		}
 	}
-} //	}
-//		@Override
-//		public void run() {
-//			try (PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
-//				try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
-//					for (Command command = RedisProtocol.decode(in); command != null; command = RedisProtocol.decode(in)) {
-//						String outputLine = onQuery(command);
-//						out.println(outputLine);
-//					}
-//				}
-//			} catch (IOException e) {
-//				throw new RuntimeException(e);
-//			}
-//		}
-//
-//	}
+}

@@ -33,7 +33,7 @@ public final class TcpServer2 implements Runnable {
 					// Wait for an event
 					/*int keys =*/
 					selector.select();
-					//System.out.println("select");
+					System.out.println("select");
 					final Iterator<SelectionKey> selectionKeyIt = selector.selectedKeys().iterator();
 
 					while (selectionKeyIt.hasNext()) {
@@ -93,7 +93,7 @@ public final class TcpServer2 implements Runnable {
 		buffer.clear();
 		int bytesRead = socketChannel.read(buffer);
 
-		if (bytesRead < 0) {
+		if (bytesRead <= 0) {
 			return;
 		}
 		System.out.println("readBytes : " + bytesRead);
@@ -104,19 +104,27 @@ public final class TcpServer2 implements Runnable {
 		while (buffer.hasRemaining()) {
 			sb.append((char) buffer.get());
 		}
-
 		String command = sb.toString();
-		System.out.println("command (" + command.length() + "): " + command);
+		buffer.clear();
+		//System.out.println("command (" + command.length() + "): " + command);
 		if (command.contains("flush")) {
-			System.out.println("flush : " + command);
+			System.out.println("$flush");
 			datas = 0;
+			String count = ":" + datas;
+			buffer.put(count.getBytes(RedisProtocol.CHARSET));
 		} else if (command.contains("llen")) {
-			System.out.println("llen : " + command);
+			System.out.println("$llen");
 			String count = ":" + datas;
 			buffer.put(count.getBytes(RedisProtocol.CHARSET));
 		} else if (command.contains("lpush")) {
-			System.out.println("lpush : " + command);
+			System.out.println("$lpush");
+			String count = ":" + datas;
+			buffer.put(count.getBytes(RedisProtocol.CHARSET));
 			datas++;
+		}
+		buffer.flip();
+		while (buffer.hasRemaining()) {
+			socketChannel.write(buffer);
 		}
 	}
 }

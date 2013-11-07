@@ -5,22 +5,13 @@ import java.io.IOException;
 public class RedisTest {
 	//private static final String HOST = "kasper-redis";
 	private static final String HOST = "localhost";
-	private static final int PORT = 6379;
-
-	//	public static void main(String[] args) throws IOException, InterruptedException {
-	//		multiThread(5, 100000);
-	//	}
+	//private static final int PORT = 6379;
+	private static final int PORT = 4444;
 
 	public static void main(String[] args) throws IOException, InterruptedException {
-		multiThread(5, 100000);
-		multiThread(5, 100000);
-		multiThread(50, 10000);
-		multiThread(50, 10000);
-		multiThread(10, 50000);
-		multiThread(10, 50000);
-		multiThread(100, 5000);
-		multiThread(100, 5000);
-		//monoThread(100000);
+		new Thread(new TcpServer2(HOST, PORT)).start();
+		Thread.sleep(1000);
+		multiThread(5, 10);
 	}
 
 	private static boolean check(int total) throws IOException {
@@ -84,12 +75,13 @@ public class RedisTest {
 
 		@Override
 		public void run() {
-			try (TcpClient2 tcpClient = new TcpClient2(HOST, PORT)) {
+			try (TcpClient tcpClient = new TcpClient(HOST, PORT)) {
 				for (int i = 0; i < count; i++) {
 					tcpClient.exec(new Command("lpush", "test", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaanode[" + id + "] :" + i));
+					System.out.println("exec effectué");
 					long res = tcpClient.reply();
-					//					if (i % 50000 == 0) {
-					//						System.out.println(">>>lpush node [" + id + "] : " + i + " >>" + res);
+					//if (i % 50000 == 0) {
+					System.out.println(">>>lpush node [" + id + "] : " + i + " >>" + res);
 					//					}
 				}
 			} catch (Exception e) {

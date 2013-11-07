@@ -38,7 +38,7 @@ public final class TcpClient2 implements AutoCloseable {
 	}
 
 	public void exec(Command command) throws IOException {
-		//System.out.println("exec command :" + command.getName());
+		System.out.println("exec command :" + command.getName());
 		buffer.clear();
 		RedisProtocol2.encode(command, buffer);
 

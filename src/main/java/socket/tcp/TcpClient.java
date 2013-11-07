@@ -1,5 +1,6 @@
 package socket.tcp;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,10 +9,11 @@ import java.net.Socket;
 public final class TcpClient implements AutoCloseable {
 	private final Socket socket;
 	private final BufferedReader in;
+	private final BufferedOutputStream buffer;
 
-	TcpClient(int port) {
+	TcpClient(String host, int port) {
 		try {
-			socket = new Socket("localhost", port);
+			socket = new Socket(host, port);
 
 			//			socket.setReuseAddress(true);
 			//			socket.setKeepAlive(true); //Will monitor the TCP connection is valid
@@ -19,6 +21,7 @@ public final class TcpClient implements AutoCloseable {
 			//			socket.setSoLinger(true, 0); //Control calls close () method, the underlying socket is closed immediately
 
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			buffer = new BufferedOutputStream(socket.getOutputStream());
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -27,6 +30,8 @@ public final class TcpClient implements AutoCloseable {
 	public void close() {
 		try {
 			try {
+				//imbriquer les try
+				buffer.close();
 				in.close();
 			} finally {
 				//On ferme tjrs la socket
@@ -39,15 +44,15 @@ public final class TcpClient implements AutoCloseable {
 
 	public void exec(Command command) throws IOException {
 		//System.out.println("exec command :" + command.getName());
-		RedisProtocol.encode(command, socket.getOutputStream());
-		socket.getOutputStream().flush();
+		RedisProtocol.encode(command, buffer);
+		buffer.flush();
 	}
 
-	public String reply() throws IOException {
+	public long reply() throws IOException {
 		//System.out.println("flush command :" + command.getName());
 		//----
 		String response = in.readLine();
 		//	System.out.println("ask:response=" + response);
-		return response;
+		return Long.valueOf(response.substring(1));
 	}
 }

@@ -3,6 +3,7 @@ package socket.tcp;
 import java.io.IOException;
 
 public class TcpMain {
+	private static final String HOST = "localhost";
 	private static final int PORT = 4444;
 
 	public static void main(String[] args) throws IOException {
@@ -24,7 +25,7 @@ public class TcpMain {
 
 		@Override
 		public void run() {
-			try (TcpClient tcpClient = new TcpClient(PORT)) {
+			try (TcpClient tcpClient = new TcpClient(HOST, PORT)) {
 				for (int i = 0; i < 5; i++) {
 					tcpClient.exec(new Command("ping"));
 					System.out.println(">>>ping(id=" + id + ") : " + tcpClient.reply());

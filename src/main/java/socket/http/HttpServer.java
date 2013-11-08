@@ -2,28 +2,43 @@ package socket.http;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * A simple server HTTP with only a header and a basic htlm content. 
+ * To test you need 
+ *  - to execute this class as a java application 
+ *   -to open localhost:88 with your browser.
+ *   
+ * @author pchretien
+ */
 public class HttpServer {
-	public static void main(String[] args) throws Exception {
-		// création de la socket sur le port 88
-		int port = 88;
-		try (ServerSocket serverSocket = new ServerSocket(port)) {
-			System.err.println("Serveur lancé sur le port : " + port);
+	private static final int DEFAULT_PORT = 88;
+	private final int port;
 
-			// repeatedly wait for connections, and process
+	public static void main(String[] args) throws Exception {
+		new HttpServer(DEFAULT_PORT).start();
+	}
+
+	HttpServer(int port) {
+		this.port = port;
+	}
+
+	void start() throws IOException {
+		try (ServerSocket serverSocket = new ServerSocket(port)) {
+			System.out.println("Http server on port : " + port);
 			while (true) {
 				// on reste bloqué sur l'attente d'une demande client
 				try (Socket clientSocket = serverSocket.accept()) {
-					System.err.println("Nouveau client connecté");
+					System.out.println("A new client is connected");
 					// on ouvre un flux de conversation
 
 					try (BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
 						try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()))) {
-
 							// chaque fois qu'une donnée est lue sur le réseau on la renvoi sur
 							// le flux d'écriture.
 							// la donnée lue est donc retournée exactement au même client.
@@ -35,19 +50,20 @@ public class HttpServer {
 								}
 							}
 
+							String content = new StringBuilder()//
+									.append("<TITLE>Hello World</TITLE>") //
+									.append("<P>This is a basic sample page.</P>")//
+									.toString();
+
 							out.write("HTTP/1.0 200 OK\r\n");
-							//out.write("Date: Fri, 31 Dec 1999 23:59:59 GMT\r\n");
 							out.write("Server: Vertigo");
 							out.write("Content-Type: text/html\r\n");
-							out.write("Content-Length: 57\r\n");
-							//out.write("Expires: Sat, 01 Jan 2000 00:59:59 GMT\r\n");
-							//out.write("Last-modified: Fri, 09 Aug 1996 14:21:40 GMT\r\n");
+							out.write("Content-Length: " + content.length() + "r\n");
 							out.write("\r\n");
-							out.write("<TITLE>Exemple</TITLE>");
-							out.write("<P>Ceci est une page d'exemple.</P>");
+							out.write(content);
 
 							// on ferme les flux.
-							System.err.println("Connexion avec le client terminée");
+							System.out.println("Connection with client is closed");
 						}
 					}
 				}

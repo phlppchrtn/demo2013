@@ -17,7 +17,7 @@ public class RedisTest {
 		test(5, 100000);
 		test(10, 50000);
 		//test(20, 10000);
-		test(25, 20000);
+		test(25, 200000);
 	}
 
 	private static void test(int threadCount, int count) throws IOException, InterruptedException {

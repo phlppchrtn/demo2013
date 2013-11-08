@@ -1,4 +1,4 @@
-package io.polaroid;
+package misc.polaroid;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;

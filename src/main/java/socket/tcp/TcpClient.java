@@ -42,13 +42,18 @@ public final class TcpClient implements AutoCloseable {
 		}
 	}
 
-	public void exec(Command command) throws IOException {
+	public long exec(Command command) throws IOException {
+		push(command);
+		return pull();
+	}
+
+	private void push(Command command) throws IOException {
 		//System.out.println("exec command :" + command.getName());
 		RedisProtocol.encode(command, buffer);
 		buffer.flush();
 	}
 
-	public long reply() throws IOException {
+	private long pull() throws IOException {
 		//System.out.println("flush command :" + command.getName());
 		//----
 		String response = in.readLine();

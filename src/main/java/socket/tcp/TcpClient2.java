@@ -37,7 +37,13 @@ public final class TcpClient2 implements AutoCloseable {
 		}
 	}
 
-	public void exec(Command command) throws IOException {
+	//Command ==> 
+	public long exec(Command command) throws IOException {
+		push(command);
+		return pull();
+	}
+
+	private void push(Command command) throws IOException {
 		//	System.out.println("exec command :" + command.getName());
 		buffer.clear();
 		RedisProtocol2.encode(command, buffer);
@@ -49,7 +55,7 @@ public final class TcpClient2 implements AutoCloseable {
 		}
 	}
 
-	public long reply() throws IOException {
+	private long pull() throws IOException {
 		buffer.clear();
 		int bytesRead = socketChannel.read(buffer);
 		//		while (bytesRead != -1) {

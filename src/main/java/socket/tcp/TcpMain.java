@@ -27,8 +27,8 @@ public class TcpMain {
 		public void run() {
 			try (TcpClient tcpClient = new TcpClient(HOST, PORT)) {
 				for (int i = 0; i < 5; i++) {
-					tcpClient.exec(new Command("ping"));
-					System.out.println(">>>ping(id=" + id + ") : " + tcpClient.reply());
+					long res = tcpClient.exec(new Command("ping"));
+					System.out.println(">>>ping(id=" + id + ") : " + res);
 					//System.out.println(">>>pong : " + tcpClient.ask("pong\r\n"));
 				}
 			} catch (IOException e) {

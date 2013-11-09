@@ -67,7 +67,7 @@ public final class TcpCLClient implements AutoCloseable {
 		System.out.println("attendus : " + size);
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		while ((next = in.read()) > -1) {
-			System.out.println(">>>" + next + " " + bos.size());
+			//System.out.println(">>>" + next + " " + bos.size());
 			bos.write(next);
 			if (bos.size() == size) {
 				break;

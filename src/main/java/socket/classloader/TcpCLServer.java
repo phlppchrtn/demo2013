@@ -37,19 +37,24 @@ public final class TcpCLServer implements Runnable {
 
 		@Override
 		public void run() {
-			try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
-				String input;
-				while ((input = in.readLine()) != null) {
-					byte[] classAsBytes = loadClassData(input);
-					//----					
-					String size = String.valueOf(classAsBytes.length) + "*";
-					socket.getOutputStream().write(size.getBytes(CHARSET));
-					//----					
-					socket.getOutputStream().write(classAsBytes);
-					socket.getOutputStream().flush();
+			while (true) {
+				try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+					String input;
+					while ((input = in.readLine()) != null) {
+						System.out.println("server : loading class : " + input);
+						byte[] classAsBytes = loadClassData(input);
+						//----					
+						String size = String.valueOf(classAsBytes.length) + "*";
+						socket.getOutputStream().write(size.getBytes(CHARSET));
+						//----					
+						socket.getOutputStream().write(classAsBytes);
+						socket.getOutputStream().flush();
+						System.out.println("server : send class : " + classAsBytes.length);
+					}
+				} catch (IOException e) {
+					System.out.println(" connection closed : restarting ");
+					throw new RuntimeException(e);
 				}
-			} catch (IOException e) {
-				throw new RuntimeException(e);
 			}
 		}
 

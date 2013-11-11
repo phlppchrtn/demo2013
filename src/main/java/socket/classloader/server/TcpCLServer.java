@@ -1,4 +1,4 @@
-package socket.classloader;
+package socket.classloader.server;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -13,7 +13,7 @@ public final class TcpCLServer implements Runnable {
 
 	private final int port;
 
-	TcpCLServer(int port) {
+	public TcpCLServer(int port) {
 		this.port = port;
 	}
 

@@ -1,11 +1,11 @@
-package socket.classloader;
+package socket.classloader.client;
 
 import java.io.IOException;
 
-public class TcpClassLoader extends ClassLoader {
+public final class TcpClassLoader extends ClassLoader {
 	private final TcpCLClient tcpCLClient;
 
-	TcpClassLoader(String host, int port) {
+	public TcpClassLoader(String host, int port) {
 		tcpCLClient = new TcpCLClient(host, port);
 	}
 

@@ -1,4 +1,4 @@
-package socket.classloader;
+package socket.classloader.server;
 
 public class TestServer {
 	//private static final int PORT = 6379;

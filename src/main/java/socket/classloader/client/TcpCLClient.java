@@ -1,4 +1,4 @@
-package socket.classloader;
+package socket.classloader.client;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public final class TcpCLClient implements AutoCloseable {
+final class TcpCLClient implements AutoCloseable {
 	private final Socket socket;
 	private final InputStream in;
 	private final PrintWriter out;

@@ -1,4 +1,4 @@
-package socket.multicast;
+package socket.discovery;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -11,18 +11,16 @@ public class Sender {
 
 	public static void hello() throws IOException {
 		//Open a random port to send the package
-		DatagramSocket c = new DatagramSocket(); //PORT, InetAddress.getByName("255.255.255.255"));
-		c.setBroadcast(true);
+		try (final DatagramSocket datagramSocket = new DatagramSocket()) {
+			datagramSocket.setBroadcast(true);
+			//---
+			final byte[] sendData = "DISCOVER_VERTIGO".getBytes();
 
-		byte[] sendData = "DISCOVER_VERTIGO".getBytes();
-
-		//Try the 255.255.255.255 first
-		{
+			//Try the 255.255.255.255 first
 			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("255.255.255.255"), PORT);
-			c.send(sendPacket);
+			datagramSocket.send(sendPacket);
 			System.out.println(">>> Request packet sent to: 255.255.255.255 (DEFAULT)");
 		}
-
 		// Broadcast the message over all the network interfaces
 		/*		Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
 				while (interfaces.hasMoreElements()) {

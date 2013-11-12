@@ -1,4 +1,4 @@
-package socket.multicast;
+package socket.discovery;
 
 import java.io.IOException;
 

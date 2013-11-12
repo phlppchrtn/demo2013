@@ -1,4 +1,4 @@
-package socket.multicast;
+package socket.discovery;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -8,15 +8,13 @@ public class Receiver implements Runnable {
 	private static final int PORT = 4444;
 
 	public void run() {
-		try {
-			//Keep a socket open to listen to all the UDP trafic that is destined for this port
-			DatagramSocket socket = new DatagramSocket(PORT, InetAddress.getByName("0.0.0.0"));
+		try (DatagramSocket socket = new DatagramSocket(PORT, InetAddress.getByName("0.0.0.0"))) {
 			socket.setBroadcast(true);
-
+			//---
 			while (true) {
 				System.out.println(getClass().getName() + ">>>Ready to receive broadcast packets!");
 				//Receive a packet
-				byte[] recvBuf = new byte[15000];
+				final byte[] recvBuf = new byte[15000];
 				DatagramPacket packet = new DatagramPacket(recvBuf, recvBuf.length);
 				socket.receive(packet);
 

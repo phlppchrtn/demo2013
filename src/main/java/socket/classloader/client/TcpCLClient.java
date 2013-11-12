@@ -64,7 +64,7 @@ final class TcpCLClient implements AutoCloseable {
 			sb.append((char) next);
 		}
 		int size = Integer.valueOf(sb.toString());
-		System.out.println("attendus : " + size);
+		//System.out.println("attendus : " + size);
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		while ((next = in.read()) > -1) {
 			//System.out.println(">>>" + next + " " + bos.size());
@@ -73,7 +73,7 @@ final class TcpCLClient implements AutoCloseable {
 				break;
 			}
 		}
-		System.out.println(">>> flush  ");
+		//System.out.println(">>> flush  ");
 		bos.flush();
 		return bos.toByteArray();
 		/*

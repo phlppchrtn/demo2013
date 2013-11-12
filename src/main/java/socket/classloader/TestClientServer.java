@@ -14,6 +14,6 @@ public class TestClientServer {
 		//----
 		Class clazz = new TcpClassLoader(HOST, PORT).findClass(CalculatorImpl.class.getName());
 		Calculator calculator = (Calculator) clazz.newInstance();
-		System.out.println(">>>3+2=" + calculator.add(3, 2));
+		System.out.println(">>>3+2=" + calculator.f(3, 2));
 	}
 }

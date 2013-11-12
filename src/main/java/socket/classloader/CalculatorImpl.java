@@ -5,7 +5,7 @@ import socket.classloader.client.Calculator;
 public class CalculatorImpl implements Calculator {
 	private final CalculatorAddImpl add = new CalculatorAddImpl();
 
-	public int add(int a, int b) {
-		return add.add(a, b);
+	public int f(int a, int b) {
+		return add.f(a, b);
 	}
 }

@@ -15,14 +15,12 @@ import java.util.Iterator;
  *
  */
 public final class TcpServer2 implements Runnable {
-	private final String host;
 	private final int port;
 	private final ByteBuffer buffer;
 	//---
 	private long datas;
 
-	TcpServer2(final String host, final int port) {
-		this.host = host;
+	TcpServer2(final int port) {
 		this.port = port;
 		buffer = ByteBuffer.allocate(8192);
 	}
@@ -30,7 +28,7 @@ public final class TcpServer2 implements Runnable {
 	public void run() {
 		try (Selector selector = Selector.open()) {
 			try (ServerSocketChannel serverSocketChannel = ServerSocketChannel.open()) {
-				serverSocketChannel.socket().bind(new InetSocketAddress(host, port));
+				serverSocketChannel.socket().bind(new InetSocketAddress(port));
 				serverSocketChannel.configureBlocking(false);
 
 				serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);

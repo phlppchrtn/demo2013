@@ -9,7 +9,7 @@ public class RedisTest {
 	private static final int PORT = 4444;
 
 	public static void main(String[] args) throws IOException, InterruptedException {
-		new Thread(new TcpServer2(HOST, PORT)).start();
+		new Thread(new TcpServer2(PORT)).start();
 		Thread.sleep(10);
 
 		//-----

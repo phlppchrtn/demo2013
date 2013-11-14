@@ -2,9 +2,10 @@ package socket.tcp.protocol;
 
 import java.io.IOException;
 
-//Patterns 
+// Protocols 
+// Request / Reply
 public interface ReqResp extends AutoCloseable {
-	long exec(Command command) throws IOException;
+	long exec(VCommand command) throws IOException;
 
 	//On simplifie le close pour éliminer les exceptions
 	void close();

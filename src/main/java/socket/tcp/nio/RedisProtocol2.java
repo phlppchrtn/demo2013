@@ -3,13 +3,13 @@ package socket.tcp.nio;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-import socket.tcp.protocol.Command;
+import socket.tcp.protocol.VCommand;
 
 final class RedisProtocol2 {
 	private static final String LN = "\r\n";
 	public static final String CHARSET = "UTF-8";
 
-	public static void encode(Command command, ByteBuffer buffer) throws IOException {
+	public static void encode(VCommand command, ByteBuffer buffer) throws IOException {
 		byte[] bytes;
 		//--- *Nb d'infos
 		buffer.put("*".getBytes(CHARSET));
@@ -33,7 +33,7 @@ final class RedisProtocol2 {
 		}
 	}
 
-	public static Command decode(ByteBuffer input) throws IOException {
+	public static VCommand decode(ByteBuffer input) throws IOException {
 		String[] lines = new String(input.array(), CHARSET).split(LN);
 		if (lines.length == 0) {
 			return null;
@@ -65,6 +65,6 @@ final class RedisProtocol2 {
 				args[i - 1] = line;
 			}
 		}
-		return new Command(commandName, args);
+		return new VCommand(commandName, args);
 	}
 }

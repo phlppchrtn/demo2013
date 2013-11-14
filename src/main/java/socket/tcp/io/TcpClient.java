@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-import socket.tcp.protocol.Command;
+import socket.tcp.protocol.VCommand;
 import socket.tcp.protocol.ReqResp;
 
 public final class TcpClient implements ReqResp {
@@ -45,12 +45,12 @@ public final class TcpClient implements ReqResp {
 		}
 	}
 
-	public long exec(Command command) throws IOException {
+	public long exec(VCommand command) throws IOException {
 		push(command);
 		return pull();
 	}
 
-	private void push(Command command) throws IOException {
+	private void push(VCommand command) throws IOException {
 		//System.out.println("exec command :" + command.getName());
 		RedisProtocol.encode(command, buffer);
 		buffer.flush();

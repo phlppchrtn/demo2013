@@ -4,13 +4,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import socket.tcp.protocol.Command;
+import socket.tcp.protocol.VCommand;
 
 final class RedisProtocol {
 	private static final String LN = "\r\n";
 	public static final String CHARSET = "UTF-8";
 
-	public static void encode(Command command, OutputStream output) throws IOException {
+	public static void encode(VCommand command, OutputStream output) throws IOException {
 		byte[] bytes;
 
 		//--- *Nb d'infos
@@ -35,7 +35,7 @@ final class RedisProtocol {
 		}
 	}
 
-	public static Command decode(BufferedReader input) throws IOException {
+	public static VCommand decode(BufferedReader input) throws IOException {
 		String line = input.readLine();
 		if (line == null) {
 			return null;
@@ -67,6 +67,6 @@ final class RedisProtocol {
 				args[i - 1] = line;
 			}
 		}
-		return new Command(commandName, args);
+		return new VCommand(commandName, args);
 	}
 }

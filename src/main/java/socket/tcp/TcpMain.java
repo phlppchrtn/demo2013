@@ -2,32 +2,38 @@ package socket.tcp;
 
 import java.io.IOException;
 
-import socket.tcp.io.TcpClient;
-import socket.tcp.nio.TcpServer2;
-import socket.tcp.protocol.Command;
+import socket.tcp.io.TcpServer;
+import socket.tcp.nio.TcpClient2;
 import socket.tcp.protocol.ReqResp;
+import socket.tcp.protocol.VCommand;
+import socket.tcp.protocol.VCommandHandler;
 
 public final class TcpMain {
 	private final int port = 4444;
 	private final String host = "localhost";
 
 	public static void main(String[] args) throws IOException, InterruptedException {
-		new TcpMain().test(10, 50000);
+		new TcpMain().testSuite();
+	}
+
+	private void testSuite() throws InterruptedException {
+		startServer();
+		//-------------------------------------------------
+		test(1, 500000);
+		test(10, 50000);
+		test(20, 25000);
+		test(50, 10000);
 	}
 
 	Runnable createTcpServer() {
-		return new TcpServer2(port);
+		return new TcpServer(port, new MyCommandHandler());
 	}
 
 	ReqResp createTcpClient() {
-		return new TcpClient(host, port);
+		return new TcpClient2(host, port);
 	}
 
 	public void test(int threadCount, int count) throws InterruptedException {
-		//démarrage du serveur TCP
-		Runnable tcpServer = createTcpServer();
-		new Thread(tcpServer).start();
-		//-------------------------------------------------
 		Thread[] threads = new Thread[threadCount];
 		long start = System.currentTimeMillis();
 		for (int j = 0; j < threadCount; j++) {
@@ -45,6 +51,12 @@ public final class TcpMain {
 
 	}
 
+	private void startServer() {
+		//démarrage du serveur TCP
+		Runnable tcpServer = createTcpServer();
+		new Thread(tcpServer).start();
+	}
+
 	public static final class Sender implements Runnable {
 		private final int id;
 		private final TcpMain tcpMain;
@@ -60,7 +72,7 @@ public final class TcpMain {
 		public void run() {
 			try (ReqResp tcpClient = tcpMain.createTcpClient()) {
 				for (int i = 0; i < count; i++) {
-					long res = tcpClient.exec(new Command("ping"));
+					long res = tcpClient.exec(new VCommand("ping"));
 					//System.out.println(">" + res);
 					if (res != 200)
 						throw new RuntimeException("erreur dans le retour :" + res);
@@ -70,6 +82,17 @@ public final class TcpMain {
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
+		}
+	}
+
+	private static class MyCommandHandler implements VCommandHandler {
+		public String onCommand(VCommand command) {
+			if ("ping".equals(command.getName())) {
+				return "+OK";
+			} else if ("pong".equals(command.getName())) {
+				return "+OK";
+			}
+			throw new RuntimeException("Command inconnue :" + command.getName());
 		}
 	}
 }

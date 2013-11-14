@@ -7,50 +7,44 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import socket.tcp.protocol.Command;
+import socket.tcp.protocol.VCommand;
+import socket.tcp.protocol.VCommandHandler;
 
 public final class TcpServer implements Runnable {
 	private final int port;
+	private final VCommandHandler commandHandler;
 
-	public TcpServer(int port) {
+	public TcpServer(int port, VCommandHandler commandHandler) {
 		this.port = port;
+		this.commandHandler = commandHandler;
 	}
 
 	public void run() {
 		try (ServerSocket serverSocket = new ServerSocket(port)) {
 			while (true) {
 				Socket socket = serverSocket.accept();
-				new Thread(new TcpSocket(socket)).start();
+				new Thread(new TcpSocket(commandHandler, socket)).start();
 			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	static String onQuery(Command command) {
-		if ("ping".equals(command.getName())) {
-			return "+OK";
-		} else if ("pong".equals(command.getName())) {
-			return "+OK";
-		}
-		return "command unknown";
-	}
-
-	//	}
-
 	private static class TcpSocket implements Runnable {
 		private final Socket socket;
+		private final VCommandHandler commandHandler;
 
-		TcpSocket(Socket socket) {
+		TcpSocket(VCommandHandler commandHandler, Socket socket) {
 			this.socket = socket;
+			this.commandHandler = commandHandler;
 		}
 
 		@Override
 		public void run() {
 			try (PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
 				try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
-					for (Command command = RedisProtocol.decode(in); command != null; command = RedisProtocol.decode(in)) {
-						String outputLine = onQuery(command);
+					for (VCommand command = RedisProtocol.decode(in); command != null; command = RedisProtocol.decode(in)) {
+						String outputLine = commandHandler.onCommand(command);
 						out.println(outputLine);
 					}
 				}

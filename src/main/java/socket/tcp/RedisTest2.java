@@ -17,7 +17,7 @@ public final class RedisTest2 extends AbstractRedisTest {
 	}
 
 	Runnable createTcpServer() {
-		return new TcpServer2(port);
+		return new TcpServer2(port, getCommandHandler());
 	}
 
 	ReqResp createTcpClient() {

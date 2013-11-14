@@ -1,10 +1,10 @@
 package socket.tcp.protocol;
 
-public final class Command {
+public final class VCommand {
 	private final String name;
 	private final String[] args;
 
-	public Command(String name, String... args) {
+	public VCommand(String name, String... args) {
 		if (name == null) {
 			throw new NullPointerException("name is required");
 		}

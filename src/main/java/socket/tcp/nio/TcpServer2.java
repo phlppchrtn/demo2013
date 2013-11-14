@@ -9,7 +9,8 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 
-import socket.tcp.protocol.Command;
+import socket.tcp.protocol.VCommand;
+import socket.tcp.protocol.VCommandHandler;
 
 /**
  * A server using non blocking TCP socket .
@@ -18,12 +19,12 @@ import socket.tcp.protocol.Command;
  */
 public final class TcpServer2 implements Runnable {
 	private final int port;
+	private final VCommandHandler commandHandler;
 	private final ByteBuffer buffer;
-	//---
-	private long datas;
 
-	public TcpServer2(final int port) {
+	public TcpServer2(final int port, VCommandHandler commandHandler) {
 		this.port = port;
+		this.commandHandler = commandHandler;
 		buffer = ByteBuffer.allocate(8192);
 	}
 
@@ -95,7 +96,7 @@ public final class TcpServer2 implements Runnable {
 		}
 
 		buffer.flip();
-		Command command = RedisProtocol2.decode(buffer);
+		VCommand command = RedisProtocol2.decode(buffer);
 
 		// We can use an optimized protocol 
 		//		StringBuilder sb = new StringBuilder();
@@ -106,7 +107,7 @@ public final class TcpServer2 implements Runnable {
 
 		//-------------------------------------------------
 		//-------------------------------------------------
-		String response = onCommand(command);
+		String response = commandHandler.onCommand(command);
 		buffer.clear();
 		buffer.put(response.getBytes(RedisProtocol2.CHARSET));
 
@@ -114,23 +115,5 @@ public final class TcpServer2 implements Runnable {
 		while (buffer.hasRemaining()) {
 			socketChannel.write(buffer);
 		}
-	}
-
-	public String onCommand(Command command) {
-		//System.out.println("command (" + command.length() + "): " + command);
-		if ("ping".equals(command.getName())) {
-			return "+OK";
-		} else if ("pong".equals(command.getName())) {
-			return "+OK";
-		} else if ("flushdb".equals(command.getName())) {
-			datas = 0;
-		} else if ("llen".equals(command.getName())) {
-		} else if ("lpush".equals(command.getName())) {
-			datas++;
-		} else {
-			throw new RuntimeException("Command inconnue :" + command.getName());
-		}
-
-		return ":" + datas;
 	}
 }

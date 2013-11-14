@@ -5,7 +5,7 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
-import socket.tcp.protocol.Command;
+import socket.tcp.protocol.VCommand;
 import socket.tcp.protocol.ReqResp;
 
 public final class TcpClient2 implements ReqResp {
@@ -41,12 +41,12 @@ public final class TcpClient2 implements ReqResp {
 	}
 
 	//Command ==> 
-	public long exec(Command command) throws IOException {
+	public long exec(VCommand command) throws IOException {
 		push(command);
 		return pull();
 	}
 
-	private void push(Command command) throws IOException {
+	private void push(VCommand command) throws IOException {
 		//	System.out.println("exec command :" + command.getName());
 		buffer.clear();
 		RedisProtocol2.encode(command, buffer);

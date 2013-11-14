@@ -1,4 +1,4 @@
-package socket.tcp;
+package socket.tcp.nio;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -8,6 +8,8 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
+
+import socket.tcp.protocol.Command;
 
 /**
  * A server using non blocking TCP socket .
@@ -20,7 +22,7 @@ public final class TcpServer2 implements Runnable {
 	//---
 	private long datas;
 
-	TcpServer2(final int port) {
+	public TcpServer2(final int port) {
 		this.port = port;
 		buffer = ByteBuffer.allocate(8192);
 	}
@@ -106,7 +108,7 @@ public final class TcpServer2 implements Runnable {
 		//-------------------------------------------------
 		String response = onCommand(command);
 		buffer.clear();
-		buffer.put(response.getBytes(RedisProtocol.CHARSET));
+		buffer.put(response.getBytes(RedisProtocol2.CHARSET));
 
 		buffer.flip();
 		while (buffer.hasRemaining()) {
@@ -116,13 +118,17 @@ public final class TcpServer2 implements Runnable {
 
 	public String onCommand(Command command) {
 		//System.out.println("command (" + command.length() + "): " + command);
-		if ("flushdb".equals(command.getName())) {
+		if ("ping".equals(command.getName())) {
+			return "+OK";
+		} else if ("pong".equals(command.getName())) {
+			return "+OK";
+		} else if ("flushdb".equals(command.getName())) {
 			datas = 0;
 		} else if ("llen".equals(command.getName())) {
 		} else if ("lpush".equals(command.getName())) {
 			datas++;
 		} else {
-			throw new RuntimeException("Command inconnue");
+			throw new RuntimeException("Command inconnue :" + command.getName());
 		}
 
 		return ":" + datas;

@@ -1,4 +1,4 @@
-package socket.tcp;
+package socket.tcp.io;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,10 +7,12 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import socket.tcp.protocol.Command;
+
 public final class TcpServer implements Runnable {
 	private final int port;
 
-	TcpServer(int port) {
+	public TcpServer(int port) {
 		this.port = port;
 	}
 
@@ -27,11 +29,11 @@ public final class TcpServer implements Runnable {
 
 	static String onQuery(Command command) {
 		if ("ping".equals(command.getName())) {
-			return ":555";
+			return "+OK";
 		} else if ("pong".equals(command.getName())) {
-			return ":444";
+			return "+OK";
 		}
-		return "aaaaaa";
+		return "command unknown";
 	}
 
 	//	}

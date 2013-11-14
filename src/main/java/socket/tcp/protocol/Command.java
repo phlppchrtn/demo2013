@@ -1,10 +1,10 @@
-package socket.tcp;
+package socket.tcp.protocol;
 
 public final class Command {
 	private final String name;
 	private final String[] args;
 
-	Command(String name, String... args) {
+	public Command(String name, String... args) {
 		if (name == null) {
 			throw new NullPointerException("name is required");
 		}

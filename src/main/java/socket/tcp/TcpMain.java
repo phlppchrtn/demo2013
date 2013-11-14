@@ -2,33 +2,69 @@ package socket.tcp;
 
 import java.io.IOException;
 
-public class TcpMain {
-	private static final String HOST = "localhost";
-	private static final int PORT = 4444;
+import socket.tcp.io.TcpClient;
+import socket.tcp.nio.TcpServer2;
+import socket.tcp.protocol.Command;
+import socket.tcp.protocol.ReqResp;
 
-	public static void main(String[] args) throws IOException {
-		//démarrage du serveur TCP
-		TcpServer tcpServer = new TcpServer(PORT);
-		new Thread(tcpServer).start();
+public final class TcpMain {
+	private final int port = 4444;
+	private final String host = "localhost";
 
-		for (int j = 0; j < 20; j++) {
-			new Thread(new Sender("" + j)).start();
-		}
+	public static void main(String[] args) throws IOException, InterruptedException {
+		new TcpMain().test(10, 50000);
 	}
 
-	public static class Sender implements Runnable {
-		private final String id;
+	Runnable createTcpServer() {
+		return new TcpServer2(port);
+	}
 
-		Sender(String id) {
+	ReqResp createTcpClient() {
+		return new TcpClient(host, port);
+	}
+
+	public void test(int threadCount, int count) throws InterruptedException {
+		//démarrage du serveur TCP
+		Runnable tcpServer = createTcpServer();
+		new Thread(tcpServer).start();
+		//-------------------------------------------------
+		Thread[] threads = new Thread[threadCount];
+		long start = System.currentTimeMillis();
+		for (int j = 0; j < threadCount; j++) {
+			threads[j] = new Thread(new Sender(j, this, count));
+			threads[j].start();
+		}
+		for (int j = 0; j < threadCount; j++) {
+			threads[j].join();
+		}
+		System.out.println("--------------------------------------------------- ");
+		System.out.println("----- threads       : " + threadCount);
+		System.out.println("----- count/thread  : " + count);
+		System.out.println("----- elapsed time  : " + ((System.currentTimeMillis() - start) / 1000) + "s");
+		System.out.println("--------------------------------------------------- ");
+
+	}
+
+	public static final class Sender implements Runnable {
+		private final int id;
+		private final TcpMain tcpMain;
+		private final int count;
+
+		Sender(int id, TcpMain tcpMain, int count) {
 			this.id = id;
+			this.tcpMain = tcpMain;
+			this.count = count;
 		}
 
 		@Override
 		public void run() {
-			try (TcpClient tcpClient = new TcpClient(HOST, PORT)) {
-				for (int i = 0; i < 5; i++) {
+			try (ReqResp tcpClient = tcpMain.createTcpClient()) {
+				for (int i = 0; i < count; i++) {
 					long res = tcpClient.exec(new Command("ping"));
-					System.out.println(">>>ping(id=" + id + ") : " + res);
+					//System.out.println(">" + res);
+					if (res != 200)
+						throw new RuntimeException("erreur dans le retour :" + res);
+					//					System.out.println(">>>ping(id=" + id + ") : " + res);
 					//System.out.println(">>>pong : " + tcpClient.ask("pong\r\n"));
 				}
 			} catch (IOException e) {

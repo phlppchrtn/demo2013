@@ -1,4 +1,4 @@
-package socket.tcp;
+package socket.tcp.io;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -6,12 +6,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-public final class TcpClient implements AutoCloseable {
+import socket.tcp.protocol.Command;
+import socket.tcp.protocol.ReqResp;
+
+public final class TcpClient implements ReqResp {
 	private final Socket socket;
 	private final BufferedReader in;
 	private final BufferedOutputStream buffer;
 
-	TcpClient(String host, int port) {
+	public TcpClient(String host, int port) {
 		try {
 			socket = new Socket(host, port);
 
@@ -58,6 +61,9 @@ public final class TcpClient implements AutoCloseable {
 		//----
 		String response = in.readLine();
 		//	System.out.println("ask:response=" + response);
+		if (response.startsWith("+OK")) {
+			return 200;
+		}
 		return Long.valueOf(response.substring(1));
 	}
 }

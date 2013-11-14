@@ -1,9 +1,11 @@
-package socket.tcp;
+package socket.tcp.nio;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-public class RedisProtocol2 {
+import socket.tcp.protocol.Command;
+
+final class RedisProtocol2 {
 	private static final String LN = "\r\n";
 	public static final String CHARSET = "UTF-8";
 

@@ -1,11 +1,14 @@
-package socket.tcp;
+package socket.tcp.nio;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
-public final class TcpClient2 implements AutoCloseable {
+import socket.tcp.protocol.Command;
+import socket.tcp.protocol.ReqResp;
+
+public final class TcpClient2 implements ReqResp {
 	private SocketChannel socketChannel;
 	private ByteBuffer buffer;
 
@@ -73,6 +76,9 @@ public final class TcpClient2 implements AutoCloseable {
 			} else {
 				sb.append((char) buffer.get());
 			}
+		}
+		if (sb.toString().startsWith("OK")) {
+			return 200;
 		}
 		return Long.valueOf(sb.toString().trim());
 	}

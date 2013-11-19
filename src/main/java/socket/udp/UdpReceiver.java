@@ -1,13 +1,14 @@
-package socket.discovery;
+package socket.udp;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-public class Receiver implements Runnable {
+public class UdpReceiver implements Runnable {
 	private static final int PORT = 4444;
 
 	public void run() {
+		//random port to receive the package
 		try (DatagramSocket socket = new DatagramSocket(PORT, InetAddress.getByName("0.0.0.0"))) {
 			socket.setBroadcast(true);
 			//---

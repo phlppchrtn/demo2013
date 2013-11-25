@@ -1,9 +1,8 @@
-package socket.tcp;
+package socket.tcp.nio;
 
 import java.io.IOException;
 
-import socket.tcp.nio.TcpClient2;
-import socket.tcp.nio.TcpServer2;
+import socket.tcp.AbstractRedisTest;
 import socket.tcp.protocol.ReqResp;
 
 public final class RedisTest2 extends AbstractRedisTest {
@@ -16,11 +15,11 @@ public final class RedisTest2 extends AbstractRedisTest {
 		new RedisTest2().testSuite();
 	}
 
-	Runnable createTcpServer() {
+	protected Runnable createTcpServer() {
 		return new TcpServer2(port, getCommandHandler());
 	}
 
-	ReqResp createTcpClient() {
+	protected ReqResp createTcpClient() {
 		return new TcpClient2(host, port);
 	}
 }

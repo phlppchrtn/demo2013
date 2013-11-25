@@ -1,9 +1,8 @@
-package socket.tcp;
+package socket.tcp.io;
 
 import java.io.IOException;
 
-import socket.tcp.io.TcpClient;
-import socket.tcp.io.TcpServer;
+import socket.tcp.AbstractRedisTest;
 import socket.tcp.protocol.ReqResp;
 
 public final class RedisTest extends AbstractRedisTest {
@@ -16,11 +15,11 @@ public final class RedisTest extends AbstractRedisTest {
 		new RedisTest().testSuite();
 	}
 
-	Runnable createTcpServer() {
+	protected Runnable createTcpServer() {
 		return new TcpServer(port, getCommandHandler());
 	}
 
-	ReqResp createTcpClient() {
+	protected ReqResp createTcpClient() {
 		return new TcpClient(host, port);
 	}
 }

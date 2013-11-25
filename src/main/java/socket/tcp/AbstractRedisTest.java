@@ -26,9 +26,9 @@ public abstract class AbstractRedisTest {
 		return commandHandler;
 	}
 
-	abstract Runnable createTcpServer();
+	protected abstract Runnable createTcpServer();
 
-	abstract ReqResp createTcpClient();
+	protected abstract ReqResp createTcpClient();
 
 	private final void test(int threadCount, int count) throws IOException, InterruptedException {
 		long start = System.currentTimeMillis();

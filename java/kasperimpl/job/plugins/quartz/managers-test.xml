@@ -1,0 +1,7 @@
+<?xml version =	'1.0' encoding = 'ISO-8859-1'?>
+<managers>
+   <manager name="AnalyticsManager" class="kasperimpl.analytics.AnalyticsManagerImpl" />
+   <manager name="JobManager" class="kasperimpl.job.JobManagerImpl">
+        <plugin name="SchedulerPlugin" class="kasperimpl.job.plugins.quartz.QuartzSchedulerPlugin" />
+    </manager>
+</managers>

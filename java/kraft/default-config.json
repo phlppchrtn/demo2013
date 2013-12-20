@@ -1,0 +1,6 @@
+{
+	'staticHandlers' : {
+		'F:/projet kraft/kraftServer/kleeform'  : '/views/*', 
+		'F:/projet kraft/kraftServer/resources' : '/resources/*'
+	}
+}

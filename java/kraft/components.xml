@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE components-config PUBLIC "-//Kasper//DTD Kasper Components Config 1.0//EN"
+                              "http://www.kleegroup.com/dtd/kasper-components-config_1_0.dtd"> 
+
+<components-config>
+    <component  id="dataServices" class="kraft.services.DataServices"/>    
+
+
+	<interceptor id="tx" class="kasperimpl.transaction.KTransactionInterceptor"/> 	
+    <aspect>
+    	 <annotation>Transactional</annotation>
+    	 <advice>tx</advice>
+	</aspect>      
+</components-config>

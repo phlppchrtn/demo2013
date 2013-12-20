@@ -5,8 +5,8 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
-import socket.tcp.protocol.VCommand;
 import socket.tcp.protocol.ReqResp;
+import socket.tcp.protocol.VCommand;
 
 public final class TcpClient2 implements ReqResp {
 	private SocketChannel socketChannel;

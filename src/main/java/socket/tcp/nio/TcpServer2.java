@@ -66,7 +66,7 @@ public final class TcpServer2 implements Runnable {
 		}
 	}
 
-	private void accept(SelectionKey selectionKey) throws IOException {
+	private static void accept(SelectionKey selectionKey) throws IOException {
 		ServerSocketChannel serverSocketChannel = (ServerSocketChannel) selectionKey.channel();
 
 		SocketChannel socketChannel = serverSocketChannel.accept();

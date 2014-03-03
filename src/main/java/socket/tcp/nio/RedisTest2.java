@@ -15,10 +15,12 @@ public final class RedisTest2 extends AbstractRedisTest {
 		new RedisTest2().testSuite();
 	}
 
+	@Override
 	protected Runnable createTcpServer() {
 		return new TcpServer2(port, getCommandHandler());
 	}
 
+	@Override
 	protected ReqResp createTcpClient() {
 		return new TcpClient2(host, port);
 	}

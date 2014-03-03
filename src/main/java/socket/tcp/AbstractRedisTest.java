@@ -59,19 +59,19 @@ public abstract class AbstractRedisTest {
 
 	private void flushDb() throws IOException {
 		try (ReqResp tcpClient = createTcpClient()) {
-			long res = tcpClient.exec(new VCommand("flushdb"));
+			/*long res = */tcpClient.exec(new VCommand("flushdb"));
 			//System.out.println(">>Text: flushDB :" + res);
 		}
 	}
 
-	private void monoThread(int count) throws IOException {
+	private void monoThread(int count) {
 		loop("mono", count);
 	}
 
 	private void loop(String id, int count) {
 		try (ReqResp tcpClient = createTcpClient()) {
 			for (int i = 0; i < count; i++) {
-				long res = tcpClient.exec(new VCommand("lpush", "test", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaanode[" + id + "] :" + i));
+				/*long res = */tcpClient.exec(new VCommand("lpush", "test", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaanode[" + id + "] :" + i));
 				//				if ((i + 1) % 50000 == 0) {
 				//					System.out.println(">>>lpush node [" + id + "] : >>" + res);
 				//				}
@@ -81,7 +81,7 @@ public abstract class AbstractRedisTest {
 		}
 	}
 
-	private void multiThread(int threadCount, int count) throws IOException, InterruptedException {
+	private void multiThread(int threadCount, int count) throws InterruptedException {
 		Thread[] threads = new Thread[threadCount];
 		for (int j = 0; j < threadCount; j++) {
 			threads[j] = new Thread(new Sender("" + j, count, this));
@@ -121,6 +121,7 @@ public abstract class AbstractRedisTest {
 			if ("flushdb".equals(command.getName())) {
 				datas = 0;
 			} else if ("llen".equals(command.getName())) {
+				//
 			} else if ("lpush".equals(command.getName())) {
 				datas++;
 			} else {

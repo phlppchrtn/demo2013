@@ -34,9 +34,9 @@ public final class Console extends WindowAdapter implements WindowListener, Acti
 		// create all components and add them
 		frame = new JFrame("Java Console");
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		Dimension frameSize = new Dimension((int) (screenSize.width / 2), (int) (screenSize.height / 2));
-		final int x = (int) (frameSize.width / 2);
-		final int y = (int) (frameSize.height / 2);
+		Dimension frameSize = new Dimension(screenSize.width / 2, (int) (screenSize.height / 2));
+		final int x = frameSize.width / 2;
+		final int y = frameSize.height / 2;
 		frame.setBounds(x, y, frameSize.width, frameSize.height);
 
 		textArea = new JTextArea();

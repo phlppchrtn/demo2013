@@ -1,9 +1,8 @@
 package console;
 
-import java.io.IOException;
 
 public class Test {
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		Console console = new Console();
 	}
 }

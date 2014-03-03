@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -31,9 +30,9 @@ public class Console2 {
 
 		final JFrame frame = new JFrame("Vertigo Console");
 		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		final Dimension frameSize = new Dimension((int) (screenSize.width / 2), (int) (screenSize.height / 2));
-		final int x = (int) (frameSize.width / 2);
-		final int y = (int) (frameSize.height / 2);
+		final Dimension frameSize = new Dimension(screenSize.width / 2, (int) (screenSize.height / 2));
+		final int x = frameSize.width / 2;
+		final int y = frameSize.height / 2;
 		frame.setBounds(x, y, frameSize.width, frameSize.height);
 
 		final JTextField input = new JTextField();
@@ -64,7 +63,7 @@ public class Console2 {
 
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		Console2 console = new Console2();
 		//console.read();
 	}

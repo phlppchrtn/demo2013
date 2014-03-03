@@ -47,7 +47,7 @@ final class TcpCLClient implements AutoCloseable {
 		return pull();
 	}
 
-	private void push(String className) throws IOException {
+	private void push(String className) {
 		//System.out.println("exec command :" + command.getName());
 		out.println(className);
 		out.flush();

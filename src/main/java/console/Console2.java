@@ -30,7 +30,7 @@ public class Console2 {
 
 		final JFrame frame = new JFrame("Vertigo Console");
 		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		final Dimension frameSize = new Dimension(screenSize.width / 2, (int) (screenSize.height / 2));
+		final Dimension frameSize = new Dimension(screenSize.width / 2, screenSize.height / 2);
 		final int x = frameSize.width / 2;
 		final int y = frameSize.height / 2;
 		frame.setBounds(x, y, frameSize.width, frameSize.height);

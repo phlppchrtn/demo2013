@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
@@ -18,7 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-public final class Console extends WindowAdapter implements WindowListener, ActionListener, Runnable {
+public final class Console extends WindowAdapter implements ActionListener, Runnable {
 	private final JFrame frame;
 	private final JTextArea textArea;
 	private final Thread reader;
@@ -34,7 +33,7 @@ public final class Console extends WindowAdapter implements WindowListener, Acti
 		// create all components and add them
 		frame = new JFrame("Java Console");
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		Dimension frameSize = new Dimension(screenSize.width / 2, (int) (screenSize.height / 2));
+		Dimension frameSize = new Dimension(screenSize.width / 2, screenSize.height / 2);
 		final int x = frameSize.width / 2;
 		final int y = frameSize.height / 2;
 		frame.setBounds(x, y, frameSize.width, frameSize.height);
@@ -98,6 +97,7 @@ public final class Console extends WindowAdapter implements WindowListener, Acti
 		//		errorThrower.start();
 	}
 
+	@Override
 	public synchronized void windowClosed(WindowEvent evt) {
 		quit = true;
 		this.notifyAll(); // stop all threads
@@ -105,6 +105,7 @@ public final class Console extends WindowAdapter implements WindowListener, Acti
 			reader.join(1000);
 			pin.close();
 		} catch (Exception e) {
+			//
 		}
 		//		try {
 		//			reader2.join(1000);
@@ -114,6 +115,7 @@ public final class Console extends WindowAdapter implements WindowListener, Acti
 		System.exit(0);
 	}
 
+	@Override
 	public synchronized void windowClosing(WindowEvent evt) {
 		frame.setVisible(false); // default behaviour of JFrame	
 		frame.dispose();
@@ -129,6 +131,7 @@ public final class Console extends WindowAdapter implements WindowListener, Acti
 				try {
 					this.wait(100);
 				} catch (InterruptedException ie) {
+					//
 				}
 				if (pin.available() != 0) {
 					String input = this.readLine(pin);

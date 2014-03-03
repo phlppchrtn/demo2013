@@ -60,18 +60,17 @@ public final class TcpClient2 implements ReqResp {
 
 	private long pull() throws IOException {
 		buffer.clear();
-		int bytesRead = socketChannel.read(buffer);
+		/*int bytesRead =*/socketChannel.read(buffer);
 		//		while (bytesRead != -1) {
 		//System.out.println("Read " + bytesRead);
 		buffer.flip();
 
 		boolean first = true;
-		char firstChar;
 		StringBuilder sb = new StringBuilder();
 		while (buffer.hasRemaining()) {
 			if (first) {
 				//:98
-				firstChar = (char) buffer.get();
+				//	char firstChar = (char) buffer.get();
 				first = false;
 			} else {
 				sb.append((char) buffer.get());

@@ -12,7 +12,7 @@ public final class TcpMain {
 	private final int port = 4444;
 	private final String host = "localhost";
 
-	public static void main(String[] args) throws IOException, InterruptedException {
+	public static void main(String[] args) throws InterruptedException {
 		new TcpMain().testSuite();
 	}
 

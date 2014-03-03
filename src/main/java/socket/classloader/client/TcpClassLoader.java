@@ -9,6 +9,7 @@ public final class TcpClassLoader extends ClassLoader {
 		tcpCLClient = new TcpCLClient(host, port);
 	}
 
+	@Override
 	public Class findClass(String name) {
 		try {
 			byte[] b = tcpCLClient.exec(name);

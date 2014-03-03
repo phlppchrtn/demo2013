@@ -16,12 +16,12 @@ public abstract class AbstractTcpMain {
 	protected abstract Runnable createTcpServer(VCommandHandler commandHandler, int port);
 
 	public static final class Sender implements Runnable {
-		private final int id;
+		//		private final int id;
 		private final AbstractTcpMain tcpMain;
 		private final int count;
 
 		Sender(int id, AbstractTcpMain tcpMain, int count) {
-			this.id = id;
+			//	this.id = id;
 			this.tcpMain = tcpMain;
 			this.count = count;
 		}

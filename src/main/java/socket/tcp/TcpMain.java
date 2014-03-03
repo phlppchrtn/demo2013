@@ -58,12 +58,12 @@ public final class TcpMain {
 	}
 
 	public static final class Sender implements Runnable {
-		private final int id;
+		//	private final int id;
 		private final TcpMain tcpMain;
 		private final int count;
 
 		Sender(int id, TcpMain tcpMain, int count) {
-			this.id = id;
+			//this.id = id;
 			this.tcpMain = tcpMain;
 			this.count = count;
 		}

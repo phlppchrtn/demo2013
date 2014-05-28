@@ -17,7 +17,7 @@ import org.apache.sshd.server.session.ServerSession;
  * userName = nico
  * pwd = nico
  */
-public class SshServer {
+public class SSHServer {
 	/**
 	 * Very basic PasswordAuthenticator used for unit tests.
 	 */

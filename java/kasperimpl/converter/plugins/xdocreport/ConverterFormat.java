@@ -5,7 +5,6 @@ import kasper.kernel.util.Assertion;
 /**
  * Formats de sortie supportés par Open Office.
  * @author pchretien, npiedeloup
- * @version $Id: ConverterFormat.java,v 1.1 2013/01/03 13:11:39 npiedeloup Exp $
  */
 enum ConverterFormat {
 

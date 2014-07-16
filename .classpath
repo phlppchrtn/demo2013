@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry excluding="misc/|socket/|rest/" kind="src" path="src/main/java"/>
 	<classpathentry kind="lib" path="lib/sshd-core-0.9.0.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-jdk14-1.6.4.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/pchretien/.m2/repository/org/eclipse/jetty/orbit/javax.servlet/3.0.0.v201112011016/javax.servlet-3.0.0.v201112011016.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="org.eclipse.jetty.orbit"/>
+			<attribute name="maven.artifactId" value="javax.servlet"/>
+			<attribute name="maven.version" value="3.0.0.v201112011016"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/vertigo-core"/>
+	<classpathentry kind="lib" path="/Kasper7/kasper-external/lib/log4j-1.2.16.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

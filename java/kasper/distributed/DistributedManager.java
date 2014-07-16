@@ -10,7 +10,6 @@ import kasper.kernel.manager.Manager;
  *  - soit en mode mixte
  *  
  * @author pchretien
- * @version $Id: DistributedManager.java,v 1.1 2012/03/26 13:24:46 pchretien Exp $
  */
 public interface DistributedManager extends Manager {
 	/**

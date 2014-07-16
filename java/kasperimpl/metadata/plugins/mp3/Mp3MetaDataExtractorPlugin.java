@@ -16,7 +16,6 @@ import de.ueberdosis.mp3info.ID3Reader;
  * Gestion des documents de type mp3.
  *
  * @author pchretien
- * @version $Id: Mp3MetaDataExtractorPlugin.java,v 1.1 2012/11/14 09:12:46 pchretien Exp $
  */
 public final class Mp3MetaDataExtractorPlugin implements MetaDataExtractorPlugin {
 	private final FileManager fileManager;

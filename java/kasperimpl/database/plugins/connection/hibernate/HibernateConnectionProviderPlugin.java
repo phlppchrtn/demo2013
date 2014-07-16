@@ -17,7 +17,6 @@ import kasperimpl.database.plugins.connection.AbstractConnectionProviderPlugin;
  * Wrapping des connexions hibernate.
  *
  * @author pchretien
- * @version $Id: HibernateConnectionProviderPlugin.java,v 1.1 2012/09/27 09:23:55 npiedeloup Exp $
  */
 public final class HibernateConnectionProviderPlugin extends AbstractConnectionProviderPlugin {
 	private static final KTransactionResourceId<HibernateResource> HIBERNATE_RESOURCE_ID = new KTransactionResourceId<HibernateResource>(KTransactionResourceId.Priority.NORMAL,

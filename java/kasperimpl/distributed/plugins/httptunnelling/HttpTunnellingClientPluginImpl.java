@@ -11,7 +11,6 @@ import kasper.kernel.util.Assertion;
 
 /**
  * @author pchretien
- * @version $Id: HttpTunnellingClientPluginImpl.java,v 1.2 2012/05/25 13:33:35 pchretien Exp $
  */
 public final class HttpTunnellingClientPluginImpl implements ClientPlugin {
 	private final String serverURL;

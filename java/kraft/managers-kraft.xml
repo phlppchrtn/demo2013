@@ -4,7 +4,6 @@
     	<plugin name="ResourcePlugin" class="kasperimpl.resource.plugins.java.ClassPathResourceResolverPlugin"/>                               
     </manager> 
     <manager name="LocaleManager" class="kasperimpl.locale.LocaleManagerImpl"> 
-         <param name="multilingual" value="false" />
          <param name="locales" value="fr_FR" />
     </manager>
 

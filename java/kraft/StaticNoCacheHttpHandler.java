@@ -144,7 +144,7 @@ public class StaticNoCacheHttpHandler extends HttpHandler {
 	 *
 	 * @return return the {@link File} representation of the passed <code>docRoot</code>.
 	 */
-	private final File addDocRoot(String docRoot) {
+	private File addDocRoot(String docRoot) {
 		if (docRoot == null) {
 			throw new NullPointerException("docRoot can't be null");
 		}
@@ -161,7 +161,7 @@ public class StaticNoCacheHttpHandler extends HttpHandler {
 	 * @param docRoot the directory to be added to the list of directories
 	 *                where files will be serviced from.
 	 */
-	private final void addDocRoot(File docRoot) {
+	private void addDocRoot(File docRoot) {
 		docRoots.add(docRoot);
 	}
 

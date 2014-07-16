@@ -34,7 +34,6 @@ import kasperimpl.config.plugins.xml.XmlConfig;
 /**
  * Interface d'un plugin de gestion de configuration applicative XML rechargeable.
  * @author npiedeloup
- * @version $Id: XmlReloadableConfigPlugin.java,v 1.1 2013/02/15 13:41:22 pchretien Exp $
  */
 public final class XmlReloadableConfigPlugin implements ConfigPlugin, Activeable {
 	private final URL configURL;
@@ -93,7 +92,6 @@ public final class XmlReloadableConfigPlugin implements ConfigPlugin, Activeable
 	/**
 	 * TimerTask de rechargement de config.
 	 * @author npiedeloup
-	 * @version $Id: XmlReloadableConfigPlugin.java,v 1.1 2013/02/15 13:41:22 pchretien Exp $
 	 */
 	private final class ReloadConfigTask extends TimerTask {
 

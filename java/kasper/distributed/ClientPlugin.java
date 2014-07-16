@@ -8,7 +8,6 @@ import kasper.kernel.manager.Plugin;
  * Un proxy est alors créé.
  *   
  * @author pchretien
- * @version $Id: ClientPlugin.java,v 1.1 2012/03/26 13:24:46 pchretien Exp $
  */
 public interface ClientPlugin extends Plugin {
 	/**

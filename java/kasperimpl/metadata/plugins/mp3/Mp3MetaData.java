@@ -8,7 +8,6 @@ import kasper.metadata.MetaDataType;
  * Liste des métadonnées pour les MP3.
  *
  * @author pchretien
- * @version $Id: Mp3MetaData.java,v 1.1 2012/11/14 09:12:46 pchretien Exp $
  */
 public enum Mp3MetaData implements MetaData {
 	/** Album.*/

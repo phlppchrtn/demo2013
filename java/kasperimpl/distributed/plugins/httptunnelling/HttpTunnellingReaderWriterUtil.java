@@ -14,7 +14,6 @@ import java.util.zip.GZIPOutputStream;
  * Utilitaire centralisant la communication sur http au lieu de rmi .
  *
  * @author npiedeloup
- * @version $Id: HttpTunnellingReaderWriterUtil.java,v 1.1 2012/03/26 13:24:46 pchretien Exp $
  */
 final class HttpTunnellingReaderWriterUtil {
 	private static final String NULL_MAGIC_WORD = "null";

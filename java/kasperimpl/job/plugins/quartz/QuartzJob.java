@@ -12,7 +12,6 @@ import org.quartz.StatefulJob;
  * Cette classe hérite de StatefulJob pour éviter les exécutions concurrentes.
  * Elle est publique et statique pour pouvoir être instanciée par Quartz.
  * @author dchallas
- * @version $Id: QuartzJob.java,v 1.2 2012/09/19 15:43:53 pchretien Exp $
  */
 public final class QuartzJob implements StatefulJob {
 	private final JobManager jobManager = Home.getContainer().getManager(JobManager.class);

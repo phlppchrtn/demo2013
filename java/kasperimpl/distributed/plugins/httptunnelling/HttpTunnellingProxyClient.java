@@ -15,7 +15,6 @@ import kasper.kernel.util.Assertion;
  * Proxy http pour communication http au lieu de rmi.
  *
  * @author pchretien
- * @version $Id: HttpTunnellingProxyClient.java,v 1.2 2013/05/28 17:17:45 pchretien Exp $
  */
 final class HttpTunnellingProxyClient<F> implements InvocationHandler {
 	private final String serverURL;

@@ -12,7 +12,6 @@ import kasper.kernel.util.Assertion;
  * Implémentation de référence de la gestion des appels distribués.
  * 
  * @author pchretien
- * @version $Id: DistributedManagerImpl.java,v 1.1 2012/03/26 13:24:46 pchretien Exp $
  */
 public final class DistributedManagerImpl implements DistributedManager {
 	@Inject

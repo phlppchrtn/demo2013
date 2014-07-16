@@ -16,7 +16,6 @@ import kasper.kernel.util.ClassUtil;
  * Handler HTTP pour communication Java sur http (et non par rmi).
  *
  * @author pchretien
- * @version $Id: HttpTunnellingHandler.java,v 1.2 2013/05/28 17:17:45 pchretien Exp $
  */
 public final class HttpTunnellingHandler {
 	/**

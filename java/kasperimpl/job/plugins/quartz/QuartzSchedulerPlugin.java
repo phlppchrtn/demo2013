@@ -48,7 +48,6 @@ import org.quartz.impl.StdSchedulerFactory;
  * selon http://www.opensymphony.com/quartz/wikidocs/ConfigJDBCJobStoreClustering.html.
  *
  * @author evernat
- * @version $Id: QuartzSchedulerPlugin.java,v 1.2 2012/09/19 15:43:53 pchretien Exp $
  */
 public final class QuartzSchedulerPlugin implements SchedulerPlugin, Activeable {
 	private Scheduler scheduler;

@@ -28,7 +28,6 @@ import org.odftoolkit.odfdom.doc.OdfDocument;
  *		<optional>true</optional>
  *	</dependency>
  * @author npiedeloup
- * @version $Id: XDocReportConverterPlugin.java,v 1.1 2013/01/03 13:11:39 npiedeloup Exp $
  */
 public final class XDocReportConverterPlugin implements ConverterPlugin {
 	private static final Logger LOGGER = Logger.getLogger(XDocReportConverterPlugin.class);

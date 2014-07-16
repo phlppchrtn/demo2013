@@ -30,7 +30,7 @@ public abstract class AbstractRedisTest {
 
 	protected abstract ReqResp createTcpClient();
 
-	private final void test(int threadCount, int count) throws IOException, InterruptedException {
+	private void test(int threadCount, int count) throws IOException, InterruptedException {
 		long start = System.currentTimeMillis();
 		//1 #  
 		flushDb();

@@ -47,12 +47,12 @@ public class SSHServer {
 			public Command create() {
 				System.out.println(">>>command");
 				return new Command() {
-					private InputStream in;
-
-					private OutputStream out;
-					private OutputStream errorOut;
-
-					private ExitCallback exitCallback;
+					//					private InputStream in;
+					//
+					//					private OutputStream out;
+					//					private OutputStream errorOut;
+					//
+					//					private ExitCallback exitCallback;
 
 					@Override
 					public void start(Environment environment) throws IOException {

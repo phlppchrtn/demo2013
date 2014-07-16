@@ -14,7 +14,6 @@ import kasper.kernel.util.Assertion;
  * Le nom de l'operation sera par exemple tiré du nom de la méthode java.
  * 
  * @author pchretien
- * @version $Id: HttpTunnellingRequest.java,v 1.2 2013/05/28 17:17:45 pchretien Exp $
  */
 final class HttpTunnellingRequest implements Serializable {
 	private static final long serialVersionUID = -1L;

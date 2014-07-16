@@ -19,7 +19,6 @@ import org.hibernate.ejb.EntityManagerImpl;
  * des fichiers...
  *
  * @author pchretien
- * @version $Id: HibernateResource.java,v 1.1 2012/09/27 09:23:55 npiedeloup Exp $
  */
 public final class HibernateResource implements KTransactionResource {
 	private final EntityManager em;

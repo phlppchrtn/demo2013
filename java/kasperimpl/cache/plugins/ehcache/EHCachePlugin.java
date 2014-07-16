@@ -26,7 +26,6 @@ import net.sf.ehcache.config.CacheConfiguration;
  * Implémentation EHCache du CacheManager.
  *
  * @author pchretien
- * @version $Id: EHCachePlugin.java,v 1.1 2012/09/21 15:06:04 npiedeloup Exp $
  */
 public final class EHCachePlugin implements CachePlugin, Activeable {
 	/**

@@ -10,7 +10,6 @@ import kasper.kernel.util.Assertion;
  * Connexion Hibernate.
  *
  * @author pchretien
- * @version $Id: HibernateConnection.java,v 1.1 2012/09/27 09:23:55 npiedeloup Exp $
  */
 final class HibernateConnection implements KConnection {
 	private final Connection jdbcConnection;

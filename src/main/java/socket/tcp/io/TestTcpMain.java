@@ -4,9 +4,9 @@ import socket.tcp.AbstractTcpMain;
 import socket.tcp.protocol.ReqResp;
 import socket.tcp.protocol.VCommandHandler;
 
-public final class TcpMain extends AbstractTcpMain {
+public final class TestTcpMain extends AbstractTcpMain {
 	public static void main(String[] args) throws InterruptedException {
-		new TcpMain().testSuite();
+		new TestTcpMain().testSuite();
 	}
 
 	@Override

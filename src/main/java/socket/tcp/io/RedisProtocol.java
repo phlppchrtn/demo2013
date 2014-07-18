@@ -7,31 +7,18 @@ import java.io.OutputStream;
 import socket.tcp.protocol.VCommand;
 
 final class RedisProtocol {
-	private static final String LN = "\r\n";
-	public static final String CHARSET = "UTF-8";
 
 	public static void encode(VCommand command, OutputStream output) throws IOException {
-		byte[] bytes;
-
-		//--- *Nb d'infos
-		output.write("*".getBytes(CHARSET));
-		output.write(String.valueOf(command.args().length + 1).getBytes(CHARSET));
-		output.write(LN.getBytes(CHARSET));
-		//--- cas du nom de la commande
-		bytes = command.getName().getBytes(CHARSET);
-		output.write("$".getBytes(CHARSET));
-		output.write(String.valueOf(bytes.length).getBytes(CHARSET));
-		output.write(LN.getBytes(CHARSET));
-		output.write(bytes);
-		output.write(LN.getBytes(CHARSET));
+		Writer writer = new Writer(output)//
+				//--- *Nb d'infos
+				.write("*")//
+				.write(String.valueOf(command.args().length + 1))//
+				.writeln()//
+				//--- cas du nom de la commande
+				.writeBulkString(command.getName());
 		//--- cas des args 
 		for (String arg : command.args()) {
-			bytes = arg.getBytes(CHARSET);
-			output.write("$".getBytes(CHARSET));
-			output.write(String.valueOf(bytes.length).getBytes(CHARSET));
-			output.write(LN.getBytes(CHARSET));
-			output.write(bytes);
-			output.write(LN.getBytes(CHARSET));
+			writer.writeBulkString(arg);
 		}
 	}
 

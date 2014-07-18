@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="misc/|socket/|rest/" kind="src" path="src/main/java"/>
+	<classpathentry excluding="misc/|rest/|kasper/|kasperimpl/|kraft/|redis/|socket/ssh/" kind="src" path="src/main/java"/>
 	<classpathentry kind="lib" path="lib/sshd-core-0.9.0.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-jdk14-1.6.4.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
@@ -14,6 +14,23 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/vertigo-core"/>
-	<classpathentry kind="lib" path="/Kasper7/kasper-external/lib/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="C:/Users/pchretien/.m2/repository/org/freemarker/freemarker/2.3.20/freemarker-2.3.20.jar" sourcepath="C:/Users/pchretien/.m2/repository/org/freemarker/freemarker/2.3.20/freemarker-2.3.20-sources.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="org.freemarker"/>
+			<attribute name="maven.artifactId" value="freemarker"/>
+			<attribute name="maven.version" value="2.3.20"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/pchretien/.m2/repository/org/markdownj/markdownj/0.3.0-1.0.2b4/markdownj-0.3.0-1.0.2b4.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="org.markdownj"/>
+			<attribute name="maven.artifactId" value="markdownj"/>
+			<attribute name="maven.version" value="0.3.0-1.0.2b4"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -8,7 +8,7 @@ import socket.tcp.protocol.VCommandHandler;
 
 public abstract class AbstractTcpMain {
 
-	private static final int PORT = 4444;
+	private static final int PORT = 6379;
 	private static final String HOST = "localhost";
 
 	protected abstract ReqResp createTcpClient(String host, int port);
@@ -44,7 +44,7 @@ public abstract class AbstractTcpMain {
 	}
 
 	protected void testSuite() throws InterruptedException {
-		startServer();
+		//startServer();
 		//-------------------------------------------------
 		test(1, 500);
 		test(10, 50);
@@ -70,11 +70,11 @@ public abstract class AbstractTcpMain {
 
 	}
 
-	private void startServer() {
-		//démarrage du serveur TCP
-		Runnable tcpServer = createTcpServer(new MyCommandHandler(), PORT);
-		new Thread(tcpServer).start();
-	}
+	//	private void startServer() {
+	//		//démarrage du serveur TCP
+	//		Runnable tcpServer = createTcpServer(new MyCommandHandler(), PORT);
+	//		new Thread(tcpServer).start();
+	//	}
 
 	protected static class MyCommandHandler implements VCommandHandler {
 		public String onCommand(VCommand command) {

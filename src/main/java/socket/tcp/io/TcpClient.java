@@ -46,16 +46,16 @@ public final class TcpClient implements ReqResp, AutoCloseable {
 	}
 
 	public long exec(VCommand command) throws IOException {
-		return execLong(command);
+		return 1; //execLong(command);
 	}
 
-	public long execLong(VCommand command) throws IOException {
-		push(command);
+	public long execLong(String command, String... args) throws IOException {
+		push(new VCommand(command, args));
 		return pullLong();
 	}
 
-	public String execString(VCommand command) throws IOException {
-		push(command);
+	public String execString(String command, String... args) throws IOException {
+		push(new VCommand(command, args));
 		return pullString();
 	}
 

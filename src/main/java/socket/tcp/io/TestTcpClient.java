@@ -35,7 +35,7 @@ public final class TestTcpClient {
 	}
 
 	String flushall() throws IOException {
-		return tcpClient.execString(new VCommand("flushall"));
+		return tcpClient.execString("flushall");
 	}
 
 	long lpush(String key, String... values) throws IOException {
@@ -44,7 +44,7 @@ public final class TestTcpClient {
 		for (int i = 0; i < values.length; i++) {
 			args[i + 1] = values[i];
 		}
-		return tcpClient.execLong(new VCommand("lpush", args));
+		return tcpClient.execLong("lpush", args);
 	}
 
 	String echo (String message) throws IOException{
@@ -52,16 +52,15 @@ public final class TestTcpClient {
 	}
 	
 	String hmset( String key, Map<String,String> map) throws IOException{
-		String [] args = new String[map.size()*2];
+		String [] args = new String[map.size()*2+1];
 		int i=0;
+		args[i++]= key;
 		for (Entry<String, String> entry : map.entrySet()){
-			args[i]=entry.getKey();
-			i++;
-			args[i]=entry.getValue();
-			i++;
+			args[i++]=entry.getKey();
+			args[i++]=entry.getValue();
 		}	
-		System.out.println("args>"+ Arrays.asList(args));
-		return tcpClient.execString(new VCommand("hmset", args));
+		//System.out.println("args>"+ Arrays.asList(args));
+		return tcpClient.execString("hmset", args);
 	}
 
 //	Set<String> keys(String pattern) throws IOException {
@@ -69,15 +68,16 @@ public final class TestTcpClient {
 //	}
 	
 	String auth(String password) throws IOException {
-		return tcpClient.execString(new VCommand("auth", password));
+		return tcpClient.execString("auth", password);
 	}
-
+	
+	
 	long llen(String key) throws IOException {
-		return tcpClient.execLong(new VCommand("llen", key));
+		return tcpClient.execLong("llen", key);
 	}
 
 	long lpushx(String key, String value) throws IOException {
-		return tcpClient.execLong(new VCommand("lpushx", key, value));
+		return tcpClient.execLong("lpushx", key, value);
 	}
 
 	String lpop(String key) throws IOException {

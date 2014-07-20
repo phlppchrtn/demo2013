@@ -1,20 +1,37 @@
 package socket.tcp.io;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import socket.tcp.protocol.VCommand;
 
 public final class TestTcpClient {
-	private final TcpClient tcpClient = new TcpClient("localhost", 6379);
+	private final String host = "pub-redis-15190.us-east-1-3.4.ec2.garantiadata.com";
+	//private final String host = "localhost";
+	//private static final int PORT = 6379;
+//	private final int port = 6379;
+	private final int port = 15190;
+//	private final TcpClient tcpClient = new TcpClient("localhost", 6379);
+	private final TcpClient tcpClient = new TcpClient(host, port);
 
 	public static void main(String[] args) throws IOException {
 		TestTcpClient test = new TestTcpClient();
+		test.auth("kleegroup");
 		test.flushall();
 		test.lpush("actors", "marlon");
 		test.lpush("actors", "clint");
+		System.out.println("echo >"+test.echo("coucou"));
 		String actor = test.lpop("actors");
 		System.out.println("lpop actors >" + actor);
 		System.out.println("llen actors >" + test.llen("actors"));
+		//---
+		Map<String, String> map = new HashMap<>();
+		map.put("name", "john");
+		map.put("lastname", "doe");
+		test.hmset("user", map);
 	}
 
 	String flushall() throws IOException {
@@ -28,6 +45,31 @@ public final class TestTcpClient {
 			args[i + 1] = values[i];
 		}
 		return tcpClient.execLong(new VCommand("lpush", args));
+	}
+
+	String echo (String message) throws IOException{
+		return tcpClient.execBulk(new VCommand("echo", message));
+	}
+	
+	String hmset( String key, Map<String,String> map) throws IOException{
+		String [] args = new String[map.size()*2];
+		int i=0;
+		for (Entry<String, String> entry : map.entrySet()){
+			args[i]=entry.getKey();
+			i++;
+			args[i]=entry.getValue();
+			i++;
+		}	
+		System.out.println("args>"+ Arrays.asList(args));
+		return tcpClient.execString(new VCommand("hmset", args));
+	}
+
+//	Set<String> keys(String pattern) throws IOException {
+//		return ;
+//	}
+	
+	String auth(String password) throws IOException {
+		return tcpClient.execString(new VCommand("auth", password));
 	}
 
 	long llen(String key) throws IOException {

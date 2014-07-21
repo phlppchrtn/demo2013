@@ -12,7 +12,7 @@ import socket.tcp.protocol.VCommand;
 public final class TcpClient implements ReqResp {
 	private final Socket socket;
 	private final BufferedReader in;
-	private final BufferedOutputStream buffer;
+	private final BufferedOutputStream out;
 
 	public TcpClient(String host, int port) {
 		try {
@@ -24,7 +24,7 @@ public final class TcpClient implements ReqResp {
 			//			socket.setSoLinger(true, 0); //Control calls close () method, the underlying socket is closed immediately
 
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			buffer = new BufferedOutputStream(socket.getOutputStream());
+			out = new BufferedOutputStream(socket.getOutputStream());
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -34,7 +34,7 @@ public final class TcpClient implements ReqResp {
 		try {
 			try {
 				//imbriquer les try
-				buffer.close();
+				out.close();
 				in.close();
 			} finally {
 				//On ferme tjrs la socket
@@ -59,15 +59,15 @@ public final class TcpClient implements ReqResp {
 		return pullString();
 	}
 
-	public String execBulk(VCommand command) throws IOException {
-		push(command);
+	public String execBulk(String command, String... args) throws IOException {
+		push(new VCommand(command, args));
 		return pullBulk();
 	}
 
 	private void push(VCommand command) throws IOException {
 		//System.out.println("exec command :" + command.getName());
-		RedisProtocol.encode(command, buffer);
-		buffer.flush();
+		RedisProtocol.encode(command, out);
+		out.flush();
 	}
 
 	private long pullLong() throws IOException {
@@ -76,7 +76,7 @@ public final class TcpClient implements ReqResp {
 		String response = in.readLine();
 		System.out.println("ask:response=" + response);
 		if (!response.startsWith(":")) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(response);
 		}
 		return Long.valueOf(response.substring(1));
 	}
@@ -87,7 +87,7 @@ public final class TcpClient implements ReqResp {
 		String response = in.readLine();
 		System.out.println("ask:response=" + response);
 		if (!response.startsWith("+")) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(response);
 		}
 		return response.substring(1);
 	}
@@ -96,7 +96,7 @@ public final class TcpClient implements ReqResp {
 		//		System.out.println("sub: " + line.substring(1));
 		String response = in.readLine();
 		if (!response.startsWith("$")) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(response);
 		}
 		int n = Integer.valueOf(response.substring(1));
 		if (n < 0) {

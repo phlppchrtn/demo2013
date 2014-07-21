@@ -19,14 +19,17 @@ final class Writer {
 	}
 
 	Writer writeln() throws IOException {
+		//System.out.println();
 		return write(LN);
 	}
 
 	Writer write(String s) throws IOException {
+		//System.out.print(s);
 		return write(s.getBytes(CHARSET));
 	}
 
 	Writer writeBulkString(String bulk) throws IOException {
+		//System.out.println("bulk:" + bulk);
 		//--- cas du nom de la commande
 		byte[] bytes = bulk.getBytes(CHARSET);
 		return write("$")//

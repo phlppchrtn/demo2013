@@ -6,10 +6,10 @@ import java.io.OutputStream;
 
 import socket.tcp.protocol.VCommand;
 
-final class RedisProtocol {
+final class RespProtocol {
 
 	public static void encode(VCommand command, OutputStream output) throws IOException {
-		Writer writer = new Writer(output)//
+		RespWriter writer = new RespWriter(output)//
 				//--- *Nb d'infos
 				.write("*")//
 				.write(String.valueOf(command.args().length + 1))//

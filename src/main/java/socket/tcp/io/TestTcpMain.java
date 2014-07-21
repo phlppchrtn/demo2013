@@ -16,6 +16,6 @@ public final class TestTcpMain extends AbstractTcpMain {
 
 	@Override
 	protected ReqResp createTcpClient(String host, int port) {
-		return new TcpClient(host, port);
+		return new RespClient(host, port);
 	}
 }

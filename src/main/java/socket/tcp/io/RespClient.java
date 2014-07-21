@@ -9,12 +9,12 @@ import java.net.Socket;
 import socket.tcp.protocol.ReqResp;
 import socket.tcp.protocol.VCommand;
 
-public final class TcpClient implements ReqResp {
+public final class RespClient implements ReqResp {
 	private final Socket socket;
 	private final BufferedReader in;
 	private final BufferedOutputStream out;
 
-	public TcpClient(String host, int port) {
+	public RespClient(String host, int port) {
 		try {
 			socket = new Socket(host, port);
 
@@ -66,7 +66,7 @@ public final class TcpClient implements ReqResp {
 
 	private void push(VCommand command) throws IOException {
 		//System.out.println("exec command :" + command.getName());
-		RedisProtocol.encode(command, out);
+		RespProtocol.encode(command, out);
 		out.flush();
 	}
 
@@ -95,6 +95,9 @@ public final class TcpClient implements ReqResp {
 	public String pullBulk() throws IOException {
 		String response = in.readLine();
 		System.out.println("pullBulk: " + response);
+		if ("*-1".equals(response)){
+			return null;
+		}
 		if (!response.startsWith("$")) {
 			throw new IllegalArgumentException(response);
 		}

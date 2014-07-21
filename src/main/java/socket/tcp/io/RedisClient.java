@@ -5,10 +5,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public final class RedisClient implements AutoCloseable {
-	private final TcpClient tcpClient;
+	private final RespClient tcpClient;
 
 	public RedisClient(String host, int port) {
-		tcpClient = new TcpClient(host, port);
+		tcpClient = new RespClient(host, port);
 	}
 
 	long append(String key, String value) throws IOException {

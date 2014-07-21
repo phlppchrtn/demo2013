@@ -43,7 +43,7 @@ public final class TcpServer implements Runnable {
 		public void run() {
 			try (PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
 				try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
-					for (VCommand command = RedisProtocol.decode(in); command != null; command = RedisProtocol.decode(in)) {
+					for (VCommand command = RespProtocol.decode(in); command != null; command = RespProtocol.decode(in)) {
 						String outputLine = commandHandler.onCommand(command);
 						out.println(outputLine);
 					}

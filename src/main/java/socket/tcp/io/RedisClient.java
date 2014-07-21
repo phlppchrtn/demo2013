@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import socket.tcp.io.resp.RespClient;
+
 public final class RedisClient implements AutoCloseable {
 	private final RespClient tcpClient;
 

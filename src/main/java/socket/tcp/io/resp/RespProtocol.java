@@ -1,4 +1,4 @@
-package socket.tcp.io;
+package socket.tcp.io.resp;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import socket.tcp.protocol.VCommand;
 
 final class RespProtocol {
 
-	public static void encode(VCommand command, OutputStream output) throws IOException {
+	 static void encode(VCommand command, OutputStream output) throws IOException {
 		RespWriter writer = new RespWriter(output)//
 				//--- *Nb d'infos
 				.write("*")//
@@ -22,7 +22,7 @@ final class RespProtocol {
 		}
 	}
 
-	public static VCommand decode(BufferedReader input) throws IOException {
+	 static VCommand decode(BufferedReader input) throws IOException {
 		String line = input.readLine();
 		if (line == null) {
 			return null;

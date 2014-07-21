@@ -1,4 +1,4 @@
-package socket.tcp.io;
+package socket.tcp.io.resp;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -6,10 +6,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-import socket.tcp.protocol.ReqResp;
 import socket.tcp.protocol.VCommand;
 
-public final class RespClient implements ReqResp {
+public final class RespClient implements AutoCloseable {
 	private final Socket socket;
 	private final BufferedReader in;
 	private final BufferedOutputStream out;
@@ -43,10 +42,6 @@ public final class RespClient implements ReqResp {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	public long exec(VCommand command) throws IOException {
-		return 1; //execLong(command);
 	}
 
 	public long execLong(String command, String... args) throws IOException {

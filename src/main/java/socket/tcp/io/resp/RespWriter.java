@@ -1,4 +1,4 @@
-package socket.tcp.io;
+package socket.tcp.io.resp;
 
 import java.io.IOException;
 import java.io.OutputStream;

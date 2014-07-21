@@ -69,7 +69,7 @@ public final class RespClient implements AutoCloseable {
 		//System.out.println("flush command :" + command.getName());
 		//----
 		String response = in.readLine();
-		System.out.println("ask:response=" + response);
+		//System.out.println("ask:response=" + response);
 		if (!response.startsWith(":")) {
 			throw new IllegalArgumentException(response);
 		}
@@ -80,7 +80,7 @@ public final class RespClient implements AutoCloseable {
 		//System.out.println("flush command :" + command.getName());
 		//----
 		String response = in.readLine();
-		System.out.println("ask:response=" + response);
+		//System.out.println("ask:response=" + response);
 		if (!response.startsWith("+")) {
 			throw new IllegalArgumentException(response);
 		}
@@ -89,7 +89,7 @@ public final class RespClient implements AutoCloseable {
 
 	public String pullBulk() throws IOException {
 		String response = in.readLine();
-		System.out.println("pullBulk: " + response);
+		//System.out.println("pullBulk: " + response);
 		if ("*-1".equals(response)){
 			return null;
 		}

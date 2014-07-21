@@ -93,8 +93,8 @@ public final class TcpClient implements ReqResp {
 	}
 
 	public String pullBulk() throws IOException {
-		//		System.out.println("sub: " + line.substring(1));
 		String response = in.readLine();
+		System.out.println("pullBulk: " + response);
 		if (!response.startsWith("$")) {
 			throw new IllegalArgumentException(response);
 		}

@@ -27,6 +27,14 @@ public final class RedisClient implements AutoCloseable {
 		return tcpClient.execLong("exists", key) == 1;
 	}
 
+	boolean expire(String key, long seconds) throws IOException {
+		return tcpClient.execLong("expire", key, String.valueOf(seconds)) == 1;
+	}
+
+	String brpoplpush(String source, String destination, long timeout) throws IOException {
+		return tcpClient.execBulk("brpoplpush", args(source, destination, String.valueOf(timeout)));
+	}
+
 	long del(String... keys) throws IOException {
 		return tcpClient.execLong("del", keys);
 	}
@@ -100,7 +108,11 @@ public final class RedisClient implements AutoCloseable {
 		return tcpClient.execLong("hlen", key);
 	}
 
-	String hmset(String key, Map<String, String> map) throws IOException {
+	boolean hset(String key, String field, String value) throws IOException {
+		return tcpClient.execLong("hset", key, field, value) == 1;
+	}
+
+	void hmset(String key, Map<String, String> map) throws IOException {
 		String[] args = new String[map.size() * 2 + 1];
 		int i = 0;
 		args[i++] = key;
@@ -109,11 +121,11 @@ public final class RedisClient implements AutoCloseable {
 			args[i++] = entry.getValue();
 		}
 		//System.out.println("args>"+ Arrays.asList(args));
-		return tcpClient.execString("hmset", args);
+		tcpClient.execString("hmset", args);
 	}
 
 	long hincrBy(String key, String field, long increment) throws IOException {
-		return tcpClient.execLong("hincrby", key, field, Long.valueOf(increment).toString());
+		return tcpClient.execLong("hincrby", key, field, String.valueOf(increment));
 	}
 
 	private static String[] args(String key, String... values) {

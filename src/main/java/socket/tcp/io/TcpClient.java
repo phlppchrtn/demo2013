@@ -9,7 +9,7 @@ import java.net.Socket;
 import socket.tcp.protocol.ReqResp;
 import socket.tcp.protocol.VCommand;
 
-public final class TcpClient implements ReqResp, AutoCloseable {
+public final class TcpClient implements ReqResp {
 	private final Socket socket;
 	private final BufferedReader in;
 	private final BufferedOutputStream buffer;

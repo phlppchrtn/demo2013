@@ -1,6 +1,7 @@
 package socket.tcp.io;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -12,6 +13,62 @@ public final class RedisClient implements AutoCloseable {
 	public RedisClient(String host, int port) {
 		tcpClient = new RespClient(host, port);
 	}
+
+	//-------------------------------------------------------------------------
+	//------------------------------list---------------------------------------
+	//-------------------------------------------------------------------------
+	//	BLPOP, BRPOP, BRPOPLPUSH, LINDEX, LINSERT, LLEN, LPOP
+	//	LPUSH, LPUSHX, LRANGE, LREM, LSET LTRIM, RPOP, RPOPLPUSH, RPUSH, RPUSHX
+	//-------------------------------------------------------------------------
+	List<String> blpop(long timeout, String... keys) throws IOException {
+		String[] args = args(timeout, keys);
+		return tcpClient.execArray("blpop", args);
+	}
+
+	List<String> brpop(long timeout, String... keys) throws IOException {
+		String[] args = args(timeout, keys);
+		return tcpClient.execArray("brpop", args);
+	}
+
+	String brpoplpush(String source, String destination, long timeout) throws IOException {
+		return tcpClient.execBulk("brpoplpush", args(source, destination, String.valueOf(timeout)));
+	}
+
+	String lindex(String key, int index) throws IOException {
+		return tcpClient.execBulk("lindex", key, String.valueOf(index));
+	}
+
+	long llen(String key) throws IOException {
+		return tcpClient.execLong("llen", key);
+	}
+
+	String lpop(String key) throws IOException {
+		return tcpClient.execBulk("lpop", key);
+	}
+
+	long lpush(String key, String value) throws IOException {
+		return tcpClient.execLong("lpush", key, value);
+	}
+
+	long lpushx(String key, String value) throws IOException {
+		return tcpClient.execLong("lpushx", key, value);
+	}
+
+	String rpop(String key) throws IOException {
+		return tcpClient.execBulk("rpop", key);
+	}
+
+	long rpush(String key, String value) throws IOException {
+		return tcpClient.execLong("rpush", key, value);
+	}
+
+	long rpushx(String key, String value) throws IOException {
+		return tcpClient.execLong("rpushx", key, value);
+	}
+
+	//-------------------------------------------------------------------------
+	//-----------------------------/list---------------------------------------
+	//-------------------------------------------------------------------------
 
 	long append(String key, String value) throws IOException {
 		return tcpClient.execLong("append", key, value);
@@ -33,32 +90,12 @@ public final class RedisClient implements AutoCloseable {
 		return tcpClient.execLong("expire", key, String.valueOf(seconds)) == 1;
 	}
 
-	String brpoplpush(String source, String destination, long timeout) throws IOException {
-		return tcpClient.execBulk("brpoplpush", args(source, destination, String.valueOf(timeout)));
-	}
-
 	long del(String... keys) throws IOException {
 		return tcpClient.execLong("del", keys);
 	}
 
 	void flushall() throws IOException {
 		tcpClient.execString("flushall");
-	}
-
-	long lpush(String key, String value) throws IOException {
-		return tcpClient.execLong("lpush", key, value);
-	}
-
-	long lpushx(String key, String value) throws IOException {
-		return tcpClient.execLong("lpushx", key, value);
-	}
-
-	long rpushx(String key, String value) throws IOException {
-		return tcpClient.execLong("rpushx", key, value);
-	}
-
-	long rpush(String key, String value) throws IOException {
-		return tcpClient.execLong("rpush", key, value);
 	}
 
 	String ping() throws IOException {
@@ -75,18 +112,6 @@ public final class RedisClient implements AutoCloseable {
 
 	String auth(String password) throws IOException {
 		return tcpClient.execString("auth", password);
-	}
-
-	long llen(String key) throws IOException {
-		return tcpClient.execLong("llen", key);
-	}
-
-	String rpop(String key) throws IOException {
-		return tcpClient.execBulk("rpop", key);
-	}
-
-	String lpop(String key) throws IOException {
-		return tcpClient.execBulk("lpop", key);
 	}
 
 	public void close() {
@@ -136,6 +161,15 @@ public final class RedisClient implements AutoCloseable {
 		for (int i = 0; i < values.length; i++) {
 			args[i + 1] = values[i];
 		}
+		return args;
+	}
+
+	private String[] args(long timeout, String... keys) {
+		String[] args = new String[keys.length + 1];
+		for (int i = 0; i < keys.length; i++) {
+			args[i] = keys[i];
+		}
+		args[keys.length] = String.valueOf(timeout);
 		return args;
 	}
 

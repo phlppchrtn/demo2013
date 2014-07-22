@@ -2,6 +2,7 @@ package socket.tcp.io;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.After;
@@ -10,10 +11,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 public final class TestRedisClient {
-	private final String host = "pub-redis-15190.us-east-1-3.4.ec2.garantiadata.com";
-	//private final String host = "localhost";
-	//private static final int port = 6379;
-	private final int port = 15190;
+	//private final String host = "pub-redis-15190.us-east-1-3.4.ec2.garantiadata.com";
+	private final String host = "localhost";
+	private static final int port = 6379;
+	//private final int port = 15190;
 
 	//	private final TcpClient tcpClient = new TcpClient("localhost", 6379);
 
@@ -25,7 +26,7 @@ public final class TestRedisClient {
 	@Before
 	public void before() throws IOException {
 		redis = new RedisClient(host, port);
-		redis.auth("kleegroup");
+		//redis.auth("kleegroup");
 		redis.flushall();
 	}
 
@@ -107,6 +108,27 @@ public final class TestRedisClient {
 		Assert.assertEquals(0, redis.llen("europe"));
 		Assert.assertEquals(6, redis.llen("countries"));
 		Assert.assertEquals(null, redis.brpoplpush("europe", "countries", 1));
+		//----test : blpop, brpop
+		List<String> list;
+		redis.lpush("europe", "germany");
+		redis.lpush("europe", "france");
+		redis.lpush("europe", "italy");
+		list = redis.blpop(1, "europe");
+		Assert.assertEquals(2, list.size());
+		Assert.assertEquals("europe", list.get(0));
+		Assert.assertEquals("italy", list.get(1));
+
+		list = redis.brpop(1, "europe");
+		Assert.assertEquals(2, list.size());
+		Assert.assertEquals("europe", list.get(0));
+		Assert.assertEquals("germany", list.get(1));
+
+		//----test :lindex
+		redis.flushall();
+		redis.lpush("europe", "germany");
+		redis.lpush("europe", "france");
+		redis.lpush("europe", "italy");
+		Assert.assertEquals("france", redis.lindex("europe", 1));
 	}
 
 	@Test

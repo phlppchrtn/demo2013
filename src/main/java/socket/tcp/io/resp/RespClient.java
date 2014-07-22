@@ -54,22 +54,18 @@ public final class RespClient implements AutoCloseable {
 	}
 
 	public List<String> execArray(String command, String... args) throws IOException {
-		RespProtocol.push(out, command, args);
-		return (List<String>) RespProtocol.pull(in, '*');
+		return (List<String>) RespProtocol.pushPull(RespProtocol.RespType.RESP_ARRAY, in, out, command, args);
 	}
 
 	public long execLong(String command, String... args) throws IOException {
-		RespProtocol.push(out, command, args);
-		return (Long) RespProtocol.pull(in, ':');
+		return (Long) RespProtocol.pushPull(RespProtocol.RespType.RESP_INTEGER, in, out, command, args);
 	}
 
 	public String execString(String command, String... args) throws IOException {
-		RespProtocol.push(out, command, args);
-		return (String) RespProtocol.pull(in, '+');
+		return (String) RespProtocol.pushPull(RespProtocol.RespType.RESP_STRING, in, out, command, args);
 	}
 
 	public String execBulk(String command, String... args) throws IOException {
-		RespProtocol.push(out, command, args);
-		return (String) RespProtocol.pull(in, '$');
+		return (String) RespProtocol.pushPull(RespProtocol.RespType.RESP_BULK, in, out, command, args);
 	}
 }

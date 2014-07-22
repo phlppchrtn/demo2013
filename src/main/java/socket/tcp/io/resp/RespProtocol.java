@@ -10,6 +10,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 final class RespProtocol {
+	static enum RespType {
+		RESP_STRING('+'), RESP_ARRAY('*'), RESP_BULK('$'), RESP_INTEGER(':');
+		private final char c;
+
+		private RespType(char c) {
+			this.c = c;
+		}
+
+		char getChar() {
+			return c;
+		}
+	}
 
 	private static final String CHARSET = "UTF-8";
 	private static final String LN = "\r\n";
@@ -86,19 +98,34 @@ final class RespProtocol {
 		write(out, LN);
 	}
 
-	static void push(BufferedOutputStream out, String command, String[] args) throws IOException {
+	/**
+	 * 
+	 * @param in
+	 * @param out
+	 * @param command
+	 * @param args
+	 * @param expected  T
+	 * @return
+	 * @throws IOException
+	 */
+	static Object pushPull(RespType type, BufferedReader in, BufferedOutputStream out, String command, String[] args) throws IOException {
+		push(out, command, args);
+		return pull(in, type.getChar());
+	}
+
+	private static void push(BufferedOutputStream out, String command, String[] args) throws IOException {
 		//System.out.println("exec command :" + command.getName());
 		writeCommand(out, command, args);
 		out.flush();
 	}
 
-	static Object pull(BufferedReader in, char expected) throws IOException {
+	private static Object pull(BufferedReader in, char expected) throws IOException {
 		String response = in.readLine();
 		//System.out.println(expected + ":" + response);
 		//---
 		char start = response.charAt(0);
-		if (start == '+') {
-			return new RuntimeException(response);
+		if (start == '-') {
+			throw new RuntimeException(response);
 		}
 		//Hack pour gérer un mauvais retour de brpoplpush
 		if (start == '*' && "*-1".equals(response)) {

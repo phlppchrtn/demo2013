@@ -131,6 +131,14 @@ public final class TestRedisClient {
 		redis.lpush("europe", "france");
 		redis.lpush("europe", "italy");
 		Assert.assertEquals("france", redis.lindex("europe", 1));
+		//------
+		Assert.assertEquals(1, redis.lpush("mylist", "hello"));
+		Assert.assertEquals(2, redis.lpush("mylist", "hello"));
+		Assert.assertEquals(3, redis.lpush("mylist", "foo"));
+		Assert.assertEquals(4, redis.lpush("mylist", "hello"));
+		Assert.assertEquals(5, redis.lpush("mylist", "hello"));
+		Assert.assertEquals(2, redis.lrem("mylist", -2, "hello"));
+		Assert.assertEquals("foo", redis.rpop("mylist"));
 	}
 
 	@Test

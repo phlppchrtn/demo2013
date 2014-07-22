@@ -20,8 +20,8 @@ public final class RedisClient implements AutoCloseable {
 	//-------------------------------------------------------------------------
 	//------------------------------list---------------------------------------
 	//-------------------------------------------------------------------------
-	//	BLPOP, BRPOP, BRPOPLPUSH, LINDEX, LINSERT, LLEN, LPOP
-	//	LPUSH, LPUSHX, LRANGE, LREM, LSET LTRIM, RPOP, RPOPLPUSH, RPUSH, RPUSHX
+	//	BLPOP, BRPOP, BRPOPLPUSH, LINDEX, -LINSERT, LLEN, LPOP
+	//	LPUSH, LPUSHX, -LRANGE, LREM, -LSET, -LTRIM, RPOP, -RPOPLPUSH, RPUSH, RPUSHX
 	//-------------------------------------------------------------------------
 	public List<String> blpop(long timeout, String... keys) throws IOException {
 		String[] args = args(timeout, keys);
@@ -57,6 +57,10 @@ public final class RedisClient implements AutoCloseable {
 		return tcpClient.execLong("lpushx", key, value);
 	}
 
+	public long lrem(String key, long count, String value) throws IOException {
+		return tcpClient.execLong("lrem", key, String.valueOf(count), value);
+	}
+
 	public String rpop(String key) throws IOException {
 		return tcpClient.execBulk("rpop", key);
 	}
@@ -73,8 +77,8 @@ public final class RedisClient implements AutoCloseable {
 	//-----------------------------/list---------------------------------------
 	//------------------------------hash---------------------------------------
 	//-------------------------------------------------------------------------
-	// HDEL, HEXISTS, HGET, HGETALL, HINCRBY, HINCRBYFLOAT, HKEYS, HLEN
-	// HMGET HMSET, HSCAN, HSET, HSETNX HVALS
+	// HDEL, HEXISTS, HGET, HGETALL, HINCRBY, -HINCRBYFLOAT, HKEYS, HLEN
+	// -HMGET -HMSET, -HSCAN, HSET, HSETNX,  HVALS
 	//-------------------------------------------------------------------------
 	public long hdel(String key, String... fields) throws IOException {
 		return tcpClient.execLong("hdel", args(key, fields));

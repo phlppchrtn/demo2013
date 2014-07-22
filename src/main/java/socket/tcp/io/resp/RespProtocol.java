@@ -18,7 +18,7 @@ final class RespProtocol {
 	//
 	//	}
 
-	private static void write(OutputStream out, String command, String args[]) throws IOException {
+	private static void writeCommand(OutputStream out, String command, String args[]) throws IOException {
 		//--- *Nb d'infos
 		write(out, "*");
 		write(out, String.valueOf(args.length + 1));
@@ -88,7 +88,7 @@ final class RespProtocol {
 
 	static void push(BufferedOutputStream out, String command, String[] args) throws IOException {
 		//System.out.println("exec command :" + command.getName());
-		RespProtocol.write(out, command, args);
+		writeCommand(out, command, args);
 		out.flush();
 	}
 
@@ -96,13 +96,18 @@ final class RespProtocol {
 		String response = in.readLine();
 		//System.out.println(expected + ":" + response);
 		//---
-		if ("*-1".equals(response)) {
+		char start = response.charAt(0);
+		if (start == '+') {
+			return new RuntimeException(response);
+		}
+		//Hack pour gérer un mauvais retour de brpoplpush
+		if (start == '*' && "*-1".equals(response)) {
 			return null;
 		}
 		//----
 		Assertion.checkArgument('?' == expected || expected == response.charAt(0), "exepected {0}, find {1}", expected, response.charAt(0));
 		//----
-		switch (response.charAt(0)) {
+		switch (start) {
 			case ':': //number
 				return Long.valueOf(response.substring(1));
 			case '+': //string
@@ -123,7 +128,7 @@ final class RespProtocol {
 				}
 				return list;
 			default:
-				throw new IllegalArgumentException(response);
+				throw new IllegalArgumentException("According resp protocol, a response must starts with - + : $ or *");
 		}
 
 	}

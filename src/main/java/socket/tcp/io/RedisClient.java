@@ -21,7 +21,7 @@ public final class RedisClient implements AutoCloseable {
 	//------------------------------list---------------------------------------
 	//-------------------------------------------------------------------------
 	//	BLPOP, BRPOP, BRPOPLPUSH, LINDEX, -LINSERT, LLEN, LPOP
-	//	LPUSH, LPUSHX, -LRANGE, LREM, -LSET, -LTRIM, RPOP, -RPOPLPUSH, RPUSH, RPUSHX
+	//	LPUSH, LPUSHX, LRANGE, LREM, -LSET, -LTRIM, RPOP, -RPOPLPUSH, RPUSH, RPUSHX
 	//-------------------------------------------------------------------------
 	public List<String> blpop(long timeout, String... keys) throws IOException {
 		String[] args = args(timeout, keys);

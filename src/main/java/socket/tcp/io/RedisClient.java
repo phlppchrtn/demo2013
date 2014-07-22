@@ -112,7 +112,10 @@ public final class RedisClient implements AutoCloseable {
 	public boolean hset(String key, String field, String value) throws IOException {
 		return tcpClient.execLong("hset", key, field, value) == 1;
 	}
-
+	
+	public boolean hsetnx(String key, String field, String value) throws IOException {
+		return tcpClient.execLong("hsetnx", key, field, value) == 1;
+	}
 	public void hmset(String key, Map<String, String> map) throws IOException {
 		String[] args = args(key, map);
 		tcpClient.execString("hmset", args);

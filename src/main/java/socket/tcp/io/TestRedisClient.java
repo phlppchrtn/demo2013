@@ -12,11 +12,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 public final class TestRedisClient {
-	//private final String host = "pub-redis-15190.us-east-1-3.4.ec2.garantiadata.com";
-	private final String host = "kasper-redis";
+	private final String host = "pub-redis-15190.us-east-1-3.4.ec2.garantiadata.com";
+	//private final String host = "kasper-redis";
 	//private final String host = "localhost";
-	private static final int port = 6379;
-	//private final int port = 15190;
+	//private static final int port = 6379;
+	private final int port = 15190;
 
 	//	private final TcpClient tcpClient = new TcpClient("localhost", 6379);
 
@@ -28,7 +28,7 @@ public final class TestRedisClient {
 	@Before
 	public void before() throws IOException {
 		redis = new RedisClient(host, port);
-		//redis.auth("kleegroup");
+		redis.auth("kleegroup");
 		redis.flushAll();
 	}
 
@@ -151,10 +151,12 @@ public final class TestRedisClient {
 		Assert.assertEquals(5, redis.hincrBy("user/1", "hit", 5));
 		Assert.assertEquals(20, redis.hincrBy("user/1", "hit", 15));
 		//--
-		Assert.assertTrue(redis.hset("user/2", "firstname", "john"));
+		Assert.assertTrue(redis.hsetnx("user/2", "firstname", "john"));
 		Assert.assertTrue(redis.hset("user/2", "lastname", "ford"));
 		Assert.assertFalse(redis.hset("user/2", "lastname", "ford"));
 		Assert.assertFalse(redis.hset("user/2", "lastname", "william"));
+		Assert.assertFalse(redis.hsetnx("user/2", "firstname", "henry")); //not modified
+		Assert.assertEquals("john", redis.hget("user/2", "firstname")); 
 
 		Map<String, String> user2 = redis.hgetAll("user/2");
 		Assert.assertEquals(2, user2.size());

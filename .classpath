@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="misc/|rest/|kasper/|kasperimpl/|kraft/|redis/|socket/ssh/|trash/|vertigo/" kind="src" path="src/main/java"/>
+	<classpathentry excluding="misc/|rest/|kasper/|kasperimpl/|kraft/|redis/|socket/ssh/|trash/|vertigo/|reflections/" kind="src" path="src/main/java"/>
 	<classpathentry kind="lib" path="lib/sshd-core-0.9.0.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-jdk14-1.6.4.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
@@ -34,5 +34,15 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="/kasper-demo2/src/main/webapp/WEB-INF/lib/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="C:/Users/pchretien/.m2/repository/redis/clients/jedis/2.4.2/jedis-2.4.2.jar" sourcepath="C:/Users/pchretien/.m2/repository/redis/clients/jedis/2.4.2/jedis-2.4.2-sources.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="redis.clients"/>
+			<attribute name="maven.artifactId" value="jedis"/>
+			<attribute name="maven.version" value="2.4.2"/>
+			<attribute name="maven.scope" value="compile"/>
+			<attribute name="maven.optionaldependency" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

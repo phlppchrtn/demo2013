@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -12,7 +13,8 @@ import org.junit.Test;
 
 public final class TestRedisClient {
 	//private final String host = "pub-redis-15190.us-east-1-3.4.ec2.garantiadata.com";
-	private final String host = "localhost";
+	private final String host = "kasper-redis";
+	//private final String host = "localhost";
 	private static final int port = 6379;
 	//private final int port = 15190;
 
@@ -27,11 +29,11 @@ public final class TestRedisClient {
 	public void before() throws IOException {
 		redis = new RedisClient(host, port);
 		//redis.auth("kleegroup");
-		redis.flushall();
+		redis.flushAll();
 	}
 
 	@After
-	public void after() {
+	public void after() throws IOException {
 		redis.close();
 	}
 
@@ -124,7 +126,7 @@ public final class TestRedisClient {
 		Assert.assertEquals("germany", list.get(1));
 
 		//----test :lindex
-		redis.flushall();
+		redis.flushAll();
 		redis.lpush("europe", "germany");
 		redis.lpush("europe", "france");
 		redis.lpush("europe", "italy");
@@ -135,24 +137,40 @@ public final class TestRedisClient {
 	public void testHash() throws Exception {
 		Assert.assertEquals(0, redis.hlen("user/1"));
 		Map<String, String> map = new HashMap<>();
-		map.put("first name", "john");
-		map.put("last name", "doe");
+		map.put("firstname", "john");
+		map.put("lastname", "doe");
 		redis.hmset("user/1", map);
 		Assert.assertEquals(2, redis.hlen("user/1"));
-		Assert.assertEquals("john", redis.hget("user/1", "first name"));
-		Assert.assertTrue(redis.hexists("user/1", "first name"));
+		Assert.assertEquals("john", redis.hget("user/1", "firstname"));
+		Assert.assertTrue(redis.hexists("user/1", "firstname"));
 		Assert.assertFalse(redis.hexists("user/1", "weight"));
 		Assert.assertEquals(2, redis.hlen("user/1"));
-		Assert.assertEquals(2, redis.hdel("user/1", "first name", "last name"));
+		Assert.assertEquals(2, redis.hdel("user/1", "firstname", "lastname"));
 		Assert.assertEquals(0, redis.hlen("user/1"));
 		//-
 		Assert.assertEquals(5, redis.hincrBy("user/1", "hit", 5));
 		Assert.assertEquals(20, redis.hincrBy("user/1", "hit", 15));
 		//--
-		Assert.assertTrue(redis.hset("user/2", "first name", "john"));
+		Assert.assertTrue(redis.hset("user/2", "firstname", "john"));
 		Assert.assertTrue(redis.hset("user/2", "lastname", "ford"));
 		Assert.assertFalse(redis.hset("user/2", "lastname", "ford"));
 		Assert.assertFalse(redis.hset("user/2", "lastname", "william"));
+
+		Map<String, String> user2 = redis.hgetAll("user/2");
+		Assert.assertEquals(2, user2.size());
+		Assert.assertEquals("william", user2.get("lastname"));
+		Assert.assertEquals("john", user2.get("firstname"));
+
+		Set<String> keys = redis.hkeys("user/2");
+		Assert.assertEquals(2, keys.size());
+		Assert.assertTrue(keys.contains("lastname"));
+		Assert.assertTrue(keys.contains("firstname"));
+
+		List<String> values = redis.hvals("user/2");
+		Assert.assertEquals(2, values.size());
+		Assert.assertTrue(values.contains("william"));
+		Assert.assertTrue(values.contains("john"));
+
 	}
 
 	@Test

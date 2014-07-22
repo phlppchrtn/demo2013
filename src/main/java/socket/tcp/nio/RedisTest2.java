@@ -6,8 +6,8 @@ import socket.tcp.AbstractRedisTest;
 import socket.tcp.protocol.ReqResp;
 
 public final class RedisTest2 extends AbstractRedisTest {
-	//private static final String HOST = "kasper-redis";
-	private final String host = "localhost";
+	private static final String host = "kasper-redis";
+	//private final String host = "localhost";
 	//private static final int PORT = 6379;
 	private final int port = 6379;
 

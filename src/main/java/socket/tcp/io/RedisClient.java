@@ -1,9 +1,12 @@
 package socket.tcp.io;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import socket.tcp.io.resp.RespClient;
 
@@ -20,126 +23,164 @@ public final class RedisClient implements AutoCloseable {
 	//	BLPOP, BRPOP, BRPOPLPUSH, LINDEX, LINSERT, LLEN, LPOP
 	//	LPUSH, LPUSHX, LRANGE, LREM, LSET LTRIM, RPOP, RPOPLPUSH, RPUSH, RPUSHX
 	//-------------------------------------------------------------------------
-	List<String> blpop(long timeout, String... keys) throws IOException {
+	public List<String> blpop(long timeout, String... keys) throws IOException {
 		String[] args = args(timeout, keys);
 		return tcpClient.execArray("blpop", args);
 	}
 
-	List<String> brpop(long timeout, String... keys) throws IOException {
+	public List<String> brpop(long timeout, String... keys) throws IOException {
 		String[] args = args(timeout, keys);
 		return tcpClient.execArray("brpop", args);
 	}
 
-	String brpoplpush(String source, String destination, long timeout) throws IOException {
-		return tcpClient.execBulk("brpoplpush", args(source, destination, String.valueOf(timeout)));
+	public String brpoplpush(String source, String destination, long timeout) throws IOException {
+		return tcpClient.execBulk("brpoplpush", source, destination, String.valueOf(timeout));
 	}
 
-	String lindex(String key, int index) throws IOException {
+	public String lindex(String key, int index) throws IOException {
 		return tcpClient.execBulk("lindex", key, String.valueOf(index));
 	}
 
-	long llen(String key) throws IOException {
+	public long llen(String key) throws IOException {
 		return tcpClient.execLong("llen", key);
 	}
 
-	String lpop(String key) throws IOException {
+	public String lpop(String key) throws IOException {
 		return tcpClient.execBulk("lpop", key);
 	}
 
-	long lpush(String key, String value) throws IOException {
+	public long lpush(String key, String value) throws IOException {
 		return tcpClient.execLong("lpush", key, value);
 	}
 
-	long lpushx(String key, String value) throws IOException {
+	public long lpushx(String key, String value) throws IOException {
 		return tcpClient.execLong("lpushx", key, value);
 	}
 
-	String rpop(String key) throws IOException {
+	public String rpop(String key) throws IOException {
 		return tcpClient.execBulk("rpop", key);
 	}
 
-	long rpush(String key, String value) throws IOException {
+	public long rpush(String key, String value) throws IOException {
 		return tcpClient.execLong("rpush", key, value);
 	}
 
-	long rpushx(String key, String value) throws IOException {
+	public long rpushx(String key, String value) throws IOException {
 		return tcpClient.execLong("rpushx", key, value);
 	}
 
 	//-------------------------------------------------------------------------
 	//-----------------------------/list---------------------------------------
+	//------------------------------hash---------------------------------------
+	//-------------------------------------------------------------------------
+	// HDEL, HEXISTS, HGET, HGETALL, HINCRBY, HINCRBYFLOAT, HKEYS, HLEN
+	// HMGET HMSET, HSCAN, HSET, HSETNX HVALS
+	//-------------------------------------------------------------------------
+	public long hdel(String key, String... fields) throws IOException {
+		return tcpClient.execLong("hdel", args(key, fields));
+	}
+
+	public boolean hexists(String key, String field) throws IOException {
+		return tcpClient.execLong("hexists", key, field) == 1;
+	}
+
+	public String hget(String key, String field) throws IOException {
+		return tcpClient.execBulk("hget", key, field);
+	}
+
+	public Map<String, String> hgetAll(String key) throws IOException {
+		List<String> values = tcpClient.execArray("hgetall", key);
+		Map<String, String> map = new HashMap<>();
+		for (int i = 0; i < (values.size() / 2); i++) {
+			map.put(values.get(2 * i), values.get(2 * i + 1));
+		}
+		return map;
+	}
+
+	public long hincrBy(String key, String field, long increment) throws IOException {
+		return tcpClient.execLong("hincrby", key, field, String.valueOf(increment));
+	}
+
+	public Set<String> hkeys(String key) throws IOException {
+		return new HashSet<>(tcpClient.execArray("hkeys", key));
+	}
+
+	public long hlen(String key) throws IOException {
+		return tcpClient.execLong("hlen", key);
+	}
+
+	public boolean hset(String key, String field, String value) throws IOException {
+		return tcpClient.execLong("hset", key, field, value) == 1;
+	}
+
+	public void hmset(String key, Map<String, String> map) throws IOException {
+		String[] args = args(key, map);
+		tcpClient.execString("hmset", args);
+	}
+
+	public List<String> hvals(String key) throws IOException {
+		return tcpClient.execArray("hvals", key);
+	}
+
+	//-------------------------------------------------------------------------
+	//-----------------------------/hash---------------------------------------
 	//-------------------------------------------------------------------------
 
-	long append(String key, String value) throws IOException {
+	public long append(String key, String value) throws IOException {
 		return tcpClient.execLong("append", key, value);
 	}
 
-	String get(String key) throws IOException {
+	public String get(String key) throws IOException {
 		return tcpClient.execBulk("get", key);
 	}
 
-	String set(String key, String value) throws IOException {
+	public String set(String key, String value) throws IOException {
 		return tcpClient.execString("set", key, value);
 	}
 
-	boolean exists(String key) throws IOException {
+	public boolean exists(String key) throws IOException {
 		return tcpClient.execLong("exists", key) == 1;
 	}
 
-	boolean expire(String key, long seconds) throws IOException {
+	public boolean expire(String key, long seconds) throws IOException {
 		return tcpClient.execLong("expire", key, String.valueOf(seconds)) == 1;
 	}
 
-	long del(String... keys) throws IOException {
+	public long del(String... keys) throws IOException {
 		return tcpClient.execLong("del", keys);
 	}
 
-	void flushall() throws IOException {
+	public void flushAll() throws IOException {
 		tcpClient.execString("flushall");
 	}
 
-	String ping() throws IOException {
+	public String ping() throws IOException {
 		return tcpClient.execString("ping");
 	}
 
-	String echo(String message) throws IOException {
+	public String echo(String message) throws IOException {
 		return tcpClient.execBulk("echo", message);
 	}
 
-	//	Set<String> keys(String pattern) throws IOException {
-	//		return ;
-	//	}
-
-	String auth(String password) throws IOException {
+	public String auth(String password) throws IOException {
 		return tcpClient.execString("auth", password);
 	}
 
-	public void close() {
+	public long sadd(String key, String... members) throws IOException {
+		return tcpClient.execLong("sadd", args(key, members));
+	}
+
+	public String spop(String key) throws IOException {
+		return tcpClient.execBulk("pop", key);
+	}
+
+	public void close() throws IOException {
 		tcpClient.close();
 	}
 
 	//------------------
-	boolean hexists(String key, String field) throws IOException {
-		return tcpClient.execLong("hexists", key, field) == 1;
-	}
 
-	String hget(String key, String field) throws IOException {
-		return tcpClient.execBulk("hget", key, field);
-	}
-
-	long hdel(String key, String... fields) throws IOException {
-		return tcpClient.execLong("hdel", args(key, fields));
-	}
-
-	long hlen(String key) throws IOException {
-		return tcpClient.execLong("hlen", key);
-	}
-
-	boolean hset(String key, String field, String value) throws IOException {
-		return tcpClient.execLong("hset", key, field, value) == 1;
-	}
-
-	void hmset(String key, Map<String, String> map) throws IOException {
+	private static String[] args(String key, Map<String, String> map) {
 		String[] args = new String[map.size() * 2 + 1];
 		int i = 0;
 		args[i++] = key;
@@ -147,12 +188,7 @@ public final class RedisClient implements AutoCloseable {
 			args[i++] = entry.getKey();
 			args[i++] = entry.getValue();
 		}
-		//System.out.println("args>"+ Arrays.asList(args));
-		tcpClient.execString("hmset", args);
-	}
-
-	long hincrBy(String key, String field, long increment) throws IOException {
-		return tcpClient.execLong("hincrby", key, field, String.valueOf(increment));
+		return args;
 	}
 
 	private static String[] args(String key, String... values) {
@@ -164,7 +200,7 @@ public final class RedisClient implements AutoCloseable {
 		return args;
 	}
 
-	private String[] args(long timeout, String... keys) {
+	private static String[] args(long timeout, String... keys) {
 		String[] args = new String[keys.length + 1];
 		for (int i = 0; i < keys.length; i++) {
 			args[i] = keys[i];
@@ -174,11 +210,5 @@ public final class RedisClient implements AutoCloseable {
 	}
 
 	//--------------------------------------------------------
-	long sadd(String key, String... members) throws IOException {
-		return tcpClient.execLong("sadd", args(key, members));
-	}
 
-	String spop(String key) throws IOException {
-		return tcpClient.execBulk("pop", key);
-	}
 }

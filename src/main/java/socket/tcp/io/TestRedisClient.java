@@ -139,6 +139,28 @@ public final class TestRedisClient {
 		Assert.assertEquals(5, redis.lpush("mylist", "hello"));
 		Assert.assertEquals(2, redis.lrem("mylist", -2, "hello"));
 		Assert.assertEquals("foo", redis.rpop("mylist"));
+		//---
+		redis.flushAll();
+		Assert.assertEquals(1, redis.rpush("mylist", "one"));
+		Assert.assertEquals(2, redis.rpush("mylist", "two"));
+		Assert.assertEquals(3, redis.rpush("mylist", "three"));
+		Assert.assertEquals(4, redis.rpush("mylist", "four"));
+		List<String> range;
+		range = redis.lrange("mylist", 0, 0);
+		Assert.assertEquals(1, range.size());
+		Assert.assertEquals("one", range.get(0));
+		//--
+		range = redis.lrange("mylist", -4, 2);
+		Assert.assertEquals(3, range.size());
+		Assert.assertEquals("one", range.get(0));
+		Assert.assertEquals("two", range.get(1));
+		Assert.assertEquals("three", range.get(2));
+		//--
+		range = redis.lrange("mylist", -100, 100);
+		Assert.assertEquals(4, range.size());
+		//--
+		range = redis.lrange("mylist", 5, 10);
+		Assert.assertEquals(0, range.size());
 	}
 
 	@Test

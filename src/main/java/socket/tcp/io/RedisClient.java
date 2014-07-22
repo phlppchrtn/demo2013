@@ -57,6 +57,10 @@ public final class RedisClient implements AutoCloseable {
 		return tcpClient.execLong("lpushx", key, value);
 	}
 
+	public List<String> lrange(String key, long start, long stop) throws IOException {
+		return tcpClient.execArray("lrange", key, String.valueOf(start), String.valueOf(stop));
+	}
+
 	public long lrem(String key, long count, String value) throws IOException {
 		return tcpClient.execLong("lrem", key, String.valueOf(count), value);
 	}

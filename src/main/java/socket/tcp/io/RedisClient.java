@@ -184,7 +184,10 @@ public final class RedisClient implements AutoCloseable {
 	public String spop(String key) throws IOException {
 		return tcpClient.execBulk("pop", key);
 	}
-
+	public Object eval(String script) throws IOException {
+		return tcpClient.execEval("eval", script, String.valueOf(0));
+	}
+	
 	public void close() throws IOException {
 		tcpClient.close();
 	}

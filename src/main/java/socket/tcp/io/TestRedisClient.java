@@ -204,6 +204,15 @@ public final class TestRedisClient {
 		Assert.assertTrue(values.contains("john"));
 
 	}
+	@Test
+	public void testScripting() throws Exception {
+		redis.flushAll();
+		Assert.assertEquals("OK", redis.eval("return redis.call('set','foo','bar')"));
+		Assert.assertEquals("bar", redis.get("foo"));
+		long res = (Long)redis.eval("for i=1, 10, 1 do redis.call('lpush','mylist','bar'..i) end return redis.call('llen', 'mylist')");
+		Assert.assertEquals(10, res);
+		Assert.assertEquals(10, redis.llen("mylist"));
+	}
 
 	@Test
 	public void testConnection() throws Exception {

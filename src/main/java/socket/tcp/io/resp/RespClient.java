@@ -52,7 +52,9 @@ public final class RespClient implements AutoCloseable {
 			socket.close();
 		}
 	}
-
+	public Object execEval(String command, String... args) throws IOException {
+		return  RespProtocol.pushPull(RespProtocol.RespType.RESP_EVAL, in, out, command, args);
+	}
 	public List<String> execArray(String command, String... args) throws IOException {
 		return (List<String>) RespProtocol.pushPull(RespProtocol.RespType.RESP_ARRAY, in, out, command, args);
 	}

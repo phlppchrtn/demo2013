@@ -11,7 +11,7 @@ import java.util.List;
 
 final class RespProtocol {
 	static enum RespType {
-		RESP_STRING('+'), RESP_ARRAY('*'), RESP_BULK('$'), RESP_INTEGER(':');
+		RESP_STRING('+'), RESP_ARRAY('*'), RESP_BULK('$'), RESP_INTEGER(':'), RESP_EVAL('?');
 		private final char c;
 
 		private RespType(char c) {

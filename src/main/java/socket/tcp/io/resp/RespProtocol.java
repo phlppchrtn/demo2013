@@ -9,7 +9,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-final class RespProtocol {
+public final class RespProtocol {
 	static enum RespType {
 		RESP_STRING('+'), RESP_ARRAY('*'), RESP_BULK('$'), RESP_INTEGER(':'), RESP_EVAL('?');
 		private final char c;
@@ -26,15 +26,11 @@ final class RespProtocol {
 	private static final String CHARSET = "UTF-8";
 	private static final String LN = "\r\n";
 
-	//	static void encode(VCommand command, OutputStream out) throws IOException {
-	//
-	//	}
-
 	private static void writeCommand(OutputStream out, String command, String args[]) throws IOException {
 		//--- *Nb d'infos
-		write(out, "*");
-		write(out, String.valueOf(args.length + 1));
-		write(out, LN);
+		out.write("*".getBytes(CHARSET));
+		out.write(String.valueOf(args.length + 1).getBytes(CHARSET));
+		out.write(LN.getBytes(CHARSET));
 		//--- cas du nom de la commande
 		writeBulkString(out, command);
 		//--- cas des args 
@@ -43,59 +39,56 @@ final class RespProtocol {
 		}
 	}
 
-	//
-	//	static VCommand decode(BufferedReader input) throws IOException {
-	//		String line = input.readLine();
-	//		if (line == null) {
-	//			return null;
-	//		}
-	//		//		System.out.println("sub: " + line.substring(1));
-	//		if (!line.startsWith("*")) {
-	//			throw new RuntimeException("protocol must begin with *");
-	//		}
-	//		final int n = Integer.valueOf(line.substring(1));
-	//		if (n < 1) {
-	//			throw new RuntimeException("protocol must contains at least one line");
-	//		}
-	//
-	//		String commandName = null;
-	//		String[] args = new String[n - 1];
-	//		for (int i = 0; i < n; i++) {
-	//			line = input.readLine();
-	//			//	System.out.println("line('" + i + "') : " + line);
-	//			if (!line.startsWith("$")) {
-	//				throw new RuntimeException("protocol must contains lines with $");
-	//			}
-	//			//n = Integer.valueOf(line.substring(1)); 
-	//			//On n'exploite pas cette info
-	//			line = input.readLine();
-	//			if (i == 0) {
-	//				commandName = line;
-	//				//	System.out.println("name  : " + line);
-	//			} else {
-	//				args[i - 1] = line;
-	//			}
-	//		}
-	//		return new VCommand(commandName, args);
-	//	}
+	static RespCommand readCommand(BufferedReader input) throws IOException {
+		String line = input.readLine();
+		if (line == null) {
+			return null;
+		}
+		//		System.out.println("sub: " + line.substring(1));
+		if (!line.startsWith("*")) {
+			throw new RuntimeException("protocol must begin with *");
+		}
+		final int n = Integer.valueOf(line.substring(1));
+		if (n < 1) {
+			throw new RuntimeException("protocol must contains at least one line");
+		}
 
-	private static void write(OutputStream out, byte[] bytes) throws IOException {
-		out.write(bytes);
+		String commandName = null;
+		String[] args = new String[n - 1];
+		for (int i = 0; i < n; i++) {
+			line = input.readLine();
+			//	System.out.println("line('" + i + "') : " + line);
+			if (!line.startsWith("$")) {
+				throw new RuntimeException("protocol must contains lines with $");
+			}
+			//n = Integer.valueOf(line.substring(1)); 
+			//On n'exploite pas cette info
+			line = input.readLine();
+			if (i == 0) {
+				commandName = line;
+				//	System.out.println("name  : " + line);
+			} else {
+				args[i - 1] = line;
+			}
+		}
+		return new RespCommand(commandName, args);
 	}
 
-	private static void write(OutputStream out, String s) throws IOException {
-		write(out, s.getBytes(CHARSET));
+	public static void writeSimpleString(OutputStream out, String value) throws IOException {
+		out.write("+".getBytes(CHARSET));
+		out.write(value.getBytes(CHARSET));
+		out.write(LN.getBytes(CHARSET));
 	}
 
-	private static void writeBulkString(OutputStream out, String bulk) throws IOException {
+	public static void writeBulkString(OutputStream out, String bulk) throws IOException {
 		//System.out.println("bulk:" + bulk);
 		//--- cas du nom de la commande
 		byte[] bytes = bulk.getBytes(CHARSET);
-		write(out, "$");
-		write(out, String.valueOf(bytes.length));
-		write(out, LN);
-		write(out, bytes);
-		write(out, LN);
+		out.write("$".getBytes(CHARSET));
+		out.write(String.valueOf(bytes.length).getBytes(CHARSET));
+		out.write(LN.getBytes(CHARSET));
+		out.write(bytes);
+		out.write(LN.getBytes(CHARSET));
 	}
 
 	/**
@@ -159,4 +152,5 @@ final class RespProtocol {
 		}
 
 	}
+
 }

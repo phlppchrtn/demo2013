@@ -12,11 +12,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 public final class TestRedisClient {
-	private final String host = "pub-redis-15190.us-east-1-3.4.ec2.garantiadata.com";
+	//private final String host = "pub-redis-15190.us-east-1-3.4.ec2.garantiadata.com";
 	//private final String host = "kasper-redis";
-	//private final String host = "localhost";
-	//private static final int port = 6379;
-	private final int port = 15190;
+	private final String host = "localhost";
+	private static final int port = 6379;
+	//private final int port = 15190;
 
 	//	private final TcpClient tcpClient = new TcpClient("localhost", 6379);
 
@@ -28,7 +28,7 @@ public final class TestRedisClient {
 	@Before
 	public void before() throws IOException {
 		redis = new RedisClient(host, port);
-		redis.auth("kleegroup");
+		//redis.auth("kleegroup");
 		redis.flushAll();
 	}
 
@@ -186,7 +186,7 @@ public final class TestRedisClient {
 		Assert.assertFalse(redis.hset("user/2", "lastname", "ford"));
 		Assert.assertFalse(redis.hset("user/2", "lastname", "william"));
 		Assert.assertFalse(redis.hsetnx("user/2", "firstname", "henry")); //not modified
-		Assert.assertEquals("john", redis.hget("user/2", "firstname")); 
+		Assert.assertEquals("john", redis.hget("user/2", "firstname"));
 
 		Map<String, String> user2 = redis.hgetAll("user/2");
 		Assert.assertEquals(2, user2.size());
@@ -204,12 +204,13 @@ public final class TestRedisClient {
 		Assert.assertTrue(values.contains("john"));
 
 	}
+
 	@Test
 	public void testScripting() throws Exception {
 		redis.flushAll();
 		Assert.assertEquals("OK", redis.eval("return redis.call('set','foo','bar')"));
 		Assert.assertEquals("bar", redis.get("foo"));
-		long res = (Long)redis.eval("for i=1, 10, 1 do redis.call('lpush','mylist','bar'..i) end return redis.call('llen', 'mylist')");
+		long res = (Long) redis.eval("for i=1, 10, 1 do redis.call('lpush','mylist','bar'..i) end return redis.call('llen', 'mylist')");
 		Assert.assertEquals(10, res);
 		Assert.assertEquals(10, redis.llen("mylist"));
 	}

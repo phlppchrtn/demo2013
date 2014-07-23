@@ -8,8 +8,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import socket.tcp.io.resp.RespProtocol;
+import socket.tcp.io.resp.VCommandHandler;
 import socket.tcp.protocol.VCommand;
-import socket.tcp.protocol.VCommandHandler;
 
 public final class TcpServer implements Runnable {
 	private final int port;

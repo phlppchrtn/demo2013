@@ -2,8 +2,8 @@ package socket.tcp.io;
 
 import socket.tcp.AbstractTcpMain;
 import socket.tcp.io.resp.RespClient;
+import socket.tcp.io.resp.VCommandHandler;
 import socket.tcp.protocol.ReqResp;
-import socket.tcp.protocol.VCommandHandler;
 
 public final class TestTcpMain extends AbstractTcpMain {
 	public static void main(String[] args) throws InterruptedException {

@@ -2,9 +2,9 @@ package socket.tcp;
 
 import java.io.IOException;
 
+import socket.tcp.io.resp.VCommandHandler;
 import socket.tcp.protocol.ReqResp;
 import socket.tcp.protocol.VCommand;
-import socket.tcp.protocol.VCommandHandler;
 
 public abstract class AbstractRedisTest {
 	private final VCommandHandler commandHandler = new RedisCommandHandler();

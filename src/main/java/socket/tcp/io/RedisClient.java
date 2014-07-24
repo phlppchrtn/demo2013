@@ -79,6 +79,19 @@ public final class RedisClient implements AutoCloseable {
 
 	//-------------------------------------------------------------------------
 	//-----------------------------/list---------------------------------------
+	//------------------------------hyperLogLog--------------------------------
+	//-------------------------------------------------------------------------
+	// PFADD, PFCOUNT, PFMERGE
+	//-------------------------------------------------------------------------
+	public long pfadd(String key, String... elements) throws IOException{
+		return tcpClient.execLong("pfadd", args(key, elements));
+	}
+	
+	public long pfcount(String... keys) throws IOException{
+		return tcpClient.execLong("pfcount", keys);
+	}
+	//-------------------------------------------------------------------------
+	//-----------------------------/hyperLogLog--------------------------------
 	//------------------------------hash---------------------------------------
 	//-------------------------------------------------------------------------
 	// HDEL, HEXISTS, HGET, HGETALL, HINCRBY, -HINCRBYFLOAT, HKEYS, HLEN

@@ -12,11 +12,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 public final class TestRedisClient {
-	//private final String host = "pub-redis-15190.us-east-1-3.4.ec2.garantiadata.com";
+	private final String host = "pub-redis-15190.us-east-1-3.4.ec2.garantiadata.com";
 	//private final String host = "kasper-redis";
-	private final String host = "localhost";
-	private static final int port = 6379;
-	//private final int port = 15190;
+	//private final String host = "localhost";
+	//private static final int port = 6379;
+	private final int port = 15190;
 
 	//	private final TcpClient tcpClient = new TcpClient("localhost", 6379);
 
@@ -28,7 +28,7 @@ public final class TestRedisClient {
 	@Before
 	public void before() throws IOException {
 		redis = new RedisClient(host, port);
-		//redis.auth("kleegroup");
+		redis.auth("kleegroup");
 		redis.flushAll();
 	}
 
@@ -162,7 +162,21 @@ public final class TestRedisClient {
 		range = redis.lrange("mylist", 5, 10);
 		Assert.assertEquals(0, range.size());
 	}
-
+	
+	@Test
+	public void testHyperLogLog() throws Exception {
+		redis.pfadd("hll",  "foo" , "bar", "zap");
+		redis.pfadd("hll", "zap",  "zap",  "zap");
+		redis.pfadd("hll", "foo",  "bar");
+		Assert.assertEquals(3, redis.pfcount("hll")); 
+		redis.pfadd("some-other-hll", "1",  "2", "3");
+		Assert.assertEquals(6, redis.pfcount("hll", "some-other-hll")); 
+		//---
+		Assert.assertEquals(0, redis.hlen("words"));
+		redis.pfadd("words", "Longtemps, je me suis couché de bonne heure. Parfois, à peine ma bougie éteinte, mes yeux se fermaient si vite que je n’avais pas le temps de me dire".split(" "));
+		Assert.assertEquals(26, redis.pfcount("words")); 
+	}
+	
 	@Test
 	public void testHash() throws Exception {
 		Assert.assertEquals(0, redis.hlen("user/1"));

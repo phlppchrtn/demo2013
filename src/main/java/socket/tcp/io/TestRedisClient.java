@@ -175,6 +175,11 @@ public final class TestRedisClient {
 		Assert.assertEquals(0, redis.hlen("words"));
 		redis.pfadd("words", "Longtemps, je me suis couché de bonne heure. Parfois, à peine ma bougie éteinte, mes yeux se fermaient si vite que je n’avais pas le temps de me dire".split(" "));
 		Assert.assertEquals(26, redis.pfcount("words")); 
+		//---
+		redis.pfadd("hll1",  "foo" , "bar", "zap", "a");
+		redis.pfadd("hll2",  "a" , "b", "c", "foo");
+		redis.pfmerge("hll3",  "hll1" , "hll2");
+		Assert.assertEquals(6, redis.pfcount("hll3")); 
 	}
 	
 	@Test

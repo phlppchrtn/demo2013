@@ -90,6 +90,11 @@ public final class RedisClient implements AutoCloseable {
 	public long pfcount(String... keys) throws IOException{
 		return tcpClient.execLong("pfcount", keys);
 	}
+
+	public void  pfmerge(String destkey, String... sourcekeys) throws IOException{
+		tcpClient.execString("pfmerge", args(destkey, sourcekeys));
+	}
+	
 	//-------------------------------------------------------------------------
 	//-----------------------------/hyperLogLog--------------------------------
 	//------------------------------hash---------------------------------------

@@ -12,11 +12,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 public final class TestRedisClient {
-	private final String host = "pub-redis-15190.us-east-1-3.4.ec2.garantiadata.com";
+	//private final String host = "pub-redis-15190.us-east-1-3.4.ec2.garantiadata.com";
 	//private final String host = "kasper-redis";
-	//private final String host = "localhost";
-	//private static final int port = 6379;
-	private final int port = 15190;
+	private final String host = "localhost";
+	private static final int port = 6380;
+	//private final int port = 15190;
 
 	//	private final TcpClient tcpClient = new TcpClient("localhost", 6379);
 
@@ -24,11 +24,13 @@ public final class TestRedisClient {
 	//		new TestRedisClient().test();
 	//	}
 	private RedisClient redis;
+	private static RedisServer redisServer;
 
 	@Before
 	public void before() throws IOException {
+		if (redisServer ==null) redisServer = new RedisServer(port);
 		redis = new RedisClient(host, port);
-		redis.auth("kleegroup");
+		//redis.auth("kleegroup");
 		redis.flushAll();
 	}
 

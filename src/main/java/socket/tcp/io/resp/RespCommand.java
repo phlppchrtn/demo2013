@@ -11,6 +11,11 @@ public final class RespCommand {
 		if (args == null) {
 			throw new NullPointerException("args is required, may be empty");
 		}
+		for (String item : args){
+			if (item== null) {
+				throw new NullPointerException("arg can not be null");
+			}
+		}
 		//-------------------------------------------------
 		this.name = name;
 		this.args = args;

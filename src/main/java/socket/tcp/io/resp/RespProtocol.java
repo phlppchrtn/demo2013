@@ -74,6 +74,18 @@ public final class RespProtocol {
 		return new RespCommand(commandName, args);
 	}
 
+	public static void writeLong(OutputStream out, Long value) throws IOException {
+		out.write(":".getBytes(CHARSET));
+		out.write(String.valueOf(value).getBytes(CHARSET));
+		out.write(LN.getBytes(CHARSET));
+	}
+
+	public static void writeError(OutputStream out, String msg) throws IOException {
+		out.write("-".getBytes(CHARSET));
+		out.write(msg.getBytes(CHARSET));
+		out.write(LN.getBytes(CHARSET));
+	}
+
 	public static void writeSimpleString(OutputStream out, String value) throws IOException {
 		out.write("+".getBytes(CHARSET));
 		out.write(value.getBytes(CHARSET));
@@ -83,6 +95,12 @@ public final class RespProtocol {
 	public static void writeBulkString(OutputStream out, String bulk) throws IOException {
 		//System.out.println("bulk:" + bulk);
 		//--- cas du nom de la commande
+		if (bulk==null){
+			out.write("$-1".getBytes(CHARSET));
+			out.write(LN.getBytes(CHARSET));
+			return;
+		}	
+
 		byte[] bytes = bulk.getBytes(CHARSET);
 		out.write("$".getBytes(CHARSET));
 		out.write(String.valueOf(bytes.length).getBytes(CHARSET));

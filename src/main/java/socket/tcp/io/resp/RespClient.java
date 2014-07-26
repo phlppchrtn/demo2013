@@ -40,7 +40,15 @@ public final class RespClient implements AutoCloseable {
 		}
 	}
 
-	public void close() throws IOException {
+	public void close() {
+		try {
+			doClose();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	private void doClose() throws IOException {
 		try {
 			try {
 				out.close();
@@ -52,22 +60,22 @@ public final class RespClient implements AutoCloseable {
 			socket.close();
 		}
 	}
-	public Object execEval(String command, String... args) throws IOException {
+	public Object execEval(String command, String... args) {
 		return  RespProtocol.pushPull(RespProtocol.RespType.RESP_EVAL, in, out, command, args);
 	}
-	public List<String> execArray(String command, String... args) throws IOException {
+	public List<String> execArray(String command, String... args)  {
 		return (List<String>) RespProtocol.pushPull(RespProtocol.RespType.RESP_ARRAY, in, out, command, args);
 	}
 
-	public long execLong(String command, String... args) throws IOException {
+	public long execLong(String command, String... args) {
 		return (Long) RespProtocol.pushPull(RespProtocol.RespType.RESP_INTEGER, in, out, command, args);
 	}
 
-	public String execString(String command, String... args) throws IOException {
+	public String execString(String command, String... args) {
 		return (String) RespProtocol.pushPull(RespProtocol.RespType.RESP_STRING, in, out, command, args);
 	}
 
-	public String execBulk(String command, String... args) throws IOException {
+	public String execBulk(String command, String... args) {
 		return (String) RespProtocol.pushPull(RespProtocol.RespType.RESP_BULK, in, out, command, args);
 	}
 }

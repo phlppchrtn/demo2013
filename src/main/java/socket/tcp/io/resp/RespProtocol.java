@@ -119,9 +119,13 @@ public final class RespProtocol {
 	 * @return
 	 * @throws IOException
 	 */
-	static Object pushPull(RespType type, BufferedReader in, BufferedOutputStream out, String command, String[] args) throws IOException {
-		push(out, command, args);
-		return pull(in, type.getChar());
+	static Object pushPull(RespType type, BufferedReader in, BufferedOutputStream out, String command, String[] args) {
+		try {
+			push(out, command, args);
+			return pull(in, type.getChar());
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	private static void push(BufferedOutputStream out, String command, String[] args) throws IOException {

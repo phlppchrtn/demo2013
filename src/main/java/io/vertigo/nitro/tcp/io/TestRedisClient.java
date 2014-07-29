@@ -24,11 +24,11 @@ public final class TestRedisClient {
 	//		new TestRedisClient().test();
 	//	}
 	private RedisClient redis;
-//	private static RedisServer redisServer;
+	private static RedisServer redisServer;
 
 	@Before
 	public void before() throws IOException {
-	//	if (redisServer ==null) redisServer = new RedisServer(port);
+		if (redisServer ==null) redisServer = new RedisServer(port);
 		redis = createRedis(host, port);
 	}
 
@@ -171,14 +171,18 @@ private static RedisClient createRedis(String host, int port) {
 	}
 	@Test
 	public void testbrpoplpush() throws Exception {
+		redis.lpush("sport","xxx");
+		redis.lpop("sport");
 		Assert.assertEquals(0, redis.llen("sports")); 
 		Assert.assertEquals(0, redis.llen("sports2")); 
+		Assert.assertEquals(0, redis.llen("sports3")); 
+		
 		Thread t1 = new Thread( new Runnable() {
 			@Override
 			public void run() {
 				try(RedisClient redis2 = createRedis(host, port)){
-					redis2.brpoplpush("sport", "sports2", 2);
-					redis2.lpush("sport","rugby");
+					redis2.brpoplpush("sport3", "sports", 2);
+					redis2.lpush("sport2","rugby");
 				}
 			}
 		});
@@ -187,8 +191,8 @@ private static RedisClient createRedis(String host, int port) {
 			@Override
 			public void run() {
 				try(RedisClient redis2 = createRedis(host, port)){
-					redis2.lpush("sport","football");
-					redis2.brpoplpush("sport", "sports2", 2);
+					redis2.lpush("sport3","football");
+					redis2.brpoplpush("sport2", "sports", 2);
 				}
 			}
 		});
@@ -199,8 +203,10 @@ private static RedisClient createRedis(String host, int port) {
 		t1.join();
 		t2.join();
 		//---
-		Assert.assertEquals(0, redis.llen("sports")); 
-		Assert.assertEquals(2, redis.llen("sports2")); 
+		//System.out.println(">>"+redis.lpop("sports"));
+		Assert.assertEquals(2, redis.llen("sports")); 
+		Assert.assertEquals(0, redis.llen("sports2")); 
+		Assert.assertEquals(0, redis.llen("sports3")); 
 	}
 	
 	@Test

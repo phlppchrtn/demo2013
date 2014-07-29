@@ -1,12 +1,13 @@
 package socket.tcp;
 
+import io.vertigo.nitro.tcp.io.resp.VCommandHandler;
+import io.vertigo.nitro.tcp.protocol.ReqResp;
+import io.vertigo.nitro.tcp.protocol.VCommand;
+
 import java.io.IOException;
 
-import socket.tcp.io.resp.VCommandHandler;
 import socket.tcp.nio.TcpClient2;
 import socket.tcp.nio.TcpServer2;
-import socket.tcp.protocol.ReqResp;
-import socket.tcp.protocol.VCommand;
 
 public final class TcpMain {
 	private final int port = 4444;

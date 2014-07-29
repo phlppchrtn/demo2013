@@ -1,4 +1,4 @@
-package socket.tcp.io.resp;
+package io.vertigo.nitro.tcp.io.resp;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;

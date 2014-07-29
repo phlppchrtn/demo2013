@@ -1,4 +1,6 @@
-package socket.tcp.io.impl;
+package io.vertigo.nitro.tcp.io.impl;
+
+import io.vertigo.nitro.tcp.io.RedisClient;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -6,7 +8,6 @@ import java.util.Calendar;
 import org.junit.Test;
 
 import redis.clients.jedis.Jedis;
-import socket.tcp.io.RedisClient;
 
 public final class GetSetBenchmark {
 	private static String HOST = "localhost";

@@ -1,4 +1,4 @@
-package socket.tcp.protocol;
+package io.vertigo.nitro.tcp.protocol;
 
 import java.io.IOException;
 

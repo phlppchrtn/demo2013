@@ -1,4 +1,6 @@
-package socket.tcp.io;
+package io.vertigo.nitro.tcp.io;
+
+import io.vertigo.nitro.tcp.io.resp.RespClient;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -7,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
-import socket.tcp.io.resp.RespClient;
 
 public final class RedisClient implements AutoCloseable {
 	private final RespClient tcpClient;

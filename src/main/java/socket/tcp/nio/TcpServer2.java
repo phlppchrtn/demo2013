@@ -1,5 +1,8 @@
 package socket.tcp.nio;
 
+import io.vertigo.nitro.tcp.io.resp.VCommandHandler;
+import io.vertigo.nitro.tcp.protocol.VCommand;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -8,9 +11,6 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
-
-import socket.tcp.io.resp.VCommandHandler;
-import socket.tcp.protocol.VCommand;
 
 /**
  * A server using non blocking TCP socket .

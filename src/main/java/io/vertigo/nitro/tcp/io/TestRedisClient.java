@@ -1,4 +1,4 @@
-package socket.tcp.io;
+package io.vertigo.nitro.tcp.io;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -12,11 +12,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 public final class TestRedisClient {
-	//private final String host = "pub-redis-15190.us-east-1-3.4.ec2.garantiadata.com";
+	private static final String host = "pub-redis-15190.us-east-1-3.4.ec2.garantiadata.com";
 	//private final String host = "kasper-redis";
-	private final String host = "localhost";
-	private static final int port = 6380;
-	//private final int port = 15190;
+	//private final String host = "localhost";
+	//private static final int port = 6380;
+	private static  final int port = 15190;
 
 	//	private final TcpClient tcpClient = new TcpClient("localhost", 6379);
 
@@ -24,15 +24,20 @@ public final class TestRedisClient {
 	//		new TestRedisClient().test();
 	//	}
 	private RedisClient redis;
-	private static RedisServer redisServer;
+//	private static RedisServer redisServer;
 
 	@Before
 	public void before() throws IOException {
-		if (redisServer ==null) redisServer = new RedisServer(port);
-		redis = new RedisClient(host, port);
-		//redis.auth("kleegroup");
-		redis.flushAll();
+	//	if (redisServer ==null) redisServer = new RedisServer(port);
+		redis = createRedis(host, port);
 	}
+
+private static RedisClient createRedis(String host, int port) {
+	RedisClient redis = new RedisClient(host, port);
+	redis.auth("kleegroup");
+	redis.flushAll();
+	return redis;
+}
 
 	@After
 	public void after() throws IOException {
@@ -163,6 +168,39 @@ public final class TestRedisClient {
 		//--
 		range = redis.lrange("mylist", 5, 10);
 		Assert.assertEquals(0, range.size());
+	}
+	@Test
+	public void testbrpoplpush() throws Exception {
+		Assert.assertEquals(0, redis.llen("sports")); 
+		Assert.assertEquals(0, redis.llen("sports2")); 
+		Thread t1 = new Thread( new Runnable() {
+			@Override
+			public void run() {
+				try(RedisClient redis2 = createRedis(host, port)){
+					redis2.brpoplpush("sport", "sports2", 2);
+					redis2.lpush("sport","rugby");
+				}
+			}
+		});
+		//---
+		Thread t2 = new Thread( new Runnable() {
+			@Override
+			public void run() {
+				try(RedisClient redis2 = createRedis(host, port)){
+					redis2.lpush("sport","football");
+					redis2.brpoplpush("sport", "sports2", 2);
+				}
+			}
+		});
+		
+		t1.start();
+		t2.start();
+		//---
+		t1.join();
+		t2.join();
+		//---
+		Assert.assertEquals(0, redis.llen("sports")); 
+		Assert.assertEquals(2, redis.llen("sports2")); 
 	}
 	
 	@Test

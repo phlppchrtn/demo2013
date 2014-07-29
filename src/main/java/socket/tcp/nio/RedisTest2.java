@@ -1,9 +1,10 @@
 package socket.tcp.nio;
 
+import io.vertigo.nitro.tcp.protocol.ReqResp;
+
 import java.io.IOException;
 
 import socket.tcp.AbstractRedisTest;
-import socket.tcp.protocol.ReqResp;
 
 public final class RedisTest2 extends AbstractRedisTest {
 	private static final String host = "kasper-redis";

@@ -1,10 +1,10 @@
 package socket.tcp;
 
-import java.io.IOException;
+import io.vertigo.nitro.tcp.io.resp.VCommandHandler;
+import io.vertigo.nitro.tcp.protocol.ReqResp;
+import io.vertigo.nitro.tcp.protocol.VCommand;
 
-import socket.tcp.io.resp.VCommandHandler;
-import socket.tcp.protocol.ReqResp;
-import socket.tcp.protocol.VCommand;
+import java.io.IOException;
 
 public abstract class AbstractTcpMain {
 

@@ -1,4 +1,10 @@
-package socket.tcp.io;
+package io.vertigo.nitro.tcp.io;
+
+import io.vertigo.nitro.tcp.io.impl.GetSetBenchmark;
+import io.vertigo.nitro.tcp.io.resp.RespCommand;
+import io.vertigo.nitro.tcp.io.resp.RespCommandHandler;
+import io.vertigo.nitro.tcp.io.resp.RespProtocol;
+import io.vertigo.nitro.tcp.io.resp.RespServer;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -6,12 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import socket.tcp.io.impl.GetSetBenchmark;
-import socket.tcp.io.resp.RespCommand;
-import socket.tcp.io.resp.RespCommandHandler;
-import socket.tcp.io.resp.RespProtocol;
-import socket.tcp.io.resp.RespServer;
 
 public final class RedisServer implements RespCommandHandler {
 	private final RespServer respServer;

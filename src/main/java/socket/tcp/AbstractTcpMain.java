@@ -1,10 +1,10 @@
 package socket.tcp;
 
-import io.vertigo.nitro.tcp.io.resp.VCommandHandler;
-import io.vertigo.nitro.tcp.protocol.ReqResp;
-import io.vertigo.nitro.tcp.protocol.VCommand;
-
 import java.io.IOException;
+
+import sockect.tcp.protocol.ReqResp;
+import sockect.tcp.protocol.VCommand;
+import sockect.tcp.protocol.VCommandHandler;
 
 public abstract class AbstractTcpMain {
 
@@ -20,7 +20,7 @@ public abstract class AbstractTcpMain {
 		private final AbstractTcpMain tcpMain;
 		private final int count;
 
-		Sender(int id, AbstractTcpMain tcpMain, int count) {
+		Sender(final int id, final AbstractTcpMain tcpMain, final int count) {
 			//	this.id = id;
 			this.tcpMain = tcpMain;
 			this.count = count;
@@ -30,14 +30,14 @@ public abstract class AbstractTcpMain {
 		public void run() {
 			try (ReqResp tcpClient = tcpMain.createTcpClient(HOST, PORT)) {
 				for (int i = 0; i < count; i++) {
-					long res = tcpClient.exec(new VCommand("ping"));
+					final long res = tcpClient.exec(new VCommand("ping"));
 					//System.out.println(">" + res);
 					if (res != 200)
 						throw new RuntimeException("erreur dans le retour :" + res);
 					//					System.out.println(">>>ping(id=" + id + ") : " + res);
 					//System.out.println(">>>pong : " + tcpClient.ask("pong\r\n"));
 				}
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				throw new RuntimeException(e);
 			}
 		}
@@ -52,9 +52,9 @@ public abstract class AbstractTcpMain {
 		test(50, 10);
 	}
 
-	public void test(int threadCount, int count) throws InterruptedException {
-		Thread[] threads = new Thread[threadCount];
-		long start = System.currentTimeMillis();
+	public void test(final int threadCount, final int count) throws InterruptedException {
+		final Thread[] threads = new Thread[threadCount];
+		final long start = System.currentTimeMillis();
 		for (int j = 0; j < threadCount; j++) {
 			threads[j] = new Thread(new Sender(j, this, count));
 			threads[j].start();
@@ -77,7 +77,7 @@ public abstract class AbstractTcpMain {
 	//	}
 
 	protected static class MyCommandHandler implements VCommandHandler {
-		public String onCommand(VCommand command) {
+		public String onCommand(final VCommand command) {
 			if ("ping".equals(command.getName())) {
 				return "+OK";
 			} else if ("pong".equals(command.getName())) {

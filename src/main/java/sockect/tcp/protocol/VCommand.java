@@ -1,4 +1,4 @@
-package io.vertigo.nitro.tcp.protocol;
+package sockect.tcp.protocol;
 
 public final class VCommand {
 	private final String name;

@@ -1,9 +1,8 @@
 package socket.tcp.nio;
 
-import io.vertigo.nitro.tcp.protocol.ReqResp;
-
 import java.io.IOException;
 
+import sockect.tcp.protocol.ReqResp;
 import socket.tcp.AbstractRedisTest;
 
 public final class RedisTest2 extends AbstractRedisTest {

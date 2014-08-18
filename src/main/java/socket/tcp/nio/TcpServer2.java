@@ -1,8 +1,5 @@
 package socket.tcp.nio;
 
-import io.vertigo.nitro.tcp.io.resp.VCommandHandler;
-import io.vertigo.nitro.tcp.protocol.VCommand;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -11,6 +8,9 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
+
+import sockect.tcp.protocol.VCommand;
+import sockect.tcp.protocol.VCommandHandler;
 
 /**
  * A server using non blocking TCP socket .
@@ -22,7 +22,7 @@ public final class TcpServer2 implements Runnable {
 	private final VCommandHandler commandHandler;
 	private final ByteBuffer buffer;
 
-	public TcpServer2(final int port, VCommandHandler commandHandler) {
+	public TcpServer2(final int port, final VCommandHandler commandHandler) {
 		this.port = port;
 		this.commandHandler = commandHandler;
 		buffer = ByteBuffer.allocate(8192);
@@ -61,28 +61,28 @@ public final class TcpServer2 implements Runnable {
 					}
 				}
 			}
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	private static void accept(SelectionKey selectionKey) throws IOException {
-		ServerSocketChannel serverSocketChannel = (ServerSocketChannel) selectionKey.channel();
+	private static void accept(final SelectionKey selectionKey) throws IOException {
+		final ServerSocketChannel serverSocketChannel = (ServerSocketChannel) selectionKey.channel();
 
-		SocketChannel socketChannel = serverSocketChannel.accept();
+		final SocketChannel socketChannel = serverSocketChannel.accept();
 		socketChannel.configureBlocking(false);
 
 		socketChannel.register(selectionKey.selector(), SelectionKey.OP_READ);
 	}
 
-	public void read(SelectionKey selectionKey) throws IOException {
-		SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
+	public void read(final SelectionKey selectionKey) throws IOException {
+		final SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
 		read(socketChannel);
 	}
 
-	public void read(SocketChannel socketChannel) throws IOException {
+	public void read(final SocketChannel socketChannel) throws IOException {
 		buffer.clear();
-		int bytesRead = socketChannel.read(buffer);
+		final int bytesRead = socketChannel.read(buffer);
 
 		if (bytesRead == -1) {
 			// Remote entity shut the socket down cleanly.
@@ -96,7 +96,7 @@ public final class TcpServer2 implements Runnable {
 		}
 
 		buffer.flip();
-		VCommand command = RedisProtocol2.decode(buffer);
+		final VCommand command = RedisProtocol2.decode(buffer);
 
 		// We can use an optimized protocol 
 		//		StringBuilder sb = new StringBuilder();
@@ -107,7 +107,7 @@ public final class TcpServer2 implements Runnable {
 
 		//-------------------------------------------------
 		//-------------------------------------------------
-		String response = commandHandler.onCommand(command);
+		final String response = commandHandler.onCommand(command);
 		buffer.clear();
 		buffer.put(response.getBytes(RedisProtocol2.CHARSET));
 

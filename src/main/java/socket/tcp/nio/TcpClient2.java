@@ -5,14 +5,14 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
-import socket.tcp.protocol.ReqResp;
-import socket.tcp.protocol.VCommand;
+import sockect.tcp.protocol.ReqResp;
+import sockect.tcp.protocol.VCommand;
 
 public final class TcpClient2 implements ReqResp {
 	private SocketChannel socketChannel;
 	private ByteBuffer buffer;
 
-	public TcpClient2(String host, int port) {
+	public TcpClient2(final String host, final int port) {
 		try {
 			socketChannel = SocketChannel.open(new InetSocketAddress(host, port));
 
@@ -26,7 +26,7 @@ public final class TcpClient2 implements ReqResp {
 			//			socket.setSoLinger(true, 0); //Control calls close () method, the underlying socket is closed immediately
 
 			//			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -35,18 +35,18 @@ public final class TcpClient2 implements ReqResp {
 		try {
 			//On ferme tjrs la socket
 			socketChannel.close();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
 	//Command ==> 
-	public long exec(VCommand command) throws IOException {
+	public long exec(final VCommand command) throws IOException {
 		push(command);
 		return pull();
 	}
 
-	private void push(VCommand command) throws IOException {
+	private void push(final VCommand command) throws IOException {
 		//	System.out.println("exec command :" + command.getName());
 		buffer.clear();
 		RedisProtocol2.encode(command, buffer);
@@ -66,7 +66,7 @@ public final class TcpClient2 implements ReqResp {
 		buffer.flip();
 
 		boolean first = true;
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		while (buffer.hasRemaining()) {
 			if (first) {
 				//:98

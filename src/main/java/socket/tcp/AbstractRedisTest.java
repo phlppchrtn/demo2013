@@ -1,10 +1,10 @@
 package socket.tcp;
 
-import io.vertigo.nitro.tcp.io.resp.VCommandHandler;
-import io.vertigo.nitro.tcp.protocol.ReqResp;
-import io.vertigo.nitro.tcp.protocol.VCommand;
-
 import java.io.IOException;
+
+import sockect.tcp.protocol.ReqResp;
+import sockect.tcp.protocol.VCommand;
+import sockect.tcp.protocol.VCommandHandler;
 
 public abstract class AbstractRedisTest {
 	private final VCommandHandler commandHandler = new RedisCommandHandler();
@@ -30,8 +30,8 @@ public abstract class AbstractRedisTest {
 
 	protected abstract ReqResp createTcpClient();
 
-	private void test(int threadCount, int count) throws IOException, InterruptedException {
-		long start = System.currentTimeMillis();
+	private void test(final int threadCount, final int count) throws IOException, InterruptedException {
+		final long start = System.currentTimeMillis();
 		//1 #  
 		flushDb();
 		//2 #
@@ -50,9 +50,9 @@ public abstract class AbstractRedisTest {
 		System.out.println("--------------------------------------------------- ");
 	}
 
-	private boolean check(int total) throws IOException {
+	private boolean check(final int total) throws IOException {
 		try (ReqResp tcpClient = createTcpClient()) {
-			long res = tcpClient.exec(new VCommand("llen", "test"));
+			final long res = tcpClient.exec(new VCommand("llen", "test"));
 			return total == res;
 		}
 	}
@@ -64,11 +64,11 @@ public abstract class AbstractRedisTest {
 		}
 	}
 
-	private void monoThread(int count) {
+	private void monoThread(final int count) {
 		loop("mono", count);
 	}
 
-	private void loop(String id, int count) {
+	private void loop(final String id, final int count) {
 		try (ReqResp tcpClient = createTcpClient()) {
 			for (int i = 0; i < count; i++) {
 				/*long res = */tcpClient.exec(new VCommand("lpush", "test", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaanode[" + id + "] :" + i));
@@ -76,13 +76,13 @@ public abstract class AbstractRedisTest {
 				//					System.out.println(">>>lpush node [" + id + "] : >>" + res);
 				//				}
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void multiThread(int threadCount, int count) throws InterruptedException {
-		Thread[] threads = new Thread[threadCount];
+	private void multiThread(final int threadCount, final int count) throws InterruptedException {
+		final Thread[] threads = new Thread[threadCount];
 		for (int j = 0; j < threadCount; j++) {
 			threads[j] = new Thread(new Sender("" + j, count, this));
 			threads[j].start();
@@ -102,7 +102,7 @@ public abstract class AbstractRedisTest {
 		private final int count;
 		private final AbstractRedisTest redis;
 
-		Sender(String id, int count, AbstractRedisTest redis) {
+		Sender(final String id, final int count, final AbstractRedisTest redis) {
 			this.id = id;
 			this.count = count;
 			this.redis = redis;
@@ -117,7 +117,7 @@ public abstract class AbstractRedisTest {
 	private static class RedisCommandHandler implements VCommandHandler {
 		private long datas;
 
-		public String onCommand(VCommand command) {
+		public String onCommand(final VCommand command) {
 			if ("flushdb".equals(command.getName())) {
 				datas = 0;
 			} else if ("llen".equals(command.getName())) {

@@ -3,13 +3,13 @@ package socket.tcp.nio;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-import socket.tcp.protocol.VCommand;
+import sockect.tcp.protocol.VCommand;
 
 final class RedisProtocol2 {
 	private static final String LN = "\r\n";
 	public static final String CHARSET = "UTF-8";
 
-	public static void encode(VCommand command, ByteBuffer buffer) throws IOException {
+	public static void encode(final VCommand command, final ByteBuffer buffer) throws IOException {
 		byte[] bytes;
 		//--- *Nb d'infos
 		buffer.put("*".getBytes(CHARSET));
@@ -23,7 +23,7 @@ final class RedisProtocol2 {
 		buffer.put(bytes);
 		buffer.put(LN.getBytes(CHARSET));
 		//--- cas des args 
-		for (String arg : command.args()) {
+		for (final String arg : command.args()) {
 			bytes = arg.getBytes(CHARSET);
 			buffer.put("$".getBytes(CHARSET));
 			buffer.put(String.valueOf(bytes.length).getBytes(CHARSET));
@@ -33,8 +33,8 @@ final class RedisProtocol2 {
 		}
 	}
 
-	public static VCommand decode(ByteBuffer input) throws IOException {
-		String[] lines = new String(input.array(), CHARSET).split(LN);
+	public static VCommand decode(final ByteBuffer input) throws IOException {
+		final String[] lines = new String(input.array(), CHARSET).split(LN);
 		if (lines.length == 0) {
 			return null;
 		}
@@ -48,7 +48,7 @@ final class RedisProtocol2 {
 		}
 
 		String commandName = null;
-		String[] args = new String[n - 1];
+		final String[] args = new String[n - 1];
 		for (int i = 0; i < n; i++) {
 			String line = lines[2 * i + 1];
 			//			System.out.println("line('" + 2 * i + "') : " + line);

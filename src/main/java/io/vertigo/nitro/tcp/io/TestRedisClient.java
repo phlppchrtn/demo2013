@@ -1,6 +1,5 @@
 package io.vertigo.nitro.tcp.io;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,11 +11,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 public final class TestRedisClient {
-	private static final String host = "pub-redis-15190.us-east-1-3.4.ec2.garantiadata.com";
+	//private static final String host = "pub-redis-15190.us-east-1-3.4.ec2.garantiadata.com";
 	//private final String host = "kasper-redis";
-	//private final String host = "localhost";
-	//private static final int port = 6380;
-	private static  final int port = 15190;
+	private final String host = "localhost";
+	private static final int port = 6379;
+	//private static final int port = 15190;
 
 	//	private final TcpClient tcpClient = new TcpClient("localhost", 6379);
 
@@ -24,23 +23,25 @@ public final class TestRedisClient {
 	//		new TestRedisClient().test();
 	//	}
 	private RedisClient redis;
-	private static RedisServer redisServer;
+
+	//	private static RedisServer redisServer;
 
 	@Before
-	public void before() throws IOException {
-		if (redisServer ==null) redisServer = new RedisServer(port);
-		redis = createRedis(host, port);
+	public void before() {
+		//		if (redisServer == null)
+		//			redisServer = new RedisServer(port);
+		redis = createRedis();
 	}
 
-private static RedisClient createRedis(String host, int port) {
-	RedisClient redis = new RedisClient(host, port);
-	redis.auth("kleegroup");
-	redis.flushAll();
-	return redis;
-}
+	private RedisClient createRedis() {
+		final RedisClient redisClient = new RedisClient(host, port);
+		//redisClient.auth("kleegroup");
+		redisClient.flushAll();
+		return redisClient;
+	}
 
 	@After
-	public void after() throws IOException {
+	public void after() {
 		redis.close();
 	}
 
@@ -169,34 +170,35 @@ private static RedisClient createRedis(String host, int port) {
 		range = redis.lrange("mylist", 5, 10);
 		Assert.assertEquals(0, range.size());
 	}
+
 	@Test
 	public void testbrpoplpush() throws Exception {
-		redis.lpush("sport","xxx");
+		redis.lpush("sport", "xxx");
 		redis.lpop("sport");
-		Assert.assertEquals(0, redis.llen("sports")); 
-		Assert.assertEquals(0, redis.llen("sports2")); 
-		Assert.assertEquals(0, redis.llen("sports3")); 
-		
-		Thread t1 = new Thread( new Runnable() {
+		Assert.assertEquals(0, redis.llen("sports"));
+		Assert.assertEquals(0, redis.llen("sports2"));
+		Assert.assertEquals(0, redis.llen("sports3"));
+
+		final Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				try(RedisClient redis2 = createRedis(host, port)){
+				try (RedisClient redis2 = createRedis()) {
 					redis2.brpoplpush("sport3", "sports", 2);
-					redis2.lpush("sport2","rugby");
+					redis2.lpush("sport2", "rugby");
 				}
 			}
 		});
 		//---
-		Thread t2 = new Thread( new Runnable() {
+		final Thread t2 = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				try(RedisClient redis2 = createRedis(host, port)){
-					redis2.lpush("sport3","football");
+				try (RedisClient redis2 = createRedis()) {
+					redis2.lpush("sport3", "football");
 					redis2.brpoplpush("sport2", "sports", 2);
 				}
 			}
 		});
-		
+
 		t1.start();
 		t2.start();
 		//---
@@ -204,34 +206,34 @@ private static RedisClient createRedis(String host, int port) {
 		t2.join();
 		//---
 		//System.out.println(">>"+redis.lpop("sports"));
-		Assert.assertEquals(2, redis.llen("sports")); 
-		Assert.assertEquals(0, redis.llen("sports2")); 
-		Assert.assertEquals(0, redis.llen("sports3")); 
+		Assert.assertEquals(2, redis.llen("sports"));
+		Assert.assertEquals(0, redis.llen("sports2"));
+		Assert.assertEquals(0, redis.llen("sports3"));
 	}
-	
+
 	@Test
 	public void testHyperLogLog() throws Exception {
-		redis.pfadd("hll",  "foo" , "bar", "zap");
-		redis.pfadd("hll", "zap",  "zap",  "zap");
-		redis.pfadd("hll", "foo",  "bar");
-		Assert.assertEquals(3, redis.pfcount("hll")); 
-		redis.pfadd("some-other-hll", "1",  "2", "3");
-		Assert.assertEquals(6, redis.pfcount("hll", "some-other-hll")); 
+		redis.pfadd("hll", "foo", "bar", "zap");
+		redis.pfadd("hll", "zap", "zap", "zap");
+		redis.pfadd("hll", "foo", "bar");
+		Assert.assertEquals(3, redis.pfcount("hll"));
+		redis.pfadd("some-other-hll", "1", "2", "3");
+		Assert.assertEquals(6, redis.pfcount("hll", "some-other-hll"));
 		//---
 		Assert.assertEquals(0, redis.hlen("words"));
 		redis.pfadd("words", "Longtemps, je me suis couché de bonne heure. Parfois, à peine ma bougie éteinte, mes yeux se fermaient si vite que je n’avais pas le temps de me dire".split(" "));
-		Assert.assertEquals(26, redis.pfcount("words")); 
+		Assert.assertEquals(26, redis.pfcount("words"));
 		//---
-		redis.pfadd("hll1",  "foo" , "bar", "zap", "a");
-		redis.pfadd("hll2",  "a" , "b", "c", "foo");
-		redis.pfmerge("hll3",  "hll1" , "hll2");
-		Assert.assertEquals(6, redis.pfcount("hll3")); 
+		redis.pfadd("hll1", "foo", "bar", "zap", "a");
+		redis.pfadd("hll2", "a", "b", "c", "foo");
+		redis.pfmerge("hll3", "hll1", "hll2");
+		Assert.assertEquals(6, redis.pfcount("hll3"));
 	}
-	
+
 	@Test
 	public void testHash() throws Exception {
 		Assert.assertEquals(0, redis.hlen("user/1"));
-		Map<String, String> map = new HashMap<>();
+		final Map<String, String> map = new HashMap<>();
 		map.put("firstname", "john");
 		map.put("lastname", "doe");
 		redis.hmset("user/1", map);
@@ -253,17 +255,17 @@ private static RedisClient createRedis(String host, int port) {
 		Assert.assertFalse(redis.hsetnx("user/2", "firstname", "henry")); //not modified
 		Assert.assertEquals("john", redis.hget("user/2", "firstname"));
 
-		Map<String, String> user2 = redis.hgetAll("user/2");
+		final Map<String, String> user2 = redis.hgetAll("user/2");
 		Assert.assertEquals(2, user2.size());
 		Assert.assertEquals("william", user2.get("lastname"));
 		Assert.assertEquals("john", user2.get("firstname"));
 
-		Set<String> keys = redis.hkeys("user/2");
+		final Set<String> keys = redis.hkeys("user/2");
 		Assert.assertEquals(2, keys.size());
 		Assert.assertTrue(keys.contains("lastname"));
 		Assert.assertTrue(keys.contains("firstname"));
 
-		List<String> values = redis.hvals("user/2");
+		final List<String> values = redis.hvals("user/2");
 		Assert.assertEquals(2, values.size());
 		Assert.assertTrue(values.contains("william"));
 		Assert.assertTrue(values.contains("john"));
@@ -275,7 +277,7 @@ private static RedisClient createRedis(String host, int port) {
 		redis.flushAll();
 		Assert.assertEquals("OK", redis.eval("return redis.call('set','foo','bar')"));
 		Assert.assertEquals("bar", redis.get("foo"));
-		long res = (Long) redis.eval("for i=1, 10, 1 do redis.call('lpush','mylist','bar'..i) end return redis.call('llen', 'mylist')");
+		final long res = (Long) redis.eval("for i=1, 10, 1 do redis.call('lpush','mylist','bar'..i) end return redis.call('llen', 'mylist')");
 		Assert.assertEquals(10, res);
 		Assert.assertEquals(10, redis.llen("mylist"));
 	}

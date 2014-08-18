@@ -11,10 +11,14 @@ import java.util.List;
 
 public final class RespProtocol {
 	static enum RespType {
-		RESP_STRING('+'), RESP_ARRAY('*'), RESP_BULK('$'), RESP_INTEGER(':'), RESP_EVAL('?');
+		RESP_STRING('+'), //
+		RESP_ARRAY('*'), //
+		RESP_BULK('$'), //
+		RESP_INTEGER(':'), //
+		RESP_EVAL('?');
 		private final char c;
 
-		private RespType(char c) {
+		private RespType(final char c) {
 			this.c = c;
 		}
 
@@ -26,7 +30,7 @@ public final class RespProtocol {
 	private static final String CHARSET = "UTF-8";
 	private static final String LN = "\r\n";
 
-	private static void writeCommand(OutputStream out, String command, String args[]) throws IOException {
+	private static void writeCommand(final OutputStream out, final String command, final String args[]) throws IOException {
 		//--- *Nb d'infos
 		out.write("*".getBytes(CHARSET));
 		out.write(String.valueOf(args.length + 1).getBytes(CHARSET));
@@ -34,12 +38,12 @@ public final class RespProtocol {
 		//--- cas du nom de la commande
 		writeBulkString(out, command);
 		//--- cas des args 
-		for (String arg : args) {
+		for (final String arg : args) {
 			writeBulkString(out, arg);
 		}
 	}
 
-	static RespCommand readCommand(BufferedReader input) throws IOException {
+	static RespCommand readCommand(final BufferedReader input) throws IOException {
 		String line = input.readLine();
 		if (line == null) {
 			return null;
@@ -54,7 +58,7 @@ public final class RespProtocol {
 		}
 
 		String commandName = null;
-		String[] args = new String[n - 1];
+		final String[] args = new String[n - 1];
 		for (int i = 0; i < n; i++) {
 			line = input.readLine();
 			//	System.out.println("line('" + i + "') : " + line);
@@ -74,34 +78,34 @@ public final class RespProtocol {
 		return new RespCommand(commandName, args);
 	}
 
-	public static void writeLong(OutputStream out, Long value) throws IOException {
+	public static void writeLong(final OutputStream out, final Long value) throws IOException {
 		out.write(":".getBytes(CHARSET));
 		out.write(String.valueOf(value).getBytes(CHARSET));
 		out.write(LN.getBytes(CHARSET));
 	}
 
-	public static void writeError(OutputStream out, String msg) throws IOException {
+	public static void writeError(final OutputStream out, final String msg) throws IOException {
 		out.write("-".getBytes(CHARSET));
 		out.write(msg.getBytes(CHARSET));
 		out.write(LN.getBytes(CHARSET));
 	}
 
-	public static void writeSimpleString(OutputStream out, String value) throws IOException {
+	public static void writeSimpleString(final OutputStream out, final String value) throws IOException {
 		out.write("+".getBytes(CHARSET));
 		out.write(value.getBytes(CHARSET));
 		out.write(LN.getBytes(CHARSET));
 	}
 
-	public static void writeBulkString(OutputStream out, String bulk) throws IOException {
+	public static void writeBulkString(final OutputStream out, final String bulk) throws IOException {
 		//System.out.println("bulk:" + bulk);
 		//--- cas du nom de la commande
-		if (bulk==null){
+		if (bulk == null) {
 			out.write("$-1".getBytes(CHARSET));
 			out.write(LN.getBytes(CHARSET));
 			return;
-		}	
+		}
 
-		byte[] bytes = bulk.getBytes(CHARSET);
+		final byte[] bytes = bulk.getBytes(CHARSET);
 		out.write("$".getBytes(CHARSET));
 		out.write(String.valueOf(bytes.length).getBytes(CHARSET));
 		out.write(LN.getBytes(CHARSET));
@@ -119,26 +123,26 @@ public final class RespProtocol {
 	 * @return
 	 * @throws IOException
 	 */
-	static Object pushPull(RespType type, BufferedReader in, BufferedOutputStream out, String command, String[] args) {
+	static Object pushPull(final RespType type, final BufferedReader in, final BufferedOutputStream out, final String command, final String[] args) {
 		try {
 			push(out, command, args);
 			return pull(in, type.getChar());
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	private static void push(BufferedOutputStream out, String command, String[] args) throws IOException {
+	private static void push(final BufferedOutputStream out, final String command, final String[] args) throws IOException {
 		//System.out.println("exec command :" + command.getName());
 		writeCommand(out, command, args);
 		out.flush();
 	}
 
-	private static Object pull(BufferedReader in, char expected) throws IOException {
-		String response = in.readLine();
+	private static Object pull(final BufferedReader in, final char expected) throws IOException {
+		final String response = in.readLine();
 		//System.out.println(expected + ":" + response);
 		//---
-		char start = response.charAt(0);
+		final char start = response.charAt(0);
 		if (start == '-') {
 			throw new RuntimeException(response);
 		}
@@ -155,7 +159,7 @@ public final class RespProtocol {
 			case '+': //string
 				return response.substring(1);
 			case '$': //bulk 
-				int n = Integer.valueOf(response.substring(1));
+				final int n = Integer.valueOf(response.substring(1));
 				if (n < 0) {
 					return null;
 				} else if (n == 0) {
@@ -163,8 +167,8 @@ public final class RespProtocol {
 				}
 				return in.readLine();
 			case '*': //array
-				int m = Integer.valueOf(response.substring(1));
-				List list = new ArrayList<>();
+				final int m = Integer.valueOf(response.substring(1));
+				final List list = new ArrayList<>();
 				for (int i = 0; i < m; i++) {
 					list.add(pull(in, '?'));
 				}

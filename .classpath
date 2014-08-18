@@ -33,7 +33,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="/kasper-demo2/src/main/webapp/WEB-INF/lib/log4j-1.2.16.jar"/>
 	<classpathentry kind="lib" path="C:/Users/pchretien/.m2/repository/redis/clients/jedis/2.4.2/jedis-2.4.2.jar" sourcepath="C:/Users/pchretien/.m2/repository/redis/clients/jedis/2.4.2/jedis-2.4.2-sources.jar">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>

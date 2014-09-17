@@ -18,8 +18,8 @@
  */
 package samples;
 
-import io.vertigo.kernel.Home;
-import io.vertigo.kernel.di.configurator.ComponentSpaceConfig;
+import io.vertigo.core.Home;
+import io.vertigo.core.di.configurator.ComponentSpaceConfig;
 import io.vertigoimpl.engines.elastica.redis.RedisElasticaEngine;
 
 import java.util.Scanner;

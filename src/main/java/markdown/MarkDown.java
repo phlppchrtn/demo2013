@@ -1,6 +1,6 @@
 package markdown;
 
-import io.vertigo.kernel.lang.Assertion;
+import io.vertigo.core.lang.Assertion;
 
 import java.io.BufferedReader;
 import java.io.File;

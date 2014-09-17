@@ -20,7 +20,7 @@ package io.vertigo.persona.util;
 
 import io.vertigo.commons.codec.CodecManager;
 import io.vertigo.commons.codec.Encoder;
-import io.vertigo.kernel.lang.Assertion;
+import io.vertigo.core.lang.Assertion;
 
 import java.util.Random;
 

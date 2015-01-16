@@ -10,7 +10,7 @@ public final class Validator<D extends DtObject> {
 
 	public Validator(final List<ValidationRule<D>> validationRules) {
 		Assertion.notNull(validationRules);
-		//---------------------------------------------------------------------
+		//-----
 		this.validationRules = validationRules;
 	}
 

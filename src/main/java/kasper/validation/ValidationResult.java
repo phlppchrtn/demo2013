@@ -14,7 +14,7 @@ public final class ValidationResult<D extends DtObject> {
 	public ValidationResult(final List<ValidationRule<D>> failedRules, final List<ValidationRule<D>> acceptedRules) {
 		Assertion.notNull(acceptedRules);
 		Assertion.notNull(failedRules);
-		//---------------------------------------------------------------------
+		//-----
 		this.acceptedRules = acceptedRules;
 		this.failedRules = failedRules;
 	}

@@ -16,7 +16,7 @@
 	<manager name="CollectionsManager" class="kasperimpl.collections.CollectionsManagerImpl"/>
     <manager name="CodecManager" class="kasperimpl.codec.CodecManagerImpl" />
     <manager name="CacheManager" class="kasperimpl.cache.CacheManagerImpl">
-        <plugin name="CachePlugin" class="kasperimpl.cache.plugins.map.MapCachePlugin" />
+        <plugin name="CachePlugin" class="kasperimpl.cache.plugins.memory.MemoryCachePlugin" />
     </manager>
     <manager name="WorkManager" class="kasperimpl.work.WorkManagerImpl" />
 	<manager name="PersistenceManager" class="kasperimpl.persistence.PersistenceManagerImpl">

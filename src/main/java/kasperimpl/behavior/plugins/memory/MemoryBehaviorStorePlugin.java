@@ -27,7 +27,7 @@ public final class MemoryBehaviorStorePlugin implements BehaviorStorePlugin {
 	public void addBehavior(final URI<?> uri, final DtObject dto) {
 		Assertion.notNull(uri);
 		Assertion.notNull(dto);
-		//---------------------------------------------------------------------
+		//-----
 		// Triplet = (uri + dto)
 		obtainBehaviors(uri).put(dto.getDefinition(), dto);
 	}

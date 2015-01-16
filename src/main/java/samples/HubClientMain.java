@@ -20,7 +20,7 @@ package samples;
 
 import io.vertigo.core.Home;
 import io.vertigo.core.di.configurator.ComponentSpaceConfig;
-import io.vertigo.core.home.data.BioManager;
+import io.vertigo.core.spaces.data.BioManager;
 import io.vertigoimpl.engines.elastica.redis.RedisElasticaEngine;
 
 import java.util.Scanner;

@@ -21,11 +21,11 @@ package samples;
 import io.vertigo.core.di.configurator.ComponentSpaceConfig;
 import io.vertigo.core.di.configurator.ComponentSpaceConfigBuilder;
 import io.vertigo.core.di.configurator.ModuleConfigBuilder;
-import io.vertigo.core.home.data.BioManager;
-import io.vertigo.core.home.data.BioManagerImpl;
-import io.vertigo.core.home.data.MathManager;
-import io.vertigo.core.home.data.MathManagerImpl;
-import io.vertigo.core.home.data.MathPlugin;
+import io.vertigo.core.spaces.data.BioManager;
+import io.vertigo.core.spaces.data.BioManagerImpl;
+import io.vertigo.core.spaces.data.MathManager;
+import io.vertigo.core.spaces.data.MathManagerImpl;
+import io.vertigo.core.spaces.data.MathPlugin;
 import io.vertigoimpl.engines.elastica.redis.RedisElasticaEngine;
 
 /**

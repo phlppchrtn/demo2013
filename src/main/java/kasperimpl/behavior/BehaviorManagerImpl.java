@@ -20,7 +20,7 @@ public final class BehaviorManagerImpl implements BehaviorManager {
 	@Inject
 	public BehaviorManagerImpl(final BehaviorStorePlugin tripletStorePlugin) {
 		Assertion.notNull(tripletStorePlugin);
-		//---------------------------------------------------------------------
+		//-----
 		behaviorStorePlugin = tripletStorePlugin;
 	}
 

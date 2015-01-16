@@ -18,15 +18,13 @@
  */
 package io.vertigo.persona.util;
 
-import io.vertigo.commons.codec.CodecManager;
-import io.vertigo.commons.codec.Encoder;
-import io.vertigo.core.lang.Assertion;
+import io.vertigo.lang.Assertion;
 
 import java.util.Random;
 
 /**
  * Classe utilitaire offrant un ensemble de services concernant les DtObject.
- * 
+ *
  * @author npiedeloup
  * @version $Id: PasswordUtil.java,v 1.6 2014/01/24 17:59:38 pchretien Exp $
  */
@@ -49,7 +47,7 @@ public final class PasswordUtil {
 	public static String generateSalt(final CodecManager codecManager, final String seed) {
 		Assertion.checkNotNull(codecManager);
 		Assertion.checkArgNotEmpty(seed);
-		//---------------------------------------------------------------------
+		//-----
 		final Encoder<byte[], byte[]> md5Codec = codecManager.getMD5Encoder();
 		final Encoder<byte[], String> hexCodec = codecManager.getHexEncoder();
 		final long lSeed;
@@ -78,7 +76,7 @@ public final class PasswordUtil {
 	 */
 	private static int randomLinearInteger(final int minValue, final int maxValue, final double pMin, final Random random) {
 		Assertion.checkArgument(pMin >= 0 && pMin <= 1, "Les probabilit�s doivent etre entre 0 et 1");
-		//---------------------------------------------------------------------
+		//-----
 		double v = random.nextDouble() * 2;
 		double x = random.nextDouble();
 		while (v > (1 - 2 * pMin) * x + pMin) {

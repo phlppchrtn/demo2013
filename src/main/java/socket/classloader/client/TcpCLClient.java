@@ -27,6 +27,7 @@ final class TcpCLClient implements AutoCloseable {
 		}
 	}
 
+	@Override
 	public void close() {
 		try {
 			try {

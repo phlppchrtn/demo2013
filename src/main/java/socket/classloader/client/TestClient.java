@@ -1,7 +1,7 @@
 package socket.classloader.client;
 
 public class TestClient {
-	private static final String HOST = "pchretien";
+	private static final String HOST = "localhost";
 	//private static final int PORT = 6379;
 	private static final int PORT = 4444;
 

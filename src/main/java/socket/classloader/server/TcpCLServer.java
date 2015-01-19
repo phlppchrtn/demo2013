@@ -17,6 +17,7 @@ public final class TcpCLServer implements Runnable {
 		this.port = port;
 	}
 
+	@Override
 	public void run() {
 		try (ServerSocket serverSocket = new ServerSocket(port)) {
 			while (true) {
@@ -39,8 +40,7 @@ public final class TcpCLServer implements Runnable {
 		public void run() {
 			while (true) {
 				try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
-					String input;
-					while ((input = in.readLine()) != null) {
+					for (String input = in.readLine(); input != null; input = in.readLine()) {
 						System.out.println("server : loading class : " + input);
 						byte[] classAsBytes = loadClassData(input);
 						//----					
@@ -67,10 +67,10 @@ public final class TcpCLServer implements Runnable {
 			}
 			int size = stream.available();
 			byte buff[] = new byte[size];
-			DataInputStream in = new DataInputStream(stream);
-			// Reading the binary data
-			in.readFully(buff);
-			in.close();
+			try (DataInputStream in = new DataInputStream(stream)) {
+				// Reading the binary data
+				in.readFully(buff);
+			}
 			return buff;
 		}
 	}

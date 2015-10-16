@@ -23,8 +23,8 @@
 package samples;
 
 import io.vertigo.core.Home;
-import io.vertigo.core.di.configurator.ComponentSpaceConfig;
-import io.vertigo.core.di.configurator.ComponentSpaceConfigBuilder;
+import io.vertigo.core.component.di.configurator.ComponentSpaceConfig;
+import io.vertigo.core.component.di.configurator.ComponentSpaceConfigBuilder;
 import io.vertigo.core.spaces.data.BioManager;
 import io.vertigo.core.spaces.data.BioManagerImpl;
 import io.vertigo.core.spaces.data.MathManager;

@@ -3,33 +3,33 @@ package socket.tcp.nio;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-import sockect.tcp.protocol.VCommand;
+import socket.tcp.protocol.VCommand;
 
 final class RedisProtocol2 {
 	private static final String LN = "\r\n";
 	public static final String CHARSET = "UTF-8";
 
 	public static void encode(final VCommand command, final ByteBuffer buffer) throws IOException {
-		byte[] bytes;
 		//--- *Nb d'infos
-		buffer.put("*".getBytes(CHARSET));
-		buffer.put(String.valueOf(command.args().length + 1).getBytes(CHARSET));
-		buffer.put(LN.getBytes(CHARSET));
 		//--- cas du nom de la commande
-		bytes = command.getName().getBytes(CHARSET);
-		buffer.put("$".getBytes(CHARSET));
-		buffer.put(String.valueOf(bytes.length).getBytes(CHARSET));
-		buffer.put(LN.getBytes(CHARSET));
-		buffer.put(bytes);
-		buffer.put(LN.getBytes(CHARSET));
+		byte[] bytes = command.getName().getBytes(CHARSET);
+		buffer
+				.put("*".getBytes(CHARSET))
+				.put(String.valueOf(command.args().length + 1).getBytes(CHARSET))
+				.put(LN.getBytes(CHARSET))
+				.put("$".getBytes(CHARSET))
+				.put(String.valueOf(bytes.length).getBytes(CHARSET))
+				.put(LN.getBytes(CHARSET))
+				.put(bytes)
+				.put(LN.getBytes(CHARSET));
 		//--- cas des args 
 		for (final String arg : command.args()) {
 			bytes = arg.getBytes(CHARSET);
-			buffer.put("$".getBytes(CHARSET));
-			buffer.put(String.valueOf(bytes.length).getBytes(CHARSET));
-			buffer.put(LN.getBytes(CHARSET));
-			buffer.put(bytes);
-			buffer.put(LN.getBytes(CHARSET));
+			buffer.put("$".getBytes(CHARSET))
+					.put(String.valueOf(bytes.length).getBytes(CHARSET))
+					.put(LN.getBytes(CHARSET))
+					.put(bytes)
+					.put(LN.getBytes(CHARSET));
 		}
 	}
 

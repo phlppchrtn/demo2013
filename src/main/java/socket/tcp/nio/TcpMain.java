@@ -1,8 +1,8 @@
 package socket.tcp.nio;
 
-import sockect.tcp.protocol.ReqResp;
-import sockect.tcp.protocol.VCommandHandler;
 import socket.tcp.AbstractTcpMain;
+import socket.tcp.protocol.ReqResp;
+import socket.tcp.protocol.VCommandHandler;
 
 public final class TcpMain extends AbstractTcpMain {
 	public static void main(final String[] args) throws InterruptedException {

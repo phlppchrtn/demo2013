@@ -9,8 +9,8 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 
-import sockect.tcp.protocol.VCommand;
-import sockect.tcp.protocol.VCommandHandler;
+import socket.tcp.protocol.VCommand;
+import socket.tcp.protocol.VCommandHandler;
 
 /**
  * A server using non blocking TCP socket .
@@ -28,6 +28,7 @@ public final class TcpServer2 implements Runnable {
 		buffer = ByteBuffer.allocate(8192);
 	}
 
+	@Override
 	public void run() {
 		try (Selector selector = Selector.open()) {
 			try (ServerSocketChannel serverSocketChannel = ServerSocketChannel.open()) {

@@ -2,15 +2,15 @@ package socket.tcp;
 
 import java.io.IOException;
 
-import sockect.tcp.protocol.ReqResp;
-import sockect.tcp.protocol.VCommand;
-import sockect.tcp.protocol.VCommandHandler;
+import socket.tcp.protocol.ReqResp;
+import socket.tcp.protocol.VCommand;
+import socket.tcp.protocol.VCommandHandler;
 
 public abstract class AbstractRedisTest {
 	private final VCommandHandler commandHandler = new RedisCommandHandler();
 
 	public final void testSuite() throws InterruptedException, IOException {
-		//		new Thread(createTcpServer()).start();
+		new Thread(createTcpServer()).start();
 		//		Thread.sleep(10);
 
 		//-----
@@ -117,6 +117,7 @@ public abstract class AbstractRedisTest {
 	private static class RedisCommandHandler implements VCommandHandler {
 		private long datas;
 
+		@Override
 		public String onCommand(final VCommand command) {
 			if ("flushdb".equals(command.getName())) {
 				datas = 0;

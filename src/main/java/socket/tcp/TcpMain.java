@@ -2,11 +2,11 @@ package socket.tcp;
 
 import java.io.IOException;
 
-import sockect.tcp.protocol.ReqResp;
-import sockect.tcp.protocol.VCommand;
-import sockect.tcp.protocol.VCommandHandler;
 import socket.tcp.nio.TcpClient2;
 import socket.tcp.nio.TcpServer2;
+import socket.tcp.protocol.ReqResp;
+import socket.tcp.protocol.VCommand;
+import socket.tcp.protocol.VCommandHandler;
 
 public final class TcpMain {
 	private final int port = 4444;
@@ -75,9 +75,11 @@ public final class TcpMain {
 					final long res = tcpClient.exec(new VCommand("ping"));
 					//System.out.println(">" + res);
 					if (res != 200)
+					{
 						throw new RuntimeException("erreur dans le retour :" + res);
-					//					System.out.println(">>>ping(id=" + id + ") : " + res);
-					//System.out.println(">>>pong : " + tcpClient.ask("pong\r\n"));
+						//					System.out.println(">>>ping(id=" + id + ") : " + res);
+						//System.out.println(">>>pong : " + tcpClient.ask("pong\r\n"));
+					}
 				}
 			} catch (final IOException e) {
 				throw new RuntimeException(e);
@@ -86,6 +88,7 @@ public final class TcpMain {
 	}
 
 	private static class MyCommandHandler implements VCommandHandler {
+		@Override
 		public String onCommand(final VCommand command) {
 			if ("ping".equals(command.getName())) {
 				return "+OK";

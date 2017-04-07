@@ -5,8 +5,8 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
-import sockect.tcp.protocol.ReqResp;
-import sockect.tcp.protocol.VCommand;
+import socket.tcp.protocol.ReqResp;
+import socket.tcp.protocol.VCommand;
 
 public final class TcpClient2 implements ReqResp {
 	private SocketChannel socketChannel;
@@ -31,6 +31,7 @@ public final class TcpClient2 implements ReqResp {
 		}
 	}
 
+	@Override
 	public void close() {
 		try {
 			//On ferme tjrs la socket
@@ -41,6 +42,7 @@ public final class TcpClient2 implements ReqResp {
 	}
 
 	//Command ==> 
+	@Override
 	public long exec(final VCommand command) throws IOException {
 		push(command);
 		return pull();

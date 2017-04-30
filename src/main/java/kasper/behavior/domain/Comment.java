@@ -14,7 +14,7 @@ import kasper.domain.util.DtObjectUtil;
  */
 @kasper.domain.metamodel.annotation.DtDefinition
 public class Comment implements DtObject {
-	/** SerialVersionUID. */
+	/** SerialVersionUID.*/
 	private static final long serialVersionUID = 1L;
 
 	private String comment;
